@@ -19,8 +19,6 @@
     <body>
         @yield('content')
 
-        {{ csrf_token() }}
-
         @yield('scripts')
 
         @unless($app->environment('local'))
