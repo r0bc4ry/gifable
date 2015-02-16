@@ -1,3 +1,9 @@
+# Laravel
 /vendor
 /node_modules
 .env
+
+# Intellij
+.idea/
+*.iml
+*.iws
