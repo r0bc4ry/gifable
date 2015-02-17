@@ -4,7 +4,7 @@ class IndexController extends Controller {
 
 	public function getIndex()
 	{
-		return view('index');
+		return view('index', ['ngApp' => 'gifable.index']);
 	}
 
 }

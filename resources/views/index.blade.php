@@ -1,14 +1,14 @@
 @extends('layouts/http')
 
+@section('styles')
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+@stop
+
 @section('content')
-    <div class="container">
-        <div class="content">
-            <div class="title">Laravel 5</div>
-            <div class="quote">{{ Inspiring::quote() }}</div>
-        </div>
-    </div>
+    <main ng-view></main>
 @stop
 
 @section('scripts')
-
+    <script src="/js/index/app.js"></script>
+    <script src="/js/index/templates.js"></script>
 @stop

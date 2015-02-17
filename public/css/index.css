@@ -1,0 +1,46 @@
+/* Neat 1.7.0
+ * http://neat.bourbon.io
+ * Copyright 2012-2014 thoughtbot, inc.
+ * MIT License */
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit; }
+
+html, body {
+  height: 100%;
+  background-color: #ecf0f1;
+  font-size: 14px;
+  color: #2c3e50; }
+
+body main {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; }
+  body main .table {
+    display: table;
+    width: 800px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 64px 0; }
+    body main .table .table-cell {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle; }
+      body main .table .table-cell .logo {
+        margin-bottom: 32px; }
+        body main .table .table-cell .logo p {
+          margin: 16px 0 0; }
+      body main .table .table-cell .uploader .file-drop-zone {
+        width: 290px;
+        height: 160px;
+        padding: 50px 0;
+        border: 2px dashed #bdc3c7;
+        margin: 0 auto; }

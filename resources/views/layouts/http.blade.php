@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="{{ $ngApp or '' }}">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,10 +14,13 @@
         <link rel="apple-touch-icon" sizes="152x152" href="/img/touch-icon-ipad-2x.png">
         <link rel="apple-touch-icon" sizes="180x180" href="/img/touch-icon-iphone-3x.png">
 
+        <link rel="stylesheet" type="text/css" href="/css/vendors.css">
         @yield('styles')
     </head>
     <body>
         @yield('content')
+
+        <script src="/js/vendors.js"></script>
 
         <script>
             var _token = '{{ csrf_token() }}';
