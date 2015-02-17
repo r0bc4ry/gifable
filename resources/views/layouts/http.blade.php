@@ -19,6 +19,10 @@
     <body>
         @yield('content')
 
+        <script>
+            var _token = '{{ csrf_token() }}';
+        </script>
+
         @yield('scripts')
 
         @unless($app->environment('local'))

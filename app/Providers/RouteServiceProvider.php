@@ -1,7 +1,9 @@
 <?php namespace Gifable\Providers;
 
+use Gifable\Gif;
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider {
 
@@ -24,7 +26,10 @@ class RouteServiceProvider extends ServiceProvider {
 	{
 		parent::boot($router);
 
-		//
+        Route::bind('gif', function($value)
+        {
+            return Gif::where('shortcode', $value)->first();
+        });
 	}
 
 	/**
