@@ -1,36 +1,94 @@
 @import "../shared/_base";
 
 body {
+    padding-top: 64px;
+
+    header,
+    main,
+    footer {
+        @include outer-container;
+        max-width: 800px;
+    }
+    header {
+        text-align: center;
+
+        p {
+            margin: 0;
+        }
+    }
     main {
-        position: absolute;
-        top: 0; right: 0; bottom: 0; left: 0;
+        section {
+            padding: 32px;
 
-        .table {
-            display: table;
-            width: 800px;
-            height: 100%;
-            margin: 0 auto;
-            padding: 64px 0;
+            .uploader {
+                position: relative;
 
-            .table-cell {
-                display: table-cell;
-                text-align: center;
-                vertical-align: middle;
+                .nv-file-drop {
+                    width: 100%;
+                    padding-bottom: 56.25%;
+                    border: 3px dashed #bdc3c7;
+                    margin: 0 auto;
 
-                .logo {
-                    margin-bottom: 32px;
+                    position: relative;
 
-                    p {
-                        margin: 16px 0 0;
+                    &.nv-file-over {
+                        border: 3px dashed #3498db;
+                    }
+                    .nv-file-select {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+                    }
+                    .content {
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        bottom: 0;
+                        left: 0;
+
+                        text-align: center;
                     }
                 }
-                .uploader {
-                    .file-drop-zone {
-                        width: 290px;
-                        height: 160px;
-                        padding: 50px 0;
-                        border: 2px dashed #bdc3c7;
-                        margin: 0 auto;
+                .nv-file-select {
+                    width: 100%;
+
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                }
+            }
+        }
+    }
+    footer {
+        font-size: 14px;
+        text-align: center;
+
+        ul {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+
+            li {
+                display: inline-block;
+                padding: 0 0 0 4px;
+                margin: 0 0 0 4px;
+                border-left: 1px solid #bdc3c7;
+
+                list-style: none;
+
+                &:first-child {
+                    border-left: none;
+                }
+                a {
+                    color: #3498db;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
                     }
                 }
             }

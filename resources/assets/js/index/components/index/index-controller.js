@@ -32,5 +32,13 @@ angular.module('gifable.index.controllers')
             $scope.fileUploader.onErrorItem(function(fileItem, response, status, headers) {
                 console.log(response);
             });
+
+            angular.element($window).bind('dragenter', function() {
+                console.log('Enter');
+            });
+
+            angular.element($window).bind('dragleave', function() {
+                console.log('Leave');
+            });
         }
     ]);

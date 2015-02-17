@@ -15,32 +15,78 @@ html {
 html, body {
   height: 100%;
   background-color: #ecf0f1;
+  font-family: "Open Sans", sans-serif;
   font-size: 14px;
   color: #2c3e50; }
+  html .pull-left, body .pull-left {
+    float: left; }
+  html .pull-right, body .pull-right {
+    float: right; }
 
-body main {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0; }
-  body main .table {
-    display: table;
-    width: 800px;
-    height: 100%;
-    margin: 0 auto;
-    padding: 64px 0; }
-    body main .table .table-cell {
-      display: table-cell;
-      text-align: center;
-      vertical-align: middle; }
-      body main .table .table-cell .logo {
-        margin-bottom: 32px; }
-        body main .table .table-cell .logo p {
-          margin: 16px 0 0; }
-      body main .table .table-cell .uploader .file-drop-zone {
-        width: 290px;
-        height: 160px;
-        padding: 50px 0;
-        border: 2px dashed #bdc3c7;
-        margin: 0 auto; }
+body {
+  padding-top: 64px; }
+  body header, body main, body footer {
+    max-width: 68em;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px; }
+    body header:after, body main:after, body footer:after {
+      content: "";
+      display: table;
+      clear: both; }
+  body header {
+    text-align: center; }
+    body header p {
+      margin: 0; }
+  body main section {
+    padding: 32px; }
+    body main section .uploader {
+      position: relative; }
+      body main section .uploader .nv-file-drop {
+        width: 100%;
+        padding-bottom: 56.25%;
+        border: 3px dashed #bdc3c7;
+        margin: 0 auto;
+        position: relative; }
+        body main section .uploader .nv-file-drop.nv-file-over {
+          border: 3px dashed #3498db; }
+        body main section .uploader .nv-file-drop .nv-file-select {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0; }
+        body main section .uploader .nv-file-drop .content {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          text-align: center; }
+      body main section .uploader .nv-file-select {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0; }
+  body footer {
+    font-size: 14px;
+    text-align: center; }
+    body footer ul {
+      display: inline-block;
+      padding: 0;
+      margin: 0; }
+      body footer ul li {
+        display: inline-block;
+        padding: 0 0 0 4px;
+        margin: 0 0 0 4px;
+        border-left: 1px solid #bdc3c7;
+        list-style: none; }
+        body footer ul li:first-child {
+          border-left: none; }
+        body footer ul li a {
+          color: #3498db;
+          text-decoration: none; }
+          body footer ul li a:hover {
+            text-decoration: underline; }

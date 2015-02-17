@@ -5,6 +5,14 @@ html, body {
     height: 100%;
     background-color: #ecf0f1;
 
+    font-family: "Open Sans", sans-serif;
     font-size: 14px;
     color: #2c3e50;
+
+    .pull-left {
+        float: left;
+    }
+    .pull-right {
+        float: right;
+    }
 }

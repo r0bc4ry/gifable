@@ -7,5 +7,15 @@ angular.module('gifable.index')
             controller: 'IndexController'
         });
 
+        $routeProvider.when('/about', {
+            templateUrl: 'components/about/about.html',
+            controller: 'AboutController'
+        });
+
+        $routeProvider.when('/api', {
+            templateUrl: 'components/api/api.html',
+            controller: 'ApiController'
+        });
+
         $routeProvider.otherwise({ redirectTo: '/' });
     }]);

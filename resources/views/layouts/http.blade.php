@@ -15,6 +15,8 @@
         <link rel="apple-touch-icon" sizes="180x180" href="/img/touch-icon-iphone-3x.png">
 
         <link rel="stylesheet" type="text/css" href="/css/vendors.css">
+        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700">
+        <link rel="stylesheet" href="/fonts/font-awesome-4.3.0/css/font-awesome.min.css">
         @yield('styles')
     </head>
     <body>

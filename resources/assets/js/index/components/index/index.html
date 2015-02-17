@@ -1,13 +1,10 @@
-<div class="table">
-    <div class="table-cell">
-        <div class="logo">
-            <img src="/img/index-logo.png">
-            <p>Convert GIFs to HTML5 videos.</p>
-        </div>
-        <div class="uploader">
-            <div ng-show="fileUploader.isHTML5">
-                <div class="file-drop-zone" nv-file-drop uploader="fileUploader"><img src="/img/index-upload.png"></div>
+<section>
+    <div class="uploader">
+        <div ng-show="fileUploader.isHTML5">
+            <div class="nv-file-drop" nv-file-drop nv-file-over="nv-file-over" uploader="fileUploader">
+                <div class="content">DRAG &amp; DROP</div>
             </div>
+            <input type="file" multiple class="nv-file-select" nv-file-select uploader="fileUploader"/>
         </div>
     </div>
-</div>
+</section>
