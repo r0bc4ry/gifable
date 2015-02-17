@@ -16,6 +16,8 @@ class CreateGifsTable extends Migration {
         {
             $table->increments('id');
             $table->string('shortcode');
+            $table->string('width');
+            $table->string('height');
             $table->string('gif_http_url');
             $table->string('gif_https_url');
             $table->string('webm_http_url');
