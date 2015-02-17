@@ -1,7 +1,7 @@
-<?php namespace App\Http\Controllers;
+<?php namespace Gifable\Http\Controllers;
 
-use App\Gif;
-use App\Services\RackspaceService;
+use Gifable\Gif;
+use Gifable\Services\RackspaceService;
 use Exception;
 use Illuminate\Http\Request;
 use OpenCloud\ObjectStore\Constants\UrlType;

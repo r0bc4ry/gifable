@@ -1,4 +1,4 @@
-<?php namespace App\Services;
+<?php namespace Gifable\Services;
 
 use OpenCloud\Rackspace;
 

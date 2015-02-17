@@ -1,6 +1,6 @@
-<?php namespace App\Services;
+<?php namespace Gifable\Services;
 
-use App\User;
+use Gifable\User;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 

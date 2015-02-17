@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers;
+<?php namespace Gifable\Http\Controllers;
 
 class IndexController extends Controller {
 

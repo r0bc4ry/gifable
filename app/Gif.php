@@ -1,4 +1,4 @@
-<?php namespace App;
+<?php namespace Gifable;
 
 use Illuminate\Database\Eloquent\Model;
 

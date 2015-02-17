@@ -1,4 +1,4 @@
-<?php namespace App\Commands;
+<?php namespace Gifable\Commands;
 
 abstract class Command {
 

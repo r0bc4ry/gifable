@@ -1,4 +1,4 @@
-<?php namespace App\Events;
+<?php namespace Gifable\Events;
 
 abstract class Event {
 
