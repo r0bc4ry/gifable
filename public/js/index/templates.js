@@ -1,3 +1,3 @@
-angular.module("gifable.index.templates").run(["$templateCache", function($templateCache) {$templateCache.put("components/about/about.html","<section>\r\n    <p>Text.</p>\r\n</section>\r\n");
-$templateCache.put("components/api/api.html","<section>\r\n    <p>Developers.</p>\r\n</section>\r\n");
-$templateCache.put("components/index/index.html","<section>\r\n    <form action=\"/transcode\" class=\"dropzone\" id=\"my-awesome-dropzone\"></form>\r\n</section>\r\n");}]);
+angular.module("gifable.index.templates").run(["$templateCache", function($templateCache) {$templateCache.put("components/api/api.html","<section>\r\n    <p>Developers.</p>\r\n</section>\r\n");
+$templateCache.put("components/about/about.html","<section>\r\n    <p>Text.</p>\r\n</section>\r\n");
+$templateCache.put("components/index/index.html","<section class=\"outer-container\">\r\n    <form action=\"/transcode\" class=\"dropzone\" id=\"my-awesome-dropzone\"></form>\r\n</section>\r\n");}]);

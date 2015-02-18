@@ -6,12 +6,13 @@
 
 @section('content')
     <header>
-        <a href="#/"><img src="/img/index-logo.png"></a>
-        <p>Convert GIFs into HTML5 videos.</p>
+        <div class="outer-container">
+            <a href="#/"><img src="/img/index-logo.png"></a>
+        </div>
     </header>
     <main ng-view></main>
     <footer>
-        Made with <i class="fa fa-heart"></i> by <a href="">Rob Cary</a>.
+        Made with <i class="fa fa-heart"></i> by <a href="https://github.com/r0bc4ry" target="_blank">Rob Cary</a>.
         <ul>
             <li><a href="#/api">API</a></li>
             <li><a href="">Donate</a></li>

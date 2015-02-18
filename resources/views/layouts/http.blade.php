@@ -8,11 +8,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/png" href="/img/favicon.png">
-        <link rel="apple-touch-icon" href="/img/touch-icon-iphone.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="/img/touch-icon-ipad.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="/img/touch-icon-iphone-2x.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="/img/touch-icon-ipad-2x.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="/img/touch-icon-iphone-3x.png">
 
         <link rel="stylesheet" type="text/css" href="/css/vendors.css">
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700">

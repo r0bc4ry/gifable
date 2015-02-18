@@ -1,21 +1,26 @@
 @import "../shared/_base";
 
 body {
-    padding-top: 64px;
-
     header,
     main,
     footer {
-        @include outer-container;
-        max-width: 800px;
+        .outer-container {
+            @include outer-container;
+            max-width: 800px;
+        }
     }
     header {
-        background-color: #ecf0f1;
-        
-        text-align: center;
+        .outer-container {
+            padding: 64px 0 0;
 
-        p {
-            margin: 0;
+            text-align: center;
+
+            img {
+                vertical-align: top;
+            }
+            p {
+                margin: 8px 0 0;
+            }
         }
     }
     main {
@@ -26,18 +31,19 @@ body {
                 width: 100%;
                 background: none;
                 padding-bottom: 56.25%;
-                border: 3px dashed #bdc3c7;
+                border: 3px dashed #bcbcbc;
 
                 position: relative;
 
                 &.dz-drag-hover {
-                    border: 3px dashed #3498db;
+                    border: 3px dashed $blue;
 
                     .dz-default.dz-message {
                         opacity: 1;
                     }
                 }
                 .dz-default.dz-message {
+                    padding-top: 137.5px;
                     margin: 0;
 
                     position: absolute;
@@ -45,6 +51,17 @@ body {
                     right: 0;
                     bottom: 0;
                     left: 0;
+
+                    color: #515151;
+
+                    img {
+                        vertical-align: top;
+                    }
+                    h3 {
+                        margin: 0;
+
+                        font-size: 48px;
+                    }
                 }
             }
         }
@@ -52,6 +69,7 @@ body {
     footer {
         font-size: 14px;
         text-align: center;
+        color: #bcbcbc;
 
         ul {
             display: inline-block;
@@ -68,14 +86,6 @@ body {
 
                 &:first-child {
                     border-left: none;
-                }
-                a {
-                    color: #3498db;
-                    text-decoration: none;
-
-                    &:hover {
-                        text-decoration: underline;
-                    }
                 }
             }
         }
