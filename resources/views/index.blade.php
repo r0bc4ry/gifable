@@ -11,7 +11,7 @@
     </header>
     <main ng-view></main>
     <footer>
-        Made with <i class="fa fa-heart"></i> in Alexandria, VA.
+        Made with <i class="fa fa-heart"></i> by <a href="">Rob Cary</a>.
         <ul>
             <li><a href="#/api">API</a></li>
             <li><a href="">Donate</a></li>

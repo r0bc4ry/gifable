@@ -5,7 +5,6 @@ angular.module('gifable.index', [
     'ngRoute',
 
     // Third-party modules
-    'angularFileUpload',
 
     // Application modules
     'gifable.index.controllers',

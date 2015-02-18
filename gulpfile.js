@@ -48,7 +48,7 @@ gulp.task('vendor:js', function() {
     return gulp.src(mainBowerFiles())
         .pipe(plugins.filter(['**/*.js', '!**/*.min.js']))
         .pipe(plugins.if(!argv.production, plugins.sourcemaps.init({ loadMaps: true })))
-        .pipe(plugins.concat('vendors.js'))
+            .pipe(plugins.concat('vendors.js'))
         .pipe(plugins.if(!argv.production, plugins.sourcemaps.write()))
         .pipe(plugins.if(argv.production, plugins.uglify()))
         .pipe(gulp.dest('public/js'));
@@ -57,7 +57,8 @@ gulp.task('vendor:js', function() {
 gulp.task('vendor:styles', function() {
     return gulp.src(mainBowerFiles())
         .pipe(plugins.filter([
-            'normalize.css'
+            'normalize.css',
+            'dropzone.css'
         ]))
         .pipe(plugins.concat('vendors.css'))
         .pipe(plugins.if(argv.production, plugins.minifyCss()))

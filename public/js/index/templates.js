@@ -1,3 +1,3 @@
 angular.module("gifable.index.templates").run(["$templateCache", function($templateCache) {$templateCache.put("components/about/about.html","<section>\r\n    <p>Text.</p>\r\n</section>\r\n");
 $templateCache.put("components/api/api.html","<section>\r\n    <p>Developers.</p>\r\n</section>\r\n");
-$templateCache.put("components/index/index.html","<section>\r\n    <div class=\"uploader\">\r\n        <div ng-show=\"fileUploader.isHTML5\">\r\n            <div class=\"nv-file-drop\" nv-file-drop nv-file-over=\"nv-file-over\" uploader=\"fileUploader\">\r\n                <div class=\"content\">DRAG &amp; DROP</div>\r\n            </div>\r\n            <input type=\"file\" multiple class=\"nv-file-select\" nv-file-select uploader=\"fileUploader\"/>\r\n        </div>\r\n    </div>\r\n</section>\r\n");}]);
+$templateCache.put("components/index/index.html","<section>\r\n    <form action=\"/transcode\" class=\"dropzone\" id=\"my-awesome-dropzone\"></form>\r\n</section>\r\n");}]);

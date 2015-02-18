@@ -14,4 +14,3 @@
 Route::get('/', 'IndexController@getIndex');
 Route::get('{gif}', 'GifController@getGif');
 Route::post('transcode', 'TranscodeController@postIndex');
-

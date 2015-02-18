@@ -10,6 +10,8 @@ body {
         max-width: 800px;
     }
     header {
+        background-color: #ecf0f1;
+        
         text-align: center;
 
         p {
@@ -20,39 +22,23 @@ body {
         section {
             padding: 32px;
 
-            .uploader {
+            .dropzone {
+                width: 100%;
+                background: none;
+                padding-bottom: 56.25%;
+                border: 3px dashed #bdc3c7;
+
                 position: relative;
 
-                .nv-file-drop {
-                    width: 100%;
-                    padding-bottom: 56.25%;
-                    border: 3px dashed #bdc3c7;
-                    margin: 0 auto;
+                &.dz-drag-hover {
+                    border: 3px dashed #3498db;
 
-                    position: relative;
-
-                    &.nv-file-over {
-                        border: 3px dashed #3498db;
-                    }
-                    .nv-file-select {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        bottom: 0;
-                        left: 0;
-                    }
-                    .content {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        bottom: 0;
-                        left: 0;
-
-                        text-align: center;
+                    .dz-default.dz-message {
+                        opacity: 1;
                     }
                 }
-                .nv-file-select {
-                    width: 100%;
+                .dz-default.dz-message {
+                    margin: 0;
 
                     position: absolute;
                     top: 0;

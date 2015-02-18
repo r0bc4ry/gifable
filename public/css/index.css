@@ -14,10 +14,12 @@ html {
 
 html, body {
   height: 100%;
-  background-color: #ecf0f1;
+  background-color: #fff;
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
   color: #2c3e50; }
+  html *:focus, body *:focus {
+    outline: 0; }
   html .pull-left, body .pull-left {
     float: left; }
   html .pull-right, body .pull-right {
@@ -35,36 +37,24 @@ body {
       display: table;
       clear: both; }
   body header {
+    background-color: #ecf0f1;
     text-align: center; }
     body header p {
       margin: 0; }
   body main section {
     padding: 32px; }
-    body main section .uploader {
+    body main section .dropzone {
+      width: 100%;
+      background: none;
+      padding-bottom: 56.25%;
+      border: 3px dashed #bdc3c7;
       position: relative; }
-      body main section .uploader .nv-file-drop {
-        width: 100%;
-        padding-bottom: 56.25%;
-        border: 3px dashed #bdc3c7;
-        margin: 0 auto;
-        position: relative; }
-        body main section .uploader .nv-file-drop.nv-file-over {
-          border: 3px dashed #3498db; }
-        body main section .uploader .nv-file-drop .nv-file-select {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0; }
-        body main section .uploader .nv-file-drop .content {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          text-align: center; }
-      body main section .uploader .nv-file-select {
-        width: 100%;
+      body main section .dropzone.dz-drag-hover {
+        border: 3px dashed #3498db; }
+        body main section .dropzone.dz-drag-hover .dz-default.dz-message {
+          opacity: 1; }
+      body main section .dropzone .dz-default.dz-message {
+        margin: 0;
         position: absolute;
         top: 0;
         right: 0;
