@@ -40,18 +40,16 @@ body header .outer-container {
   text-align: center; }
   body header .outer-container img {
     vertical-align: top; }
-  body header .outer-container p {
-    margin: 8px 0 0; }
 body main section {
-  padding: 32px; }
+  padding: 32px 32px 16px; }
   body main section .dropzone {
     width: 100%;
     background: none;
-    padding-bottom: 56.25%;
-    border: 3px dashed #bcbcbc;
+    padding: 0;
+    border: 2px dashed #bcbcbc;
     position: relative; }
     body main section .dropzone.dz-drag-hover {
-      border: 3px dashed #00b4ff; }
+      border: 2px dashed #00b4ff; }
       body main section .dropzone.dz-drag-hover .dz-default.dz-message {
         opacity: 1; }
     body main section .dropzone .dz-default.dz-message {
@@ -68,19 +66,30 @@ body main section {
       body main section .dropzone .dz-default.dz-message h3 {
         margin: 0;
         font-size: 48px; }
+    body main section .dropzone .dz-preview.dz-processing .dz-image {
+      opacity: 0;
+      -webkit-transition: opacity 0.2s;
+      -moz-transition: opacity 0.2s;
+      transition: opacity 0.2s; }
+    body main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image {
+      opacity: 1; }
+    body main section .dropzone .dz-preview .dz-details {
+      display: none; }
+    body main section .dropzone .dz-preview .dz-progress {
+      width: 100px;
+      height: 14px;
+      background: none;
+      border: 2px solid #00b4ff;
+      border-radius: 7px;
+      margin-top: -7px;
+      margin-left: -50px; }
+      body main section .dropzone .dz-preview .dz-progress .dz-upload {
+        background: #00b4ff;
+        border-radius: 6px;
+        top: 1px;
+        bottom: 1px;
+        left: 1px; }
 body footer {
   font-size: 14px;
   text-align: center;
   color: #bcbcbc; }
-  body footer ul {
-    display: inline-block;
-    padding: 0;
-    margin: 0; }
-    body footer ul li {
-      display: inline-block;
-      padding: 0 0 0 4px;
-      margin: 0 0 0 4px;
-      border-left: 1px solid #bdc3c7;
-      list-style: none; }
-      body footer ul li:first-child {
-        border-left: none; }
