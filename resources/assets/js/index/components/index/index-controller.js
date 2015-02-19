@@ -10,7 +10,7 @@ angular.module('gifable.index.controllers')
                 '<img src="/img/index-upload.png">' +
                 '<h3>DRAG &amp DROP</h3>';
 
-            Dropzone.options.myAwesomeDropzone = {
+            var dropzone = new Dropzone('div#gifable-dropzone', {
                 url: '/transcode',
                 maxFilesize: 100,
                 thumbnailWidth: 150,
@@ -19,6 +19,6 @@ angular.module('gifable.index.controllers')
                 dictInvalidFileType: 'No',
                 dictFileTooBig: '',
                 dictResponseError: ''
-            };
+            });
         }
     ]);
