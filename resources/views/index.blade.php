@@ -7,7 +7,15 @@
 @section('content')
     <header>
         <div class="outer-container">
-            <a href="#/"><img src="/img/index-logo.png"></a>
+            <div class="span-columns-6">
+                <img src="/img/index-logo.png">
+            </div>
+            <div class="span-columns-6" style="text-align: right;">
+                <ul>
+                    <li><a href="#/api">API</a></li><!--
+                    --><li><a href="#/donate">Donate</a></li>
+                </ul>
+            </div>
         </div>
     </header>
     <main ng-view></main>

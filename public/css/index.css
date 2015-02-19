@@ -20,6 +20,21 @@ html, body {
   color: #515151; }
   html *:focus, body *:focus {
     outline: 0; }
+  html .outer-container, body .outer-container {
+    max-width: 68em;
+    margin-left: auto;
+    margin-right: auto; }
+    html .outer-container:after, body .outer-container:after {
+      content: "";
+      display: table;
+      clear: both; }
+    html .outer-container .span-columns-6, body .outer-container .span-columns-6 {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 48.82117%; }
+      html .outer-container .span-columns-6:last-child, body .outer-container .span-columns-6:last-child {
+        margin-right: 0; }
   html a, body a {
     color: #00b4ff;
     text-decoration: none; }
@@ -35,11 +50,33 @@ body header .outer-container, body main .outer-container, body footer .outer-con
     content: "";
     display: table;
     clear: both; }
-body header .outer-container {
-  padding: 64px 0 0;
-  text-align: center; }
-  body header .outer-container img {
-    vertical-align: top; }
+body header {
+  background-color: #00b4ff; }
+  body header .outer-container {
+    padding: 32px; }
+    body header .outer-container .span-columns-6 {
+      font-size: 16px;
+      color: #fff;
+      line-height: 42px; }
+      body header .outer-container .span-columns-6 img {
+        vertical-align: top; }
+      body header .outer-container .span-columns-6 ul {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        list-style: none; }
+        body header .outer-container .span-columns-6 ul li {
+          display: inline-block;
+          padding: 0;
+          margin: 0;
+          margin-right: 32px; }
+          body header .outer-container .span-columns-6 ul li:last-child {
+            margin-right: 0; }
+          body header .outer-container .span-columns-6 ul li a {
+            color: inherit; }
+            body header .outer-container .span-columns-6 ul li a:hover {
+              text-decoration: none;
+              border-bottom: 2px solid #fff; }
 body main section {
   padding: 32px 32px 16px; }
   body main section .dropzone {
