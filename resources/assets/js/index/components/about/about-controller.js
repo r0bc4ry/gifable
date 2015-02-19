@@ -6,6 +6,6 @@ angular.module('gifable.index.controllers')
         function (
             $scope
         ) {
-
+            // TODO your mom
         }
     ]);

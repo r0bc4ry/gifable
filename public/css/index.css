@@ -12,6 +12,20 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
+input[type=url] {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #515151; }
+  input[type=url]::-webkit-input-placeholder {
+    color: #bcbcbc; }
+  input[type=url]::-moz-placeholder {
+    color: #bcbcbc; }
+  input[type=url]:-moz-placeholder {
+    color: #bcbcbc; }
+  input[type=url]:-ms-input-placeholder {
+    color: #bcbcbc; }
+
 html, body {
   height: 100%;
   background-color: #fff;
@@ -41,55 +55,48 @@ html, body {
     html a:hover, body a:hover {
       text-decoration: underline; }
 
-body header .outer-container, body main .outer-container, body footer .outer-container {
-  max-width: 68em;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 800px; }
-  body header .outer-container:after, body main .outer-container:after, body footer .outer-container:after {
-    content: "";
-    display: table;
-    clear: both; }
-body header {
+html header, body header {
   background-color: #00b4ff; }
-  body header .outer-container {
+  html header .outer-container, body header .outer-container {
     padding: 32px; }
-    body header .outer-container .span-columns-6 {
+    html header .outer-container .span-columns-6, body header .outer-container .span-columns-6 {
       font-size: 16px;
       color: #fff;
       line-height: 42px; }
-      body header .outer-container .span-columns-6 img {
+      html header .outer-container .span-columns-6 img, body header .outer-container .span-columns-6 img {
         vertical-align: top; }
-      body header .outer-container .span-columns-6 ul {
+      html header .outer-container .span-columns-6 ul, body header .outer-container .span-columns-6 ul {
         display: inline-block;
         padding: 0;
         margin: 0;
         list-style: none; }
-        body header .outer-container .span-columns-6 ul li {
+        html header .outer-container .span-columns-6 ul li, body header .outer-container .span-columns-6 ul li {
           display: inline-block;
           padding: 0;
           margin: 0;
           margin-right: 32px; }
-          body header .outer-container .span-columns-6 ul li:last-child {
+          html header .outer-container .span-columns-6 ul li:last-child, body header .outer-container .span-columns-6 ul li:last-child {
             margin-right: 0; }
-          body header .outer-container .span-columns-6 ul li a {
+          html header .outer-container .span-columns-6 ul li a, body header .outer-container .span-columns-6 ul li a {
             color: inherit; }
-            body header .outer-container .span-columns-6 ul li a:hover {
+            html header .outer-container .span-columns-6 ul li a:hover, body header .outer-container .span-columns-6 ul li a:hover {
               text-decoration: none;
               border-bottom: 2px solid #fff; }
-body main section {
-  padding: 32px 32px 16px; }
-  body main section .dropzone {
+html main section, body main section {
+  padding: 32px; }
+  html main section .dropzone, body main section .dropzone {
     width: 100%;
     background: none;
-    padding: 0;
+    padding-bottom: 56.25%;
     border: 2px dashed #bcbcbc;
-    position: relative; }
-    body main section .dropzone.dz-drag-hover {
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden; }
+    html main section .dropzone.dz-drag-hover, body main section .dropzone.dz-drag-hover {
       border: 2px dashed #00b4ff; }
-      body main section .dropzone.dz-drag-hover .dz-default.dz-message {
+      html main section .dropzone.dz-drag-hover .dz-default.dz-message, body main section .dropzone.dz-drag-hover .dz-default.dz-message {
         opacity: 1; }
-    body main section .dropzone .dz-default.dz-message {
+    html main section .dropzone .dz-default.dz-message, body main section .dropzone .dz-default.dz-message {
       padding-top: 137.5px;
       margin: 0;
       position: absolute;
@@ -98,21 +105,21 @@ body main section {
       bottom: 0;
       left: 0;
       color: #515151; }
-      body main section .dropzone .dz-default.dz-message img {
+      html main section .dropzone .dz-default.dz-message img, body main section .dropzone .dz-default.dz-message img {
         vertical-align: top; }
-      body main section .dropzone .dz-default.dz-message h3 {
+      html main section .dropzone .dz-default.dz-message h3, body main section .dropzone .dz-default.dz-message h3 {
         margin: 0;
         font-size: 48px; }
-    body main section .dropzone .dz-preview.dz-processing .dz-image {
+    html main section .dropzone .dz-preview.dz-processing .dz-image, body main section .dropzone .dz-preview.dz-processing .dz-image {
       opacity: 0;
       -webkit-transition: opacity 0.2s;
       -moz-transition: opacity 0.2s;
       transition: opacity 0.2s; }
-    body main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image {
+    html main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image, body main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image {
       opacity: 1; }
-    body main section .dropzone .dz-preview .dz-details {
+    html main section .dropzone .dz-preview .dz-details, body main section .dropzone .dz-preview .dz-details {
       display: none; }
-    body main section .dropzone .dz-preview .dz-progress {
+    html main section .dropzone .dz-preview .dz-progress, body main section .dropzone .dz-preview .dz-progress {
       width: 100px;
       height: 14px;
       background: none;
@@ -120,13 +127,24 @@ body main section {
       border-radius: 7px;
       margin-top: -7px;
       margin-left: -50px; }
-      body main section .dropzone .dz-preview .dz-progress .dz-upload {
+      html main section .dropzone .dz-preview .dz-progress .dz-upload, body main section .dropzone .dz-preview .dz-progress .dz-upload {
         background: #00b4ff;
         border-radius: 6px;
         top: 1px;
         bottom: 1px;
         left: 1px; }
-body footer {
+  html main section .url-input-wrapper:after, body main section .url-input-wrapper:after {
+    content: "";
+    display: table;
+    clear: both; }
+  html main section .url-input-wrapper .label, body main section .url-input-wrapper .label {
+    float: left;
+    margin-right: 8px; }
+  html main section .url-input-wrapper .input, body main section .url-input-wrapper .input {
+    overflow: hidden; }
+html footer, body footer {
   font-size: 14px;
   text-align: center;
   color: #bcbcbc; }
+html .outer-container, body .outer-container {
+  max-width: 800px; }

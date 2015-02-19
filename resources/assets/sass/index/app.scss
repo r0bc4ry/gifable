@@ -1,14 +1,6 @@
 @import "../shared/_base";
 
-body {
-    header,
-    main,
-    footer {
-        .outer-container {
-            @include outer-container;
-            max-width: 800px;
-        }
-    }
+html, body {
     header {
         background-color: $blue;
 
@@ -55,16 +47,18 @@ body {
     }
     main {
         section {
-            padding: 32px 32px 16px;
+            padding: 32px;
 
             .dropzone {
                 width: 100%;
                 background: none;
-                padding: 0;
-//                padding-bottom: 56.25%;
+                padding-bottom: 56.25%;
                 border: 2px dashed #bcbcbc;
+                margin-bottom: 32px;
 
                 position: relative;
+
+                overflow: hidden;
 
                 &.dz-drag-hover {
                     border: 2px dashed $blue;
@@ -129,11 +123,25 @@ body {
                     }
                 }
             }
+            .url-input-wrapper {
+                @include clearfix;
+
+                .label {
+                    float: left;
+                    margin-right: 8px;
+                }
+                .input {
+                    overflow: hidden;
+                }
+            }
         }
     }
     footer {
         font-size: 14px;
         text-align: center;
         color: #bcbcbc;
+    }
+    .outer-container {
+        max-width: 800px;
     }
 }

@@ -1,0 +1,121 @@
+/* Neat 1.7.0
+ * http://neat.bourbon.io
+ * Copyright 2012-2014 thoughtbot, inc.
+ * MIT License */
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit; }
+
+input[type=url] {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #515151; }
+  input[type=url]::-webkit-input-placeholder {
+    color: #bcbcbc; }
+  input[type=url]::-moz-placeholder {
+    color: #bcbcbc; }
+  input[type=url]:-moz-placeholder {
+    color: #bcbcbc; }
+  input[type=url]:-ms-input-placeholder {
+    color: #bcbcbc; }
+
+html, body {
+  height: 100%;
+  background-color: #fff;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  color: #515151; }
+  html *:focus, body *:focus {
+    outline: 0; }
+  html .outer-container, body .outer-container {
+    max-width: 68em;
+    margin-left: auto;
+    margin-right: auto; }
+    html .outer-container:after, body .outer-container:after {
+      content: "";
+      display: table;
+      clear: both; }
+    html .outer-container .span-columns-6, body .outer-container .span-columns-6 {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 48.82117%; }
+      html .outer-container .span-columns-6:last-child, body .outer-container .span-columns-6:last-child {
+        margin-right: 0; }
+  html a, body a {
+    color: #00b4ff;
+    text-decoration: none; }
+    html a:hover, body a:hover {
+      text-decoration: underline; }
+
+html, body {
+  background-color: #eee; }
+  html header, body header {
+    background-color: #00b4ff; }
+    html header .outer-container, body header .outer-container {
+      padding: 32px 0; }
+      html header .outer-container .span-columns-6, body header .outer-container .span-columns-6 {
+        font-size: 16px;
+        color: #fff;
+        line-height: 42px; }
+        html header .outer-container .span-columns-6 img, body header .outer-container .span-columns-6 img {
+          vertical-align: top; }
+        html header .outer-container .span-columns-6 ul, body header .outer-container .span-columns-6 ul {
+          display: inline-block;
+          padding: 0;
+          margin: 0;
+          list-style: none; }
+          html header .outer-container .span-columns-6 ul li, body header .outer-container .span-columns-6 ul li {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+            margin-right: 32px; }
+            html header .outer-container .span-columns-6 ul li:last-child, body header .outer-container .span-columns-6 ul li:last-child {
+              margin-right: 0; }
+            html header .outer-container .span-columns-6 ul li a, body header .outer-container .span-columns-6 ul li a {
+              color: inherit; }
+              html header .outer-container .span-columns-6 ul li a:hover, body header .outer-container .span-columns-6 ul li a:hover {
+                text-decoration: none;
+                border-bottom: 2px solid #fff; }
+  html main, body main {
+    padding: 32px 0; }
+    html main .gif-wrapper, body main .gif-wrapper {
+      display: table;
+      background-color: #fff;
+      padding: 16px;
+      margin: 0 auto 32px;
+      position: relative; }
+      html main .gif-wrapper:after, body main .gif-wrapper:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        bottom: 0;
+        left: 10px;
+        right: 10px;
+        border-radius: 100px/10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        z-index: -1; }
+      html main .gif-wrapper video, body main .gif-wrapper video {
+        max-width: 100%;
+        vertical-align: top; }
+    html main .links .row:last-child input[type=url], body main .links .row:last-child input[type=url] {
+      margin-bottom: 0; }
+    html main .links .row label, body main .links .row label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 700; }
+    html main .links .row input[type=url], body main .links .row input[type=url] {
+      margin-bottom: 16px; }
+  html footer, body footer {
+    font-size: 14px;
+    text-align: center;
+    color: #bcbcbc; }
+  html .outer-container, body .outer-container {
+    max-width: 800px; }

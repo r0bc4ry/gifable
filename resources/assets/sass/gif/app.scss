@@ -1,0 +1,107 @@
+@import "../shared/_base";
+
+html, body {
+    background-color: #eee;
+
+    header {
+        background-color: $blue;
+
+        .outer-container {
+            padding: 32px 0;
+
+            .span-columns-6 {
+                font-size: 16px;
+                color: #fff;
+                line-height: 42px;
+
+                img {
+                    vertical-align: top;
+                }
+                ul {
+                    display: inline-block;
+                    padding: 0;
+                    margin: 0;
+
+                    list-style: none;
+
+                    li {
+                        display: inline-block;
+                        padding: 0;
+                        margin: 0;
+
+                        margin-right: 32px;
+
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                        a {
+                            color: inherit;
+
+                            &:hover {
+                                text-decoration: none;
+                                border-bottom: 2px solid #fff;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    main {
+        padding: 32px 0;
+
+        .gif-wrapper {
+            display: table;
+            background-color: #fff;
+            padding: 16px;
+            margin: 0 auto 32px;
+
+            position: relative;
+
+            &:after {
+                content: "";
+
+                position: absolute;
+                top:50%;
+                bottom:0;
+                left:10px;
+                right:10px;
+                border-radius:100px / 10px;
+
+                @include box-shadow(0 0 20px rgba(0, 0, 0, 0.8));
+                z-index: -1;
+            }
+            video {
+                max-width: 100%;
+
+                vertical-align: top;
+            }
+        }
+        .links {
+            .row {
+                &:last-child {
+                    input[type=url] {
+                        margin-bottom: 0;
+                    }
+                }
+                label {
+                    display: block;
+                    margin-bottom: 4px;
+
+                    font-weight: 700;
+                }
+                input[type=url] {
+                    margin-bottom: 16px;
+                }
+            }
+        }
+    }
+    footer {
+        font-size: 14px;
+        text-align: center;
+        color: #bcbcbc;
+    }
+    .outer-container {
+        max-width: 800px;
+    }
+}

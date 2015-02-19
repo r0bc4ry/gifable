@@ -4,7 +4,7 @@ var del = require('del');
 var mainBowerFiles = require('main-bower-files');
 var plugins = require('gulp-load-plugins')();
 
-var modules = ['index'];
+var modules = ['gif', 'index'];
 
 modules.forEach(function(module) {
     gulp.task(module + ':js', function() {
@@ -13,7 +13,7 @@ modules.forEach(function(module) {
             .pipe(plugins.jshint())
             .pipe(plugins.jshint.reporter('jshint-stylish'))
             .pipe(plugins.if(!argv.production, plugins.sourcemaps.init({ loadMaps: true })))
-            .pipe(plugins.concat('app.js'))
+                .pipe(plugins.concat('app.js'))
             .pipe(plugins.if(!argv.production, plugins.sourcemaps.write()))
             .pipe(plugins.if(argv.production, plugins.uglify()))
             .pipe(gulp.dest('public/js/' + module))
@@ -21,9 +21,10 @@ modules.forEach(function(module) {
     });
 
     gulp.task(module + ':styles', function() {
-        return gulp.src('resources/assets/sass/' + module + '/' + module + '.scss')
+        return gulp.src('resources/assets/sass/' + module + '/app.scss')
             .pipe(plugins.sass({ errLogToConsole: true, includePaths: require('node-neat').includePaths }))
             .pipe(plugins.if(argv.production, plugins.minifyCss()))
+            .pipe(plugins.rename(module + '.css'))
             .pipe(gulp.dest('public/css'))
             .pipe(plugins.livereload());
     });
@@ -69,6 +70,7 @@ gulp.task('default', ['shared:clean'], function() {
     gulp.start([
         'vendor:js',
         'vendor:styles',
+        'gif:styles',
         'index:js',
         'index:styles',
         'index:views'
