@@ -1,16 +1,12 @@
-<?php namespace Gifable\Http\Controllers;
+<?php namespace Gifable\Http\Controllers\Api;
 
 use Gifable\Gif;
-use Gifable\Services\RackspaceService;
-use Exception;
 use Illuminate\Http\Request;
-use OpenCloud\ObjectStore\Constants\UrlType;
-use OpenCloud\ObjectStore\Resource\DataObject;
-use Symfony\Component\HttpFoundation\File\File;
+use Illuminate\Routing\Controller;
 
-class TranscodeController extends Controller {
+class GifsController extends Controller {
 
-	public function postIndex(Request $request)
+    public function postIndex(Request $request)
     {
         $this->validate($request, [
             'file' => 'required_without:url|image',
@@ -103,5 +99,10 @@ class TranscodeController extends Controller {
     {
         return $dataObject->getPublicUrl($https ? UrlType::SSL : UrlType::CDN)->getScheme() . '://' . $dataObject->getPublicUrl($https ? UrlType::SSL : UrlType::CDN)->getHost() . $dataObject->getPublicUrl($https ? UrlType::SSL : UrlType::CDN)->getPath();
     }
+
+	public function getGif(Gif $gif)
+	{
+        return response()->apiSuccess('gif', $gif);
+	}
 
 }

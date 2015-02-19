@@ -9,4 +9,11 @@ class IndexController extends Controller {
         ]);
 	}
 
+    public function getGif(Gif $gif)
+    {
+        return view('gif', [
+            'gif' => $gif
+        ]);
+    }
+
 }

@@ -15,7 +15,7 @@ class CreateGifsTable extends Migration {
         Schema::create('gifs', function(Blueprint $table)
         {
             $table->increments('id');
-            $table->string('shortcode');
+            $table->string('shortcode')->unique();
             $table->string('width');
             $table->string('height');
             $table->string('gif_http_url');

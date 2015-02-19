@@ -11,6 +11,12 @@
 |
 */
 
+// General
 Route::get('/', 'IndexController@getIndex');
-Route::get('{gif}', 'GifController@getGif');
-Route::post('transcode', 'TranscodeController@postIndex');
+Route::get('{gif}', 'IndexController@getGif');
+
+// API
+Route::group(['namespace' => 'Api', 'prefix' => 'api/v1'], function() {
+    Route::post('gifs', 'GifsController@postIndex');
+    Route::get('gifs/{gif}', 'GifsController@getGif');
+});
