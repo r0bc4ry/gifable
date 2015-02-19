@@ -1,6 +1,8 @@
 @import "../shared/_base";
 
 html, body {
+    background-color: #eee;
+
     header {
         background-color: $blue;
 
@@ -51,7 +53,7 @@ html, body {
 
             .dropzone {
                 width: 100%;
-                background: none;
+                background-color: #fff;
                 padding-bottom: 56.25%;
                 border: 2px dashed #bcbcbc;
                 margin-bottom: 32px;
@@ -129,6 +131,8 @@ html, body {
                 .label {
                     float: left;
                     margin-right: 8px;
+
+                    line-height: 28px;
                 }
                 .input {
                     overflow: hidden;

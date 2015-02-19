@@ -15,6 +15,7 @@ html {
 input[type=url] {
   width: 100%;
   background: none;
+  padding: 4px 0;
   border: none;
   border-bottom: 1px solid #515151; }
   input[type=url]::-webkit-input-placeholder {
@@ -55,96 +56,99 @@ html, body {
     html a:hover, body a:hover {
       text-decoration: underline; }
 
-html header, body header {
-  background-color: #00b4ff; }
-  html header .outer-container, body header .outer-container {
-    padding: 32px; }
-    html header .outer-container .span-columns-6, body header .outer-container .span-columns-6 {
-      font-size: 16px;
-      color: #fff;
-      line-height: 42px; }
-      html header .outer-container .span-columns-6 img, body header .outer-container .span-columns-6 img {
-        vertical-align: top; }
-      html header .outer-container .span-columns-6 ul, body header .outer-container .span-columns-6 ul {
-        display: inline-block;
-        padding: 0;
-        margin: 0;
-        list-style: none; }
-        html header .outer-container .span-columns-6 ul li, body header .outer-container .span-columns-6 ul li {
+html, body {
+  background-color: #eee; }
+  html header, body header {
+    background-color: #00b4ff; }
+    html header .outer-container, body header .outer-container {
+      padding: 32px; }
+      html header .outer-container .span-columns-6, body header .outer-container .span-columns-6 {
+        font-size: 16px;
+        color: #fff;
+        line-height: 42px; }
+        html header .outer-container .span-columns-6 img, body header .outer-container .span-columns-6 img {
+          vertical-align: top; }
+        html header .outer-container .span-columns-6 ul, body header .outer-container .span-columns-6 ul {
           display: inline-block;
           padding: 0;
           margin: 0;
-          margin-right: 32px; }
-          html header .outer-container .span-columns-6 ul li:last-child, body header .outer-container .span-columns-6 ul li:last-child {
-            margin-right: 0; }
-          html header .outer-container .span-columns-6 ul li a, body header .outer-container .span-columns-6 ul li a {
-            color: inherit; }
-            html header .outer-container .span-columns-6 ul li a:hover, body header .outer-container .span-columns-6 ul li a:hover {
-              text-decoration: none;
-              border-bottom: 2px solid #fff; }
-html main section, body main section {
-  padding: 32px; }
-  html main section .dropzone, body main section .dropzone {
-    width: 100%;
-    background: none;
-    padding-bottom: 56.25%;
-    border: 2px dashed #bcbcbc;
-    margin-bottom: 32px;
-    position: relative;
-    overflow: hidden; }
-    html main section .dropzone.dz-drag-hover, body main section .dropzone.dz-drag-hover {
-      border: 2px dashed #00b4ff; }
-      html main section .dropzone.dz-drag-hover .dz-default.dz-message, body main section .dropzone.dz-drag-hover .dz-default.dz-message {
-        opacity: 1; }
-    html main section .dropzone .dz-default.dz-message, body main section .dropzone .dz-default.dz-message {
-      padding-top: 137.5px;
-      margin: 0;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      color: #515151; }
-      html main section .dropzone .dz-default.dz-message img, body main section .dropzone .dz-default.dz-message img {
-        vertical-align: top; }
-      html main section .dropzone .dz-default.dz-message h3, body main section .dropzone .dz-default.dz-message h3 {
+          list-style: none; }
+          html header .outer-container .span-columns-6 ul li, body header .outer-container .span-columns-6 ul li {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+            margin-right: 32px; }
+            html header .outer-container .span-columns-6 ul li:last-child, body header .outer-container .span-columns-6 ul li:last-child {
+              margin-right: 0; }
+            html header .outer-container .span-columns-6 ul li a, body header .outer-container .span-columns-6 ul li a {
+              color: inherit; }
+              html header .outer-container .span-columns-6 ul li a:hover, body header .outer-container .span-columns-6 ul li a:hover {
+                text-decoration: none;
+                border-bottom: 2px solid #fff; }
+  html main section, body main section {
+    padding: 32px; }
+    html main section .dropzone, body main section .dropzone {
+      width: 100%;
+      background-color: #fff;
+      padding-bottom: 56.25%;
+      border: 2px dashed #bcbcbc;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden; }
+      html main section .dropzone.dz-drag-hover, body main section .dropzone.dz-drag-hover {
+        border: 2px dashed #00b4ff; }
+        html main section .dropzone.dz-drag-hover .dz-default.dz-message, body main section .dropzone.dz-drag-hover .dz-default.dz-message {
+          opacity: 1; }
+      html main section .dropzone .dz-default.dz-message, body main section .dropzone .dz-default.dz-message {
+        padding-top: 137.5px;
         margin: 0;
-        font-size: 48px; }
-    html main section .dropzone .dz-preview.dz-processing .dz-image, body main section .dropzone .dz-preview.dz-processing .dz-image {
-      opacity: 0;
-      -webkit-transition: opacity 0.2s;
-      -moz-transition: opacity 0.2s;
-      transition: opacity 0.2s; }
-    html main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image, body main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image {
-      opacity: 1; }
-    html main section .dropzone .dz-preview .dz-details, body main section .dropzone .dz-preview .dz-details {
-      display: none; }
-    html main section .dropzone .dz-preview .dz-progress, body main section .dropzone .dz-preview .dz-progress {
-      width: 100px;
-      height: 14px;
-      background: none;
-      border: 2px solid #00b4ff;
-      border-radius: 7px;
-      margin-top: -7px;
-      margin-left: -50px; }
-      html main section .dropzone .dz-preview .dz-progress .dz-upload, body main section .dropzone .dz-preview .dz-progress .dz-upload {
-        background: #00b4ff;
-        border-radius: 6px;
-        top: 1px;
-        bottom: 1px;
-        left: 1px; }
-  html main section .url-input-wrapper:after, body main section .url-input-wrapper:after {
-    content: "";
-    display: table;
-    clear: both; }
-  html main section .url-input-wrapper .label, body main section .url-input-wrapper .label {
-    float: left;
-    margin-right: 8px; }
-  html main section .url-input-wrapper .input, body main section .url-input-wrapper .input {
-    overflow: hidden; }
-html footer, body footer {
-  font-size: 14px;
-  text-align: center;
-  color: #bcbcbc; }
-html .outer-container, body .outer-container {
-  max-width: 800px; }
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        color: #515151; }
+        html main section .dropzone .dz-default.dz-message img, body main section .dropzone .dz-default.dz-message img {
+          vertical-align: top; }
+        html main section .dropzone .dz-default.dz-message h3, body main section .dropzone .dz-default.dz-message h3 {
+          margin: 0;
+          font-size: 48px; }
+      html main section .dropzone .dz-preview.dz-processing .dz-image, body main section .dropzone .dz-preview.dz-processing .dz-image {
+        opacity: 0;
+        -webkit-transition: opacity 0.2s;
+        -moz-transition: opacity 0.2s;
+        transition: opacity 0.2s; }
+      html main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image, body main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image {
+        opacity: 1; }
+      html main section .dropzone .dz-preview .dz-details, body main section .dropzone .dz-preview .dz-details {
+        display: none; }
+      html main section .dropzone .dz-preview .dz-progress, body main section .dropzone .dz-preview .dz-progress {
+        width: 100px;
+        height: 14px;
+        background: none;
+        border: 2px solid #00b4ff;
+        border-radius: 7px;
+        margin-top: -7px;
+        margin-left: -50px; }
+        html main section .dropzone .dz-preview .dz-progress .dz-upload, body main section .dropzone .dz-preview .dz-progress .dz-upload {
+          background: #00b4ff;
+          border-radius: 6px;
+          top: 1px;
+          bottom: 1px;
+          left: 1px; }
+    html main section .url-input-wrapper:after, body main section .url-input-wrapper:after {
+      content: "";
+      display: table;
+      clear: both; }
+    html main section .url-input-wrapper .label, body main section .url-input-wrapper .label {
+      float: left;
+      margin-right: 8px;
+      line-height: 28px; }
+    html main section .url-input-wrapper .input, body main section .url-input-wrapper .input {
+      overflow: hidden; }
+  html footer, body footer {
+    font-size: 14px;
+    text-align: center;
+    color: #bcbcbc; }
+  html .outer-container, body .outer-container {
+    max-width: 800px; }

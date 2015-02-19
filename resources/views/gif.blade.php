@@ -22,7 +22,7 @@
     <main>
         <section class="outer-container">
             <div class="gif-wrapper">
-                <video width="{{ $gif->width }}" height="{{ $gif->height }}" autoplay loop webkit-playsinline>
+                <video autoplay loop webkit-playsinline>
                     <source src="{{ $gif->mp4_https_url }}" type="video/webm">
                     <source src="{{ $gif->webm_https_url }}" type="video/mp4">
                     <img src="{{ $gif->gif_https_url }}">

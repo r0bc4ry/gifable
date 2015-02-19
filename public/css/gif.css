@@ -15,6 +15,7 @@ html {
 input[type=url] {
   width: 100%;
   background: none;
+  padding: 4px 0;
   border: none;
   border-bottom: 1px solid #515151; }
   input[type=url]::-webkit-input-placeholder {
@@ -60,7 +61,7 @@ html, body {
   html header, body header {
     background-color: #00b4ff; }
     html header .outer-container, body header .outer-container {
-      padding: 32px 0; }
+      padding: 32px; }
       html header .outer-container .span-columns-6, body header .outer-container .span-columns-6 {
         font-size: 16px;
         color: #fff;
@@ -84,15 +85,15 @@ html, body {
               html header .outer-container .span-columns-6 ul li a:hover, body header .outer-container .span-columns-6 ul li a:hover {
                 text-decoration: none;
                 border-bottom: 2px solid #fff; }
-  html main, body main {
-    padding: 32px 0; }
-    html main .gif-wrapper, body main .gif-wrapper {
+  html main section, body main section {
+    padding: 32px; }
+    html main section .gif-wrapper, body main section .gif-wrapper {
       display: table;
       background-color: #fff;
       padding: 16px;
       margin: 0 auto 32px;
       position: relative; }
-      html main .gif-wrapper:after, body main .gif-wrapper:after {
+      html main section .gif-wrapper:after, body main section .gif-wrapper:after {
         content: "";
         position: absolute;
         top: 50%;
@@ -102,16 +103,16 @@ html, body {
         border-radius: 100px/10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
         z-index: -1; }
-      html main .gif-wrapper video, body main .gif-wrapper video {
+      html main section .gif-wrapper video, body main section .gif-wrapper video {
         max-width: 100%;
         vertical-align: top; }
-    html main .links .row:last-child input[type=url], body main .links .row:last-child input[type=url] {
+    html main section .links .row:last-child input[type=url], body main section .links .row:last-child input[type=url] {
       margin-bottom: 0; }
-    html main .links .row label, body main .links .row label {
+    html main section .links .row label, body main section .links .row label {
       display: block;
       margin-bottom: 4px;
       font-weight: 700; }
-    html main .links .row input[type=url], body main .links .row input[type=url] {
+    html main section .links .row input[type=url], body main section .links .row input[type=url] {
       margin-bottom: 16px; }
   html footer, body footer {
     font-size: 14px;
