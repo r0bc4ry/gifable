@@ -6,8 +6,7 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "5.0.*",
-        "rackspace/php-opencloud": "dev-master",
-		"php-ffmpeg/php-ffmpeg": "0.6.*"
+        "rackspace/php-opencloud": "dev-master"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

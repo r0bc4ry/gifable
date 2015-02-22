@@ -4,7 +4,7 @@ use OpenCloud\Rackspace;
 
 class RackspaceService {
 
-    public function uploadFile($remoteFileName, $file)
+    public function uploadFile($remoteFilename, $filename)
     {
         $client = new Rackspace(Rackspace::US_IDENTITY_ENDPOINT, array(
             'username' => env('RACKSPACE_USERNAME'),
@@ -15,9 +15,8 @@ class RackspaceService {
 
         $container = $objectStoreService->getContainer(env('RACKSPACE_CONTAINER'));
 
-        $fileData = file_get_contents($file);
-
-        $object = $container->uploadObject($remoteFileName, $fileData);
+        $fileData = fopen($filename, 'r');
+        $object = $container->uploadObject($remoteFilename, $fileData);
 
         return $object;
     }

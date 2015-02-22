@@ -1,15 +1,11 @@
 <?php namespace Gifable\Http\Controllers\Api;
 
-use FFMpeg\FFMpeg;
-use FFMpeg\Format\Video\WebM;
-use FFMpeg\Format\Video\X264;
 use Gifable\Gif;
 use Gifable\Http\Controllers\Controller;
 use Gifable\Services\RackspaceService;
 use Illuminate\Http\Request;
 use OpenCloud\ObjectStore\Constants\UrlType;
 use OpenCloud\ObjectStore\Resource\DataObject;
-use Symfony\Component\HttpFoundation\File\File;
 
 class GifsController extends Controller {
 
@@ -17,65 +13,82 @@ class GifsController extends Controller {
     {
         $this->validate($request, [
             'file' => 'required_without:url|image',
-            'url' => 'required_without:file|url'
+            'url' => 'required_without:file|url',
         ]);
 
-        // Retrieve the input file and perform some additional file validation
-        $uploadedFile = $request->file('file');
-        if (!$uploadedFile->isValid()) {
-            throw new \Exception('Uploaded file is not valid.');
+        if ($request->has('file')) {
+            $file = $request->file('file');
+
+            // File is valid?
+            if (!$file->isValid()) {
+                throw new \Exception('Uploaded file is not valid.');
+            }
+
+            // File is GIF?
+            $fileExtension = $file->getClientOriginalExtension();
+            if ($fileExtension !== 'gif') {
+                throw new \Exception('File type not supported; must be a GIF image.');
+            }
+
+            $gifFilePath = $file->getRealPath();
+        } else if ($request->has('url')) {
+            $url = $request->get('url');
+
+            // Image is GIF?
+            $parsedUrl = parse_url($url);
+            $pathParts = pathinfo($parsedUrl['path']);
+            if ($pathParts['extension'] !== 'gif') {
+                throw new \Exception('File type not supported; must be a GIF image.');
+            }
+
+            $gifFilePath = $url;
+        } else {
+            throw new \Exception('File or URL required.');
         }
 
-        $uploadedFileExtension = $uploadedFile->getClientOriginalExtension();
-        if ($uploadedFileExtension !== 'gif') {
-            throw new \Exception('Uploaded file not supported; must be a GIF.');
+        // Get image dimensions; also used to verify URL is valid image
+        list($gifWidth, $gifHeight) = getimagesize($gifFilePath);
+        if (empty($gifWidth) || empty($gifHeight)) {
+            throw new \Exception('URL is not a valid file.');
         }
-
-        // TODO Add support for entering a GIF's URL
-
-        list($gifWidth, $gifHeight) = getimagesize($uploadedFile->getRealPath());
 
         // Generate the shortcode and retrieve the GIF's temporary path
-//        while (true) {
+        $i = 0;
+        while ($i < 10) {
             $shortcode = $this->generateShortcode();
-//            if (empty(Gif::where('shortcode', $shortcode)->first())) {
-//                break;
-//            }
-//        }
+            if (empty(Gif::where('shortcode', $shortcode)->first())) {
+                break;
+            }
+            $i++;
+        }
+
+        if (empty($shortcode)) {
+            throw new \Exception('Not shortcode found within 10 iterations.');
+        }
+
+        // Build output path form temporary directory and shortcode
         $outputFilePath = sys_get_temp_dir() . '/' . $shortcode;
 
+        // Calculate video bitrate based on image dimensions using the Kush Gauge
         $targetBitrate = round($gifWidth * $gifHeight * 30 * 4 * 0.07 / 1000);
 
-        // Convert uploaded GIF to WebM and MP4
-        $ffmpeg = FFMpeg::create();
-        $video = $ffmpeg->open($uploadedFile->getRealPath());
+        // Transcode GIF to WebM
+        $webmExecOutput = shell_exec('ffmpeg -i ' . $gifFilePath . ' -c:v libvpx -qmin 0 -qmax 50 -crf 5 -b:v ' . $targetBitrate . 'k -an ' . $outputFilePath . '.webm');
+        if (empty($webmExecOutput)) {
+            throw new \Exception('Error transcoding GIF to WebM.');
+        }
 
-        // MP4 format configuration
-        $mp4Format = new X264();
-        $mp4Format->on('progress', function ($video, $format, $percentage) {
-            echo "$percentage % transcoded";
-        });
-        $mp4Format->setKiloBitrate($targetBitrate);
-
-        // WebM format configuration
-        $webmFormat = new WebM();
-        $webmFormat->on('progress', function ($video, $format, $percentage) {
-            echo "$percentage % transcoded";
-        });
-        $webmFormat->setKiloBitrate($targetBitrate);
-
-        $video
-            ->save($mp4Format, $outputFilePath . '.mp4')
-            ->save($webmFormat, $outputFilePath . '.webm');
-
-//        shell_exec('ffmpeg -i ' . $uploadedFile->getRealPath() . ' -c:v libvpx -qmin 0 -qmax 50 -crf 5 -b:v ' . $targetBitrate . 'k -an ' . $outputFilePath . '.webm');
-//        shell_exec('ffmpeg -i ' . $uploadedFile->getRealPath() . ' -c:v libx264 -preset slow -crf 18 -an ' . $outputFilePath . '.mp4');
+        // Transcode GIF to MP4
+        $mp4ExecOutput = shell_exec('ffmpeg -i ' . $gifFilePath . ' -c:v libx264 -preset slow -crf 18 -an ' . $outputFilePath . '.mp4');
+        if (empty($mp4ExecOutput)) {
+            throw new \Exception('Error transcoding GIF to MP4.');
+        }
 
         // Upload GIF, WebM, and MP4 files to Rackspace
         $rackspaceService = new RackspaceService();
-        $gifDataObject = $rackspaceService->uploadFile($shortcode . '.gif', $uploadedFile);
-        $webmDataObject = $rackspaceService->uploadFile($shortcode . '.webm', new File($outputFilePath . '.webm'));
-        $mp4DataObject = $rackspaceService->uploadFile($shortcode . '.mp4', new File($outputFilePath . '.mp4'));
+        $gifDataObject = $rackspaceService->uploadFile($shortcode . '.gif', $gifFilePath);
+        $webmDataObject = $rackspaceService->uploadFile($shortcode . '.webm', $outputFilePath);
+        $mp4DataObject = $rackspaceService->uploadFile($shortcode . '.mp4', $outputFilePath);
 
         // Remove the temporary files
         unlink($outputFilePath . '.webm');
@@ -87,11 +100,11 @@ class GifsController extends Controller {
             'width' => $gifWidth,
             'height' => $gifHeight,
             'gif_http_url' => $this->getUrlFromDataObject($gifDataObject),
-            'gif_https_url' => $this->getUrlFromDataObject($gifDataObject, true),
+            'gif_https_url' => $this->getUrlFromDataObject($gifDataObject, UrlType::SSL),
             'webm_http_url' => $this->getUrlFromDataObject($webmDataObject),
-            'webm_https_url' => $this->getUrlFromDataObject($webmDataObject, true),
+            'webm_https_url' => $this->getUrlFromDataObject($webmDataObject, UrlType::SSL),
             'mp4_http_url' => $this->getUrlFromDataObject($mp4DataObject),
-            'mp4_https_url' => $this->getUrlFromDataObject($mp4DataObject, true)
+            'mp4_https_url' => $this->getUrlFromDataObject($mp4DataObject, UrlType::SSL)
         ]);
 
         return response()->apiSuccess('gif', $gif);
@@ -119,12 +132,12 @@ class GifsController extends Controller {
      *
      * @return string
      */
-    private function getUrlFromDataObject(DataObject $dataObject, $https = false)
+    private function getUrlFromDataObject(DataObject $dataObject, $urlType = UrlType::CDN)
     {
-        return $dataObject->getPublicUrl($https ? UrlType::SSL : UrlType::CDN)->getScheme() . '://' . $dataObject->getPublicUrl($https ? UrlType::SSL : UrlType::CDN)->getHost() . $dataObject->getPublicUrl($https ? UrlType::SSL : UrlType::CDN)->getPath();
+        return $dataObject->getPublicUrl($urlType)->getScheme() . '://' . $dataObject->getPublicUrl($urlType)->getHost() . $dataObject->getPublicUrl($urlType)->getPath();
     }
 
-	public function getGif(Gif $gif)
+	public function getGif(Request $request, Gif $gif)
 	{
         return response()->apiSuccess('gif', $gif);
 	}
