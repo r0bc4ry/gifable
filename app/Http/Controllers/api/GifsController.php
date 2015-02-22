@@ -1,5 +1,8 @@
 <?php namespace Gifable\Http\Controllers\Api;
 
+use FFMpeg\FFMpeg;
+use FFMpeg\Format\Video\WebM;
+use FFMpeg\Format\Video\X264;
 use Gifable\Gif;
 use Gifable\Http\Controllers\Controller;
 use Gifable\Services\RackspaceService;
@@ -33,23 +36,40 @@ class GifsController extends Controller {
         list($gifWidth, $gifHeight) = getimagesize($uploadedFile->getRealPath());
 
         // Generate the shortcode and retrieve the GIF's temporary path
-        while (true) {
+//        while (true) {
             $shortcode = $this->generateShortcode();
-            if (empty(Gif::where('shortcode', $shortcode)->first())) {
-                break;
-            }
-        }
+//            if (empty(Gif::where('shortcode', $shortcode)->first())) {
+//                break;
+//            }
+//        }
         $outputFilePath = sys_get_temp_dir() . '/' . $shortcode;
 
+        $targetBitrate = round($gifWidth * $gifHeight * 30 * 4 * 0.07 / 1000);
+
         // Convert uploaded GIF to WebM and MP4
-        exec('ffmpeg -f gif -i ' . $uploadedFile->getRealPath() . ' -c:v libvpx -crf 4 -b:v 1000K -an ' . $outputFilePath . '.webm' . ' 2>&1', $out, $ret);
-        if ($ret) {
-            throw new \Exception(array_pop($out));
-        }
-        exec('ffmpeg -f gif -i ' . $uploadedFile->getRealPath() . ' -c:v libx264 -preset slow -crf 18 -an ' . $outputFilePath . '.mp4' . ' 2>&1', $out, $ret);
-        if ($ret) {
-            throw new \Exception(array_pop($out));
-        }
+        $ffmpeg = FFMpeg::create();
+        $video = $ffmpeg->open($uploadedFile->getRealPath());
+
+        // MP4 format configuration
+        $mp4Format = new X264();
+        $mp4Format->on('progress', function ($video, $format, $percentage) {
+            echo "$percentage % transcoded";
+        });
+        $mp4Format->setKiloBitrate($targetBitrate);
+
+        // WebM format configuration
+        $webmFormat = new WebM();
+        $webmFormat->on('progress', function ($video, $format, $percentage) {
+            echo "$percentage % transcoded";
+        });
+        $webmFormat->setKiloBitrate($targetBitrate);
+
+        $video
+            ->save($mp4Format, $outputFilePath . '.mp4')
+            ->save($webmFormat, $outputFilePath . '.webm');
+
+//        shell_exec('ffmpeg -i ' . $uploadedFile->getRealPath() . ' -c:v libvpx -qmin 0 -qmax 50 -crf 5 -b:v ' . $targetBitrate . 'k -an ' . $outputFilePath . '.webm');
+//        shell_exec('ffmpeg -i ' . $uploadedFile->getRealPath() . ' -c:v libx264 -preset slow -crf 18 -an ' . $outputFilePath . '.mp4');
 
         // Upload GIF, WebM, and MP4 files to Rackspace
         $rackspaceService = new RackspaceService();
