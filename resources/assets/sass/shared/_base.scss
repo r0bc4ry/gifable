@@ -3,6 +3,8 @@
 
 @import "imports/inputs";
 
+$mobile: new-breakpoint(max-width 420px, 4);
+
 $blue: #00b4ff;
 
 html, body {

@@ -1,7 +1,7 @@
 @import "../shared/_base";
 
 html, body {
-    background-color: #eee;
+    background-color: #ecf0f1;
 
     header {
         background-color: $blue;
@@ -99,9 +99,11 @@ html, body {
         }
     }
     footer {
+        padding-bottom: 32px;
+
         font-size: 14px;
         text-align: center;
-        color: #bcbcbc;
+        color: #bdc3c7;
     }
     .outer-container {
         max-width: 800px;

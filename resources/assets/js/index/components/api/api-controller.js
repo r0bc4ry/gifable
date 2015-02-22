@@ -7,8 +7,7 @@ angular.module('gifable.index.controllers')
             $scope
         ) {
             $scope.postData = JSON.stringify({
-                file: "test",
-                url: "test"
+                file: "test"
             }, null, 4);
 
             $scope.postResponse = JSON.stringify({

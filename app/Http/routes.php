@@ -13,7 +13,7 @@
 
 // General
 Route::get('/', 'IndexController@getIndex');
-Route::get('{gif}', 'IndexController@getGif');
+Route::get('{gif}{extension?}', 'IndexController@getGif')->where(['gif' => '[a-z0-9]+', 'extension' => '\.gif|\.webm|\.mp4']);
 
 // API
 Route::group(['namespace' => 'Api', 'prefix' => 'api/v1'], function() {

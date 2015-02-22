@@ -19,13 +19,13 @@ input[type=url] {
   border: none;
   border-bottom: 1px solid #515151; }
   input[type=url]::-webkit-input-placeholder {
-    color: #bcbcbc; }
+    color: #bdc3c7; }
   input[type=url]::-moz-placeholder {
-    color: #bcbcbc; }
+    color: #bdc3c7; }
   input[type=url]:-moz-placeholder {
-    color: #bcbcbc; }
+    color: #bdc3c7; }
   input[type=url]:-ms-input-placeholder {
-    color: #bcbcbc; }
+    color: #bdc3c7; }
 
 html, body {
   height: 100%;
@@ -57,7 +57,7 @@ html, body {
       text-decoration: underline; }
 
 html, body {
-  background-color: #eee; }
+  background-color: #ecf0f1; }
   html header, body header {
     background-color: #00b4ff; }
     html header .outer-container, body header .outer-container {
@@ -115,8 +115,9 @@ html, body {
     html main section .links .row input[type=url], body main section .links .row input[type=url] {
       margin-bottom: 16px; }
   html footer, body footer {
+    padding-bottom: 32px;
     font-size: 14px;
     text-align: center;
-    color: #bcbcbc; }
+    color: #bdc3c7; }
   html .outer-container, body .outer-container {
     max-width: 800px; }

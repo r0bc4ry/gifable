@@ -1,7 +1,7 @@
 @import "../shared/_base";
 
 html, body {
-    background-color: #eee;
+    background-color: #ecf0f1;
 
     header {
         background-color: $blue;
@@ -54,13 +54,14 @@ html, body {
             .dropzone {
                 width: 100%;
                 background-color: #fff;
-                padding-bottom: 56.25%;
-                border: 2px dashed #bcbcbc;
+                padding: 0 0 56.25%;
+                border: 2px dashed #bdc3c7;
                 margin-bottom: 32px;
 
                 position: relative;
 
                 overflow: hidden;
+
 
                 &.dz-drag-hover {
                     border: 2px dashed $blue;
@@ -69,8 +70,23 @@ html, body {
                         opacity: 1;
                     }
                 }
+                .dz-default.dz-message,
+                .dz-image-preview {
+                    .table {
+                        display: table;
+                        width: 100%;
+                        height: 100%;
+
+                        .table-cell {
+                            display: table-cell;
+
+                            text-align: center;
+                            vertical-align: middle;
+                        }
+                    }
+                }
                 .dz-default.dz-message {
-                    padding-top: 137.5px;
+                    padding: 0;
                     margin: 0;
 
                     position: absolute;
@@ -81,48 +97,30 @@ html, body {
 
                     color: #515151;
 
-                    img {
-                        vertical-align: top;
-                    }
-                    h3 {
-                        margin: 0;
+                    .table {
+                        .table-cell {
+                            img {
+                                vertical-align: top;
+                            }
+                            h3 {
+                                margin: 0;
 
-                        font-size: 48px;
+                                font-size: 48px;
+                                white-space: nowrap;
+
+                                @include media($mobile) {
+                                    display: none;
+                                }
+                            }
+                        }
                     }
                 }
-                .dz-preview {
-                    &.dz-processing {
-                        .dz-image {
-                            opacity: 0;
-                            @include transition(opacity 0.2s);
-                        }
-                    }
-                    &.dz-processing.dz-complete {
-                        .dz-image {
-                            opacity: 1;
-                        }
-                    }
-                    .dz-details {
-                        display: none;
-                    }
-                    .dz-progress {
-                        width: 100px;
-                        height: 14px;
-                        background: none;
-                        border: 2px solid $blue;
-                        border-radius: 7px;
-                        margin-top: -7px;
-                        margin-left: -50px;
-
-                        .dz-upload {
-                            background: $blue;
-                            border-radius: 6px;
-
-                            top: 1px;
-                            bottom: 1px;
-                            left: 1px;
-                        }
-                    }
+                .dz-image-preview {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
                 }
             }
             .url-input-wrapper {
@@ -141,9 +139,11 @@ html, body {
         }
     }
     footer {
+        padding-bottom: 32px;
+
         font-size: 14px;
         text-align: center;
-        color: #bcbcbc;
+        color: #bdc3c7;
     }
     .outer-container {
         max-width: 800px;

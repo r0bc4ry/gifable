@@ -28,7 +28,7 @@ class RouteServiceProvider extends ServiceProvider {
 
         Route::bind('gif', function($value)
         {
-            return Gif::where('shortcode', $value)->first();
+            return Gif::where('shortcode', $value)->firstOrFail();
         });
 	}
 

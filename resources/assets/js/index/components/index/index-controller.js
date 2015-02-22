@@ -2,23 +2,44 @@
 
 angular.module('gifable.index.controllers')
     .controller('IndexController', [
+        '$interval',
         '$scope',
+        '$templateCache',
+        '$window',
         function (
-            $scope
+            $interval,
+            $scope,
+            $templateCache,
+            $window
         ) {
-            var defaultMessageTemplate = '' +
-                '<img src="/img/index-upload.png">' +
-                '<h3>DRAG &amp DROP</h3>';
+            var loadingMessages = [
+                'Test 1',
+                'Test 2',
+                'Test 3',
+                'Test 4',
+                'Test 5'
+            ];
+
+            $interval(function() {
+                $scope.testCode = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
+            }, 2000);
 
             var dropzone = new Dropzone('div#gifable-dropzone', {
-                url: '/transcode',
+                url: '/api/v1/gifs',
                 maxFilesize: 100,
-                thumbnailWidth: 150,
+                uploadMultiple: false,
+                maxFiles: 1,
                 acceptedFiles: 'image/gif',
-                dictDefaultMessage: defaultMessageTemplate,
-                dictInvalidFileType: 'No',
-                dictFileTooBig: '',
-                dictResponseError: ''
+                previewTemplate: $templateCache.get('components/index/dropzone/preview.html'),
+                dictDefaultMessage: $templateCache.get('components/index/dropzone/default-message.html')
+            });
+
+            dropzone.on('error', function(file, error) {
+                $scope.error = error;
+            });
+
+            dropzone.on('success', function(file, response) {
+                $window.location.href = '/' + response.data.gif.shortcode;
             });
         }
     ]);

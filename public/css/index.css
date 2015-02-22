@@ -19,13 +19,13 @@ input[type=url] {
   border: none;
   border-bottom: 1px solid #515151; }
   input[type=url]::-webkit-input-placeholder {
-    color: #bcbcbc; }
+    color: #bdc3c7; }
   input[type=url]::-moz-placeholder {
-    color: #bcbcbc; }
+    color: #bdc3c7; }
   input[type=url]:-moz-placeholder {
-    color: #bcbcbc; }
+    color: #bdc3c7; }
   input[type=url]:-ms-input-placeholder {
-    color: #bcbcbc; }
+    color: #bdc3c7; }
 
 html, body {
   height: 100%;
@@ -57,7 +57,7 @@ html, body {
       text-decoration: underline; }
 
 html, body {
-  background-color: #eee; }
+  background-color: #ecf0f1; }
   html header, body header {
     background-color: #00b4ff; }
     html header .outer-container, body header .outer-container {
@@ -90,8 +90,8 @@ html, body {
     html main section .dropzone, body main section .dropzone {
       width: 100%;
       background-color: #fff;
-      padding-bottom: 56.25%;
-      border: 2px dashed #bcbcbc;
+      padding: 0 0 56.25%;
+      border: 2px dashed #bdc3c7;
       margin-bottom: 32px;
       position: relative;
       overflow: hidden; }
@@ -99,8 +99,16 @@ html, body {
         border: 2px dashed #00b4ff; }
         html main section .dropzone.dz-drag-hover .dz-default.dz-message, body main section .dropzone.dz-drag-hover .dz-default.dz-message {
           opacity: 1; }
+      html main section .dropzone .dz-default.dz-message .table, html main section .dropzone .dz-image-preview .table, body main section .dropzone .dz-default.dz-message .table, body main section .dropzone .dz-image-preview .table {
+        display: table;
+        width: 100%;
+        height: 100%; }
+        html main section .dropzone .dz-default.dz-message .table .table-cell, html main section .dropzone .dz-image-preview .table .table-cell, body main section .dropzone .dz-default.dz-message .table .table-cell, body main section .dropzone .dz-image-preview .table .table-cell {
+          display: table-cell;
+          text-align: center;
+          vertical-align: middle; }
       html main section .dropzone .dz-default.dz-message, body main section .dropzone .dz-default.dz-message {
-        padding-top: 137.5px;
+        padding: 0;
         margin: 0;
         position: absolute;
         top: 0;
@@ -108,34 +116,21 @@ html, body {
         bottom: 0;
         left: 0;
         color: #515151; }
-        html main section .dropzone .dz-default.dz-message img, body main section .dropzone .dz-default.dz-message img {
+        html main section .dropzone .dz-default.dz-message .table .table-cell img, body main section .dropzone .dz-default.dz-message .table .table-cell img {
           vertical-align: top; }
-        html main section .dropzone .dz-default.dz-message h3, body main section .dropzone .dz-default.dz-message h3 {
+        html main section .dropzone .dz-default.dz-message .table .table-cell h3, body main section .dropzone .dz-default.dz-message .table .table-cell h3 {
           margin: 0;
-          font-size: 48px; }
-      html main section .dropzone .dz-preview.dz-processing .dz-image, body main section .dropzone .dz-preview.dz-processing .dz-image {
-        opacity: 0;
-        -webkit-transition: opacity 0.2s;
-        -moz-transition: opacity 0.2s;
-        transition: opacity 0.2s; }
-      html main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image, body main section .dropzone .dz-preview.dz-processing.dz-complete .dz-image {
-        opacity: 1; }
-      html main section .dropzone .dz-preview .dz-details, body main section .dropzone .dz-preview .dz-details {
-        display: none; }
-      html main section .dropzone .dz-preview .dz-progress, body main section .dropzone .dz-preview .dz-progress {
-        width: 100px;
-        height: 14px;
-        background: none;
-        border: 2px solid #00b4ff;
-        border-radius: 7px;
-        margin-top: -7px;
-        margin-left: -50px; }
-        html main section .dropzone .dz-preview .dz-progress .dz-upload, body main section .dropzone .dz-preview .dz-progress .dz-upload {
-          background: #00b4ff;
-          border-radius: 6px;
-          top: 1px;
-          bottom: 1px;
-          left: 1px; }
+          font-size: 48px;
+          white-space: nowrap; }
+          @media screen and (max-width: 420px)  {
+            html main section .dropzone .dz-default.dz-message .table .table-cell h3, body main section .dropzone .dz-default.dz-message .table .table-cell h3 {
+              display: none; } }
+      html main section .dropzone .dz-image-preview, body main section .dropzone .dz-image-preview {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0; }
     html main section .url-input-wrapper:after, body main section .url-input-wrapper:after {
       content: "";
       display: table;
@@ -147,8 +142,9 @@ html, body {
     html main section .url-input-wrapper .input, body main section .url-input-wrapper .input {
       overflow: hidden; }
   html footer, body footer {
+    padding-bottom: 32px;
     font-size: 14px;
     text-align: center;
-    color: #bcbcbc; }
+    color: #bdc3c7; }
   html .outer-container, body .outer-container {
     max-width: 800px; }

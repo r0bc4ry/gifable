@@ -1,8 +1,12 @@
 <?php namespace Gifable\Http\Controllers\Api;
 
 use Gifable\Gif;
+use Gifable\Http\Controllers\Controller;
+use Gifable\Services\RackspaceService;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use OpenCloud\ObjectStore\Constants\UrlType;
+use OpenCloud\ObjectStore\Resource\DataObject;
+use Symfony\Component\HttpFoundation\File\File;
 
 class GifsController extends Controller {
 
@@ -16,12 +20,12 @@ class GifsController extends Controller {
         // Retrieve the input file and perform some additional file validation
         $uploadedFile = $request->file('file');
         if (!$uploadedFile->isValid()) {
-            throw new Exception('Uploaded file is not valid.');
+            throw new \Exception('Uploaded file is not valid.');
         }
 
         $uploadedFileExtension = $uploadedFile->getClientOriginalExtension();
         if ($uploadedFileExtension !== 'gif') {
-            throw new Exception('Uploaded file not supported; must be a GIF.');
+            throw new \Exception('Uploaded file not supported; must be a GIF.');
         }
 
         // TODO Add support for entering a GIF's URL
@@ -40,11 +44,11 @@ class GifsController extends Controller {
         // Convert uploaded GIF to WebM and MP4
         exec('ffmpeg -f gif -i ' . $uploadedFile->getRealPath() . ' -c:v libvpx -crf 4 -b:v 1000K -an ' . $outputFilePath . '.webm' . ' 2>&1', $out, $ret);
         if ($ret) {
-            throw new Exception(array_pop($out));
+            throw new \Exception(array_pop($out));
         }
         exec('ffmpeg -f gif -i ' . $uploadedFile->getRealPath() . ' -c:v libx264 -preset slow -crf 18 -an ' . $outputFilePath . '.mp4' . ' 2>&1', $out, $ret);
         if ($ret) {
-            throw new Exception(array_pop($out));
+            throw new \Exception(array_pop($out));
         }
 
         // Upload GIF, WebM, and MP4 files to Rackspace

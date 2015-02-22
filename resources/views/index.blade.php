@@ -12,8 +12,7 @@
             </div>
             <div class="span-columns-6" style="text-align: right;">
                 <ul>
-                    <li><a href="#/about">About</a></li><!--
-                    --><li><a href="#/api">API</a></li><!--
+                    <li><a href="#/api">API</a></li><!--
                     --><li><a href="#/donate">Donate</a></li>
                 </ul>
             </div>
