@@ -16,7 +16,7 @@ class GifsController extends Controller {
             'url' => 'required_without:file|url',
         ]);
 
-        if ($request->has('file')) {
+        if ($request->hasFile('file')) {
             $file = $request->file('file');
 
             // File is valid?
@@ -106,7 +106,9 @@ class GifsController extends Controller {
         ]);
 
         // Remove the temporary files
-        unlink($outputFilePath . '.gif');
+        if (!empty($url)) {
+            unlink($outputFilePath . '.gif');
+        }
         unlink($outputFilePath . '.webm');
         unlink($outputFilePath . '.mp4');
 

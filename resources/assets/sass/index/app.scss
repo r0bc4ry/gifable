@@ -1,5 +1,8 @@
 @import "../shared/_base";
 
+@import "shared/custom-file-uploader";
+@import "shared/loading-animation";
+
 html, body {
     background-color: #ecf0f1;
 
@@ -49,29 +52,35 @@ html, body {
     }
     main {
         section {
-            padding: 32px;
+            padding: 64px 0;
 
-            .dropzone {
+            .input-wrapper {
+                text-align: center;
+
+                .file-input-wrapper {
+                    .custom-file-uploader {
+                        width: 128px;
+                        margin: 0 auto;
+                    }
+                }
+            }
+            .uploading-wrapper {
                 width: 100%;
-                background-color: #fff;
                 padding: 0 0 56.25%;
-                border: 2px dashed #bdc3c7;
-                margin-bottom: 32px;
 
                 position: relative;
 
                 overflow: hidden;
 
+                > .table-wrapper {
+                    padding: 32px;
 
-                &.dz-drag-hover {
-                    border: 2px dashed $blue;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
 
-                    .dz-default.dz-message {
-                        opacity: 1;
-                    }
-                }
-                .dz-default.dz-message,
-                .dz-image-preview {
                     .table {
                         display: table;
                         width: 100%;
@@ -84,56 +93,6 @@ html, body {
                             vertical-align: middle;
                         }
                     }
-                }
-                .dz-default.dz-message {
-                    padding: 0;
-                    margin: 0;
-
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    bottom: 0;
-                    left: 0;
-
-                    color: #515151;
-
-                    .table {
-                        .table-cell {
-                            img {
-                                vertical-align: top;
-                            }
-                            h3 {
-                                margin: 0;
-
-                                font-size: 48px;
-                                white-space: nowrap;
-
-                                @include media($mobile) {
-                                    display: none;
-                                }
-                            }
-                        }
-                    }
-                }
-                .dz-image-preview {
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    bottom: 0;
-                    left: 0;
-                }
-            }
-            .url-input-wrapper {
-                @include clearfix;
-
-                .label {
-                    float: left;
-                    margin-right: 8px;
-
-                    line-height: 28px;
-                }
-                .input {
-                    overflow: hidden;
                 }
             }
         }

@@ -56,6 +56,105 @@ html, body {
     html a:hover, body a:hover {
       text-decoration: underline; }
 
+.directive.custom-file-uploader {
+  display: block;
+  position: relative; }
+  .directive.custom-file-uploader input[type=file] {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    color: transparent; }
+    .directive.custom-file-uploader input[type=file]::-webkit-file-upload-button {
+      visibility: hidden; }
+  .directive.custom-file-uploader::before {
+    content: 'Upload GIF';
+    width: 100%;
+    color: black;
+    display: inline-block;
+    background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt; }
+  .directive.custom-file-uploader:hover::before {
+    border-color: black; }
+  .directive.custom-file-uploader:active {
+    outline: 0; }
+    .directive.custom-file-uploader:active::before {
+      background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); }
+
+.directive.loading-animation {
+  position: relative;
+  padding-top: 100px;
+  width: 40px;
+  margin: auto; }
+  .directive.loading-animation .circle {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    opacity: 0;
+    transform: rotate(225deg);
+    animation-iteration-count: infinite;
+    animation-name: orbit;
+    animation-duration: 5.5s; }
+    .directive.loading-animation .circle:after {
+      content: '';
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 5px;
+      background: #515151; }
+    .directive.loading-animation .circle:nth-child(2) {
+      animation-delay: 240ms; }
+    .directive.loading-animation .circle:nth-child(3) {
+      animation-delay: 480ms; }
+    .directive.loading-animation .circle:nth-child(4) {
+      animation-delay: 720ms; }
+    .directive.loading-animation .circle:nth-child(5) {
+      animation-delay: 960ms; }
+
+@keyframes orbit {
+  0% {
+    transform: rotate(225deg);
+    opacity: 1;
+    animation-timing-function: ease-out; }
+
+  7% {
+    transform: rotate(345deg);
+    animation-timing-function: linear; }
+
+  30% {
+    transform: rotate(455deg);
+    animation-timing-function: ease-in-out; }
+
+  39% {
+    transform: rotate(690deg);
+    animation-timing-function: linear; }
+
+  70% {
+    transform: rotate(815deg);
+    opacity: 1;
+    animation-timing-function: ease-out; }
+
+  75% {
+    transform: rotate(945deg);
+    animation-timing-function: ease-out; }
+
+  76% {
+    transform: rotate(945deg);
+    opacity: 0; }
+
+  100% {
+    transform: rotate(945deg);
+    opacity: 0; } }
+
 html, body {
   background-color: #ecf0f1; }
   html header, body header {
@@ -86,61 +185,32 @@ html, body {
                 text-decoration: none;
                 border-bottom: 2px solid #fff; }
   html main section, body main section {
-    padding: 32px; }
-    html main section .dropzone, body main section .dropzone {
+    padding: 64px 0; }
+    html main section .input-wrapper, body main section .input-wrapper {
+      text-align: center; }
+      html main section .input-wrapper .file-input-wrapper .custom-file-uploader, body main section .input-wrapper .file-input-wrapper .custom-file-uploader {
+        width: 128px;
+        margin: 0 auto; }
+    html main section .uploading-wrapper, body main section .uploading-wrapper {
       width: 100%;
-      background-color: #fff;
       padding: 0 0 56.25%;
-      border: 2px dashed #bdc3c7;
-      margin-bottom: 32px;
       position: relative;
       overflow: hidden; }
-      html main section .dropzone.dz-drag-hover, body main section .dropzone.dz-drag-hover {
-        border: 2px dashed #00b4ff; }
-        html main section .dropzone.dz-drag-hover .dz-default.dz-message, body main section .dropzone.dz-drag-hover .dz-default.dz-message {
-          opacity: 1; }
-      html main section .dropzone .dz-default.dz-message .table, html main section .dropzone .dz-image-preview .table, body main section .dropzone .dz-default.dz-message .table, body main section .dropzone .dz-image-preview .table {
-        display: table;
-        width: 100%;
-        height: 100%; }
-        html main section .dropzone .dz-default.dz-message .table .table-cell, html main section .dropzone .dz-image-preview .table .table-cell, body main section .dropzone .dz-default.dz-message .table .table-cell, body main section .dropzone .dz-image-preview .table .table-cell {
-          display: table-cell;
-          text-align: center;
-          vertical-align: middle; }
-      html main section .dropzone .dz-default.dz-message, body main section .dropzone .dz-default.dz-message {
-        padding: 0;
-        margin: 0;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        color: #515151; }
-        html main section .dropzone .dz-default.dz-message .table .table-cell img, body main section .dropzone .dz-default.dz-message .table .table-cell img {
-          vertical-align: top; }
-        html main section .dropzone .dz-default.dz-message .table .table-cell h3, body main section .dropzone .dz-default.dz-message .table .table-cell h3 {
-          margin: 0;
-          font-size: 48px;
-          white-space: nowrap; }
-          @media screen and (max-width: 420px)  {
-            html main section .dropzone .dz-default.dz-message .table .table-cell h3, body main section .dropzone .dz-default.dz-message .table .table-cell h3 {
-              display: none; } }
-      html main section .dropzone .dz-image-preview, body main section .dropzone .dz-image-preview {
+      html main section .uploading-wrapper > .table-wrapper, body main section .uploading-wrapper > .table-wrapper {
+        padding: 32px;
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         left: 0; }
-    html main section .url-input-wrapper:after, body main section .url-input-wrapper:after {
-      content: "";
-      display: table;
-      clear: both; }
-    html main section .url-input-wrapper .label, body main section .url-input-wrapper .label {
-      float: left;
-      margin-right: 8px;
-      line-height: 28px; }
-    html main section .url-input-wrapper .input, body main section .url-input-wrapper .input {
-      overflow: hidden; }
+        html main section .uploading-wrapper > .table-wrapper .table, body main section .uploading-wrapper > .table-wrapper .table {
+          display: table;
+          width: 100%;
+          height: 100%; }
+          html main section .uploading-wrapper > .table-wrapper .table .table-cell, body main section .uploading-wrapper > .table-wrapper .table .table-cell {
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle; }
   html footer, body footer {
     padding-bottom: 32px;
     font-size: 14px;

@@ -6,40 +6,44 @@ angular.module('gifable.index.controllers')
         '$scope',
         '$templateCache',
         '$window',
+
+        'FileUploader',
         function (
             $interval,
             $scope,
             $templateCache,
-            $window
+            $window,
+
+            FileUploader
         ) {
-            var loadingMessages = [
-                'Test 1',
-                'Test 2',
-                'Test 3',
-                'Test 4',
-                'Test 5'
+            $scope.uploadingMessage = 'Uploading';
+
+            var uploadingMessages = [
+                'Reticulating splines',
+                'Starting subpixel analysis',
+                'Queuing elevator music'
             ];
 
             $interval(function() {
-                $scope.testCode = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
-            }, 2000);
+                $scope.uploadingMessage = uploadingMessages[Math.floor(Math.random() * uploadingMessages.length)];
+            }, 5000);
 
-            var dropzone = new Dropzone('div#gifable-dropzone', {
+            $scope.uploader = new FileUploader({
                 url: '/api/v1/gifs',
-                maxFilesize: 100,
-                uploadMultiple: false,
-                maxFiles: 1,
-                acceptedFiles: 'image/gif',
-                previewTemplate: $templateCache.get('components/index/dropzone/preview.html'),
-                dictDefaultMessage: $templateCache.get('components/index/dropzone/default-message.html')
-            });
-
-            dropzone.on('error', function(file, error) {
-                $scope.error = error;
-            });
-
-            dropzone.on('success', function(file, response) {
-                $window.location.href = '/' + response.data.gif.shortcode;
+                filters: [{
+                    name: 'imageFilter',
+                    fn: function(file, options) {
+                        var type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+                        return '|gif|'.indexOf(type) !== -1;
+                    }
+                }],
+                autoUpload: true,
+                onSuccessItem: function(fileItem, response, status, headers) {
+                    $window.location.href = '/' + response.data.gif.shortcode;
+                },
+                onErrorItem: function(fileItem, response, status, headers) {
+                    console.info('onErrorItem', fileItem, response, status, headers);
+                }
             });
         }
     ]);

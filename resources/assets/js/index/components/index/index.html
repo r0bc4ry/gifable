@@ -1,11 +1,16 @@
 <section class="outer-container">
-    <div id="gifable-dropzone" class="dropzone"></div>
-    <div class="url-input-wrapper">
-        <div class="label">
-            <b>OR</b> Paste GIF URL:
-        </div>
-        <div class="input">
-            <input type="url" placeholder="http://gifable.io/">
+    <div class="input-wrapper" ng-hide="uploader.isUploading">
+        <img src="/img/index-upload.png">
+        <custom-file-uploader uploader="uploader"></custom-file-uploader>
+    </div>
+    <div class="uploading-wrapper">
+        <div class="table-wrapper">
+            <div class="table">
+                <div class="table-cell">
+                    <loading-animation></loading-animation>
+                    <h4>{{ uploadingMessage }}...</h4>
+                </div>
+            </div>
         </div>
     </div>
 </section>
