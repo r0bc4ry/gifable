@@ -31,6 +31,7 @@ class GifsController extends Controller {
             }
 
             $gifFilePath = $file->getRealPath();
+            $gifFileSize = $file->getSize();
         } else if ($request->has('url')) {
             $url = $request->get('url');
 
@@ -69,30 +70,24 @@ class GifsController extends Controller {
         // Build output path form temporary directory and shortcode
         $outputFilePath = sys_get_temp_dir() . '/' . $shortcode;
 
+        if (!empty($url)) {
+            $gifFilePath = $outputFilePath . '.gif';
+            copy($url, $gifFilePath);
+            $gifFileSize = filesize($gifFilePath);
+        }
+
         // Calculate video bitrate based on image dimensions using the Kush Gauge
         $targetBitrate = round($gifWidth * $gifHeight * 30 * 4 * 0.07 / 1000);
 
-        // Transcode GIF to WebM
-        $webmExecOutput = shell_exec('ffmpeg -i ' . $gifFilePath . ' -c:v libvpx -qmin 0 -qmax 50 -crf 5 -b:v ' . $targetBitrate . 'k -an ' . $outputFilePath . '.webm');
-        if (empty($webmExecOutput)) {
-            throw new \Exception('Error transcoding GIF to WebM.');
-        }
-
-        // Transcode GIF to MP4
-        $mp4ExecOutput = shell_exec('ffmpeg -i ' . $gifFilePath . ' -c:v libx264 -preset slow -crf 18 -an ' . $outputFilePath . '.mp4');
-        if (empty($mp4ExecOutput)) {
-            throw new \Exception('Error transcoding GIF to MP4.');
-        }
+        // Transcode GIF to WebM and MP4
+        shell_exec('ffmpeg -i ' . $gifFilePath . ' -c:v libvpx -qmin 0 -qmax 50 -crf 5 -b:v ' . $targetBitrate . 'k -an ' . $outputFilePath . '.webm');
+        shell_exec('ffmpeg -i ' . $gifFilePath . ' -c:v libx264 -preset slow -crf 18 -an ' . $outputFilePath . '.mp4');
 
         // Upload GIF, WebM, and MP4 files to Rackspace
         $rackspaceService = new RackspaceService();
         $gifDataObject = $rackspaceService->uploadFile($shortcode . '.gif', $gifFilePath);
-        $webmDataObject = $rackspaceService->uploadFile($shortcode . '.webm', $outputFilePath);
-        $mp4DataObject = $rackspaceService->uploadFile($shortcode . '.mp4', $outputFilePath);
-
-        // Remove the temporary files
-        unlink($outputFilePath . '.webm');
-        unlink($outputFilePath . '.mp4');
+        $webmDataObject = $rackspaceService->uploadFile($shortcode . '.webm', $outputFilePath . '.webm');
+        $mp4DataObject = $rackspaceService->uploadFile($shortcode . '.mp4', $outputFilePath . '.mp4');
 
         // Insert the new GIF into the database and return
         $gif = Gif::create([
@@ -101,11 +96,19 @@ class GifsController extends Controller {
             'height' => $gifHeight,
             'gif_http_url' => $this->getUrlFromDataObject($gifDataObject),
             'gif_https_url' => $this->getUrlFromDataObject($gifDataObject, UrlType::SSL),
+            'gif_size' => $gifFileSize,
             'webm_http_url' => $this->getUrlFromDataObject($webmDataObject),
             'webm_https_url' => $this->getUrlFromDataObject($webmDataObject, UrlType::SSL),
+            'webm_size' => filesize($outputFilePath . '.webm'),
             'mp4_http_url' => $this->getUrlFromDataObject($mp4DataObject),
-            'mp4_https_url' => $this->getUrlFromDataObject($mp4DataObject, UrlType::SSL)
+            'mp4_https_url' => $this->getUrlFromDataObject($mp4DataObject, UrlType::SSL),
+            'mp4_size' => filesize($outputFilePath . '.mp4'),
         ]);
+
+        // Remove the temporary files
+        unlink($outputFilePath . '.gif');
+        unlink($outputFilePath . '.webm');
+        unlink($outputFilePath . '.mp4');
 
         return response()->apiSuccess('gif', $gif);
     }
