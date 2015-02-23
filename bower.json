@@ -21,14 +21,6 @@
     "angular-route": "~1.3.13",
     "angular-file-upload": "~1.1.5"
   },
-  "overrides": {
-    "dropzone": {
-      "main": [
-        "dist/dropzone.css",
-        "dist/dropzone.js"
-      ]
-    }
-  },
   "resolutions": {
     "angular": "1.3.13"
   }
