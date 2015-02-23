@@ -8,8 +8,8 @@ angular.module('gifable.index')
         });
 
         $routeProvider.when('/api', {
-            templateUrl: 'components/api/api.html',
-            controller: 'ApiController'
+            templateUrl: 'components/documentation/documentation.html',
+            controller: 'DocumentationController'
         });
 
         $routeProvider.otherwise({ redirectTo: '/' });

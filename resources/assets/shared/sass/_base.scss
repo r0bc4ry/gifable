@@ -1,11 +1,12 @@
 @import "bourbon";
 @import "neat";
 
-@import "imports/inputs";
-
 $mobile: new-breakpoint(max-width 420px, 4);
 
 $blue: #00b4ff;
+
+@import "imports/buttons";
+@import "imports/inputs";
 
 html, body {
     height: 100%;

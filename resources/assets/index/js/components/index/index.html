@@ -1,16 +1,10 @@
 <section class="outer-container">
-    <div class="input-wrapper" ng-hide="uploader.isUploading">
-        <img src="/img/index-upload.png">
-        <custom-file-uploader uploader="uploader"></custom-file-uploader>
-    </div>
-    <div class="uploading-wrapper">
-        <div class="table-wrapper">
-            <div class="table">
-                <div class="table-cell">
-                    <loading-animation></loading-animation>
-                    <h4>{{ uploadingMessage }}...</h4>
-                </div>
-            </div>
+    <div class="input-wrapper">
+        <div class="header-icon">
+            <i class="fa fa-cloud-upload"></i>
+        </div>
+        <div class="file-input">
+            <custom-file-uploader uploader="uploader"></custom-file-uploader>
         </div>
     </div>
 </section>

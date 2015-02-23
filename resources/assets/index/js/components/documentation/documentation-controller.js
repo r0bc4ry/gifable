@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('gifable.index.controllers')
-    .controller('ApiController', [
+    .controller('DocumentationController', [
         '$scope',
         function (
             $scope

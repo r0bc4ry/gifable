@@ -93,12 +93,12 @@ gulp.task('default', ['shared:clean'], function() {
 // Initializes watch task(s) after running default task
 gulp.task('watch', ['default'], function() {
     modules.forEach(function(module) {
-        gulp.watch('resources/assets/js/' + module + '/**/*.js', [module + ':js']);
-        gulp.watch('resources/assets/sass/' + module + '/**/*.scss', [module + ':styles']);
-        gulp.watch('resources/assets/js/' + module + '/**/*.html', [module + ':views']);
+        gulp.watch('resources/assets/' + module + '/js/**/*.js', [module + ':js']);
+        gulp.watch('resources/assets/' + module + '/sass/**/*.scss', [module + ':styles']);
+        gulp.watch('resources/assets/' + module + '/js/**/*.html', [module + ':views']);
     });
 
-    gulp.watch('resources/assets/sass/shared/**/*.scss', function() {
+    gulp.watch('resources/assets/shared/sass/**/*.scss', function() {
         modules.forEach(function(module) {
             gulp.start(module + ':styles');
         });

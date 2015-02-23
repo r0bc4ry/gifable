@@ -12,6 +12,21 @@ html {
   -moz-box-sizing: inherit;
   box-sizing: inherit; }
 
+button {
+  background-color: #00b4ff;
+  padding: 16px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2);
+  cursor: pointer; }
+  button:hover {
+    background-color: #1abcff; }
+  button:active {
+    background-color: #00a2e6;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); }
+
 input[type=url] {
   width: 100%;
   background: none;
@@ -56,8 +71,18 @@ html, body {
     html a:hover, body a:hover {
       text-decoration: underline; }
 
+section {
+  padding: 64px 0; }
+  section .input-wrapper {
+    text-align: center; }
+    section .input-wrapper .header-icon {
+      font-size: 128px;
+      color: #fff; }
+    section .input-wrapper .file-input {
+      margin-bottom: 16px; }
+
 .directive.custom-file-uploader {
-  display: block;
+  display: inline-block;
   position: relative; }
   .directive.custom-file-uploader input[type=file] {
     width: 100%;
@@ -67,28 +92,16 @@ html, body {
     color: transparent; }
     .directive.custom-file-uploader input[type=file]::-webkit-file-upload-button {
       visibility: hidden; }
-  .directive.custom-file-uploader::before {
-    content: 'Upload GIF';
-    width: 100%;
-    color: black;
-    display: inline-block;
-    background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
-    border: 1px solid #999;
-    border-radius: 3px;
-    padding: 5px 8px;
-    outline: none;
-    white-space: nowrap;
-    -webkit-user-select: none;
-    cursor: pointer;
-    text-shadow: 1px 1px #fff;
-    font-weight: 700;
-    font-size: 10pt; }
-  .directive.custom-file-uploader:hover::before {
-    border-color: black; }
-  .directive.custom-file-uploader:active {
-    outline: 0; }
-    .directive.custom-file-uploader:active::before {
-      background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9); }
+  .directive.custom-file-uploader button {
+    width: 280px;
+    font-size: 16px; }
+    .directive.custom-file-uploader button .fa {
+      margin-right: 8px; }
+  .directive.custom-file-uploader:hover button {
+    background-color: #1abcff; }
+  .directive.custom-file-uploader:active button {
+    background-color: #00a2e6;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); }
 
 .directive.loading-animation {
   position: relative;
@@ -184,35 +197,11 @@ html, body {
               html header .outer-container .span-columns-6 ul li a:hover, body header .outer-container .span-columns-6 ul li a:hover {
                 text-decoration: none;
                 border-bottom: 2px solid #fff; }
-  html main section, body main section {
-    padding: 64px 0; }
-    html main section .input-wrapper, body main section .input-wrapper {
-      text-align: center; }
-      html main section .input-wrapper .file-input-wrapper .custom-file-uploader, body main section .input-wrapper .file-input-wrapper .custom-file-uploader {
-        width: 128px;
-        margin: 0 auto; }
-    html main section .uploading-wrapper, body main section .uploading-wrapper {
-      width: 100%;
-      padding: 0 0 56.25%;
-      position: relative;
-      overflow: hidden; }
-      html main section .uploading-wrapper > .table-wrapper, body main section .uploading-wrapper > .table-wrapper {
-        padding: 32px;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0; }
-        html main section .uploading-wrapper > .table-wrapper .table, body main section .uploading-wrapper > .table-wrapper .table {
-          display: table;
-          width: 100%;
-          height: 100%; }
-          html main section .uploading-wrapper > .table-wrapper .table .table-cell, body main section .uploading-wrapper > .table-wrapper .table .table-cell {
-            display: table-cell;
-            text-align: center;
-            vertical-align: middle; }
   html footer, body footer {
-    padding-bottom: 32px;
+    width: 100%;
+    padding: 8px;
+    position: fixed;
+    bottom: 0;
     font-size: 14px;
     text-align: center;
     color: #bdc3c7; }
