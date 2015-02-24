@@ -104,63 +104,96 @@ html, body {
       display: table;
       clear: both; }
 
+.directive.gifable-index-header {
+  background: url(/img/index-header-background.jpg) center bottom;
+  background-size: cover;
+  color: #fff; }
+  .directive.gifable-index-header .navigation {
+    padding: 12.5px 0;
+    border-bottom: 1px solid #fff; }
+    .directive.gifable-index-header .navigation .outer-container .logo {
+      float: left; }
+      .directive.gifable-index-header .navigation .outer-container .logo img {
+        vertical-align: top; }
+    .directive.gifable-index-header .navigation .outer-container .links {
+      overflow: hidden;
+      text-align: right;
+      line-height: 39px; }
+      .directive.gifable-index-header .navigation .outer-container .links ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none; }
+        .directive.gifable-index-header .navigation .outer-container .links ul:after {
+          content: "";
+          display: table;
+          clear: both; }
+        .directive.gifable-index-header .navigation .outer-container .links ul li {
+          display: inline-block;
+          margin-right: 32px;
+          text-transform: uppercase; }
+          .directive.gifable-index-header .navigation .outer-container .links ul li:last-child {
+            margin: 0; }
+          .directive.gifable-index-header .navigation .outer-container .links ul li a {
+            color: inherit; }
+            .directive.gifable-index-header .navigation .outer-container .links ul li a:hover {
+              color: #00b4ff;
+              text-decoration: none; }
+  .directive.gifable-index-header .call-to-action {
+    padding: 64px 0 32px 0;
+    text-align: center; }
+    .directive.gifable-index-header .call-to-action h1 {
+      margin: 0 0 32px;
+      text-transform: uppercase; }
+    .directive.gifable-index-header .call-to-action .input {
+      margin-bottom: 128px; }
+    .directive.gifable-index-header .call-to-action p {
+      margin: 0; }
+
+.directive.gifable-file-input {
+  display: inline-block;
+  position: relative; }
+  .directive.gifable-file-input input[type=file] {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    color: transparent; }
+    .directive.gifable-file-input input[type=file]::-webkit-file-upload-button {
+      visibility: hidden; }
+  .directive.gifable-file-input button {
+    width: 280px;
+    font-size: 16px; }
+    .directive.gifable-file-input button .fa {
+      margin-right: 8px; }
+  .directive.gifable-file-input:hover button {
+    background-color: #1abcff; }
+  .directive.gifable-file-input:active button {
+    background-color: #00a2e6;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); }
+
+.directive.gifable-header {
+  display: inline-block;
+  position: relative; }
+  .directive.gifable-header input[type=file] {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    color: transparent; }
+    .directive.gifable-header input[type=file]::-webkit-file-upload-button {
+      visibility: hidden; }
+  .directive.gifable-header button {
+    width: 280px;
+    font-size: 16px; }
+    .directive.gifable-header button .fa {
+      margin-right: 8px; }
+  .directive.gifable-header:hover button {
+    background-color: #1abcff; }
+  .directive.gifable-header:active button {
+    background-color: #00a2e6;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); }
+
 html, body {
   background-color: #ecf0f1; }
-  html header, body header {
-    background-color: #00b4ff; }
-    html header .outer-container, body header .outer-container {
-      padding: 32px; }
-      html header .outer-container .span-columns-6, body header .outer-container .span-columns-6 {
-        font-size: 16px;
-        color: #fff;
-        line-height: 42px; }
-        html header .outer-container .span-columns-6 img, body header .outer-container .span-columns-6 img {
-          vertical-align: top; }
-        html header .outer-container .span-columns-6 ul, body header .outer-container .span-columns-6 ul {
-          display: inline-block;
-          padding: 0;
-          margin: 0;
-          list-style: none; }
-          html header .outer-container .span-columns-6 ul li, body header .outer-container .span-columns-6 ul li {
-            display: inline-block;
-            padding: 0;
-            margin: 0;
-            margin-right: 32px; }
-            html header .outer-container .span-columns-6 ul li:last-child, body header .outer-container .span-columns-6 ul li:last-child {
-              margin-right: 0; }
-            html header .outer-container .span-columns-6 ul li a, body header .outer-container .span-columns-6 ul li a {
-              color: inherit; }
-              html header .outer-container .span-columns-6 ul li a:hover, body header .outer-container .span-columns-6 ul li a:hover {
-                text-decoration: none;
-                border-bottom: 2px solid #fff; }
-  html main section, body main section {
-    padding: 32px; }
-    html main section .gif-wrapper, body main section .gif-wrapper {
-      display: table;
-      background-color: #fff;
-      padding: 16px;
-      margin: 0 auto 32px;
-      position: relative; }
-      html main section .gif-wrapper:after, body main section .gif-wrapper:after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        bottom: 0;
-        left: 10px;
-        right: 10px;
-        border-radius: 100px/10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-        z-index: -1; }
-      html main section .gif-wrapper video, body main section .gif-wrapper video {
-        max-width: 100%;
-        vertical-align: top; }
-    html main section .links .row:last-child input[type=url], body main section .links .row:last-child input[type=url] {
-      margin-bottom: 0; }
-    html main section .links .row label, body main section .links .row label {
-      display: block;
-      margin-bottom: 4px;
-      font-weight: 700; }
-    html main section .links .row input[type=url], body main section .links .row input[type=url] {
-      margin-bottom: 16px; }
   html .outer-container, body .outer-container {
-    max-width: 800px; }
+    max-width: 1024px; }

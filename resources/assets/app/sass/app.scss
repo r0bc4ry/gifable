@@ -1,0 +1,16 @@
+@import "../../shared/sass/base";
+
+@import "components/documentation";
+@import "components/index";
+@import "components/index/gifable-index-header";
+
+@import "shared/gifable-file-input";
+@import "shared/gifable-header";
+
+html, body {
+    background-color: #ecf0f1;
+
+    .outer-container {
+        max-width: 1024px;
+    }
+}

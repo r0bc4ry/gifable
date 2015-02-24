@@ -1,0 +1,72 @@
+.directive.gifable-index-header {
+    background: url(/img/index-header-background.jpg) center bottom;
+    background-size: cover;
+
+    color: #fff;
+
+    .navigation {
+        padding: 12.5px 0;
+        border-bottom: 1px solid #fff;
+
+        .outer-container {
+            .logo {
+                float: left;
+
+                img {
+                    vertical-align: top;
+                }
+            }
+            .links {
+                overflow: hidden;
+
+                text-align: right;
+                line-height: 39px;
+
+                ul {
+                    @include clearfix;
+
+                    padding: 0;
+                    margin: 0;
+
+                    list-style-type: none;
+
+                    li {
+                        display: inline-block;
+                        margin-right: 32px;
+
+                        text-transform: uppercase;
+
+                        &:last-child {
+                            margin: 0;
+                        }
+                        a {
+                            color: inherit;
+
+                            &:hover {
+                                color: $blue;
+                                text-decoration: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .call-to-action {
+        padding: 64px 0 32px 0;
+
+        text-align: center;
+
+        h1 {
+            margin: 0 0 32px;
+
+            text-transform: uppercase;
+        }
+        .input {
+            margin-bottom: 128px;
+        }
+        p {
+            margin: 0;
+        }
+    }
+}

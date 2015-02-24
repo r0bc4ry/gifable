@@ -19,13 +19,6 @@ html, body {
     *:focus {
         outline: 0;
     }
-    .outer-container {
-        @include outer-container;
-
-        .span-columns-6 {
-            @include span-columns(6);
-        }
-    }
     a {
         color: $blue;
         text-decoration: none;
@@ -33,5 +26,67 @@ html, body {
         &:hover {
             text-decoration: underline;
         }
+    }
+    main {
+        min-height: 100%;
+        padding: 0 0 64px;
+        position: relative;
+
+        footer {
+            width: 100%;
+            height: 64px;
+            background-color: #34495e;
+
+            position: absolute;
+            bottom: 0;
+            left: 0;
+
+            color: #a8b6c3;
+            line-height: 64px;
+
+            .outer-container {
+                max-width: 1024px;
+
+                a {
+                    color: inherit;
+
+                    &:hover {
+                        color: #fff;
+                        text-decoration: none;
+                    }
+                }
+                .information {
+                    float: left;
+                }
+                .links {
+                    overflow: hidden;
+
+                    text-align: right;
+
+                    ul {
+                        @include clearfix;
+
+                        padding: 0;
+                        margin: 0;
+
+                        list-style-type: none;
+
+                        li {
+                            display: inline-block;
+                            margin-right: 32px;
+
+                            &:last-child {
+                                margin: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .outer-container {
+        @include outer-container;
+        padding-right: 16px;
+        padding-left: 16px;
     }
 }

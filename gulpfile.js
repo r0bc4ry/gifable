@@ -7,8 +7,8 @@ var plugins = require('gulp-load-plugins')();
 
 // Define frontend modules
 var modules = [
-    'gif',
-    'index'
+    'app',
+    'gif'
 ];
 
 // For each module, dynamically create Gulp tasks
@@ -83,10 +83,10 @@ gulp.task('default', ['shared:clean'], function() {
     gulp.start([
         'vendor:js',
         'vendor:styles',
-        'gif:styles',
-        'index:js',
-        'index:styles',
-        'index:views'
+        'app:js',
+        'app:styles',
+        'app:views',
+        'gif:styles'
     ]);
 });
 
