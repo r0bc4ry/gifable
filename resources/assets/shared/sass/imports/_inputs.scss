@@ -3,7 +3,7 @@ input[type=url] {
     background: none;
     padding: 4px 0;
     border: none;
-    border-bottom: 1px solid #515151;
+    border-bottom: 1px solid $text-color;
 
     @include placeholder {
         color: #bdc3c7;

@@ -1,11 +1,10 @@
 .directive.gifable-index-header {
-    background: #34495e url(/img/index-header-background.jpg) center;
+    background: $primary-color url(/img/index-header-background.jpg) no-repeat center center;
     background-size: cover;
 
     color: #fff;
 
     .navigation {
-        padding: 12.5px 0;
         border-bottom: 1px solid #fff;
 
         .outer-container {
@@ -13,6 +12,7 @@
                 float: left;
 
                 img {
+                    margin: 10px 0;
                     vertical-align: top;
                 }
             }
@@ -20,7 +20,7 @@
                 overflow: hidden;
 
                 text-align: right;
-                line-height: 39px;
+                line-height: 50px;
 
                 ul {
                     @include clearfix;
@@ -32,7 +32,7 @@
 
                     li {
                         display: inline-block;
-                        margin-right: 32px;
+                        margin-right: 38px;
 
                         text-transform: uppercase;
 
@@ -43,7 +43,6 @@
                             color: inherit;
 
                             &:hover {
-                                color: $blue;
                                 text-decoration: none;
                             }
                         }
@@ -53,21 +52,21 @@
         }
     }
     .call-to-action {
-        padding: 64px 0 32px 0;
+        padding: 50px 0;
 
         text-align: center;
 
         h1 {
-            margin: 0 0 32px;
+            margin: 0 0 20px;
 
-            font-size: 28px;
+            font-size: 34px;
             text-transform: uppercase;
         }
         .input {
-            margin-bottom: 64px;
+            margin-bottom: 50px;
         }
         p {
-            max-width: 512px;
+            max-width: 500px;
             margin: 0 auto;
 
             line-height: golden-ratio(14px, 1);

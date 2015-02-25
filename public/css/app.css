@@ -13,26 +13,30 @@ html {
   box-sizing: inherit; }
 
 button {
-  background-color: #00b4ff;
-  padding: 16px;
+  background-color: #59c2e6;
+  padding: 0 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   color: #fff;
-  font-weight: 600;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  line-height: 50px;
+  text-transform: uppercase;
   cursor: pointer; }
   button:hover {
-    background-color: #1abcff; }
+    background-color: #6fcae9; }
   button:active {
-    background-color: #00a2e6;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); }
+    background-color: #43bae3; }
+  button .fa {
+    margin-right: 10px;
+    font-size: 18px;
+    vertical-align: middle; }
 
 input[type=url] {
   width: 100%;
   background: none;
   padding: 4px 0;
   border: none;
-  border-bottom: 1px solid #515151; }
+  border-bottom: 1px solid #4f5f6f; }
   input[type=url]::-webkit-input-placeholder {
     color: #bdc3c7; }
   input[type=url]::-moz-placeholder {
@@ -44,30 +48,30 @@ input[type=url] {
 
 html, body {
   height: 100%;
-  background-color: #fff;
+  background-color: #e1ecf7;
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
-  color: #515151; }
+  color: #4f5f6f; }
   html *:focus, body *:focus {
     outline: 0; }
   html a, body a {
-    color: #00b4ff;
+    color: #59c2e6;
     text-decoration: none; }
     html a:hover, body a:hover {
       text-decoration: underline; }
   html main, body main {
     min-height: 100%;
-    padding: 0 0 64px;
+    padding: 0 0 50px;
     position: relative; }
     html main footer, body main footer {
       width: 100%;
-      height: 64px;
-      background-color: #34495e;
+      height: 50px;
+      background-color: #4f5f6f;
       position: absolute;
       bottom: 0;
       left: 0;
-      color: #a8b6c3;
-      line-height: 64px; }
+      color: #a1b1c2;
+      line-height: 50px; }
       html main footer .outer-container, body main footer .outer-container {
         max-width: 1024px; }
         html main footer .outer-container a, body main footer .outer-container a {
@@ -105,20 +109,20 @@ html, body {
       clear: both; }
 
 .directive.gifable-index-header {
-  background: #34495e url(/img/index-header-background.jpg) center;
+  background: #59c2e6 url(/img/index-header-background.jpg) no-repeat center center;
   background-size: cover;
   color: #fff; }
   .directive.gifable-index-header .navigation {
-    padding: 12.5px 0;
     border-bottom: 1px solid #fff; }
     .directive.gifable-index-header .navigation .outer-container .logo {
       float: left; }
       .directive.gifable-index-header .navigation .outer-container .logo img {
+        margin: 10px 0;
         vertical-align: top; }
     .directive.gifable-index-header .navigation .outer-container .links {
       overflow: hidden;
       text-align: right;
-      line-height: 39px; }
+      line-height: 50px; }
       .directive.gifable-index-header .navigation .outer-container .links ul {
         padding: 0;
         margin: 0;
@@ -129,26 +133,25 @@ html, body {
           clear: both; }
         .directive.gifable-index-header .navigation .outer-container .links ul li {
           display: inline-block;
-          margin-right: 32px;
+          margin-right: 38px;
           text-transform: uppercase; }
           .directive.gifable-index-header .navigation .outer-container .links ul li:last-child {
             margin: 0; }
           .directive.gifable-index-header .navigation .outer-container .links ul li a {
             color: inherit; }
             .directive.gifable-index-header .navigation .outer-container .links ul li a:hover {
-              color: #00b4ff;
               text-decoration: none; }
   .directive.gifable-index-header .call-to-action {
-    padding: 64px 0 32px 0;
+    padding: 50px 0;
     text-align: center; }
     .directive.gifable-index-header .call-to-action h1 {
-      margin: 0 0 32px;
-      font-size: 28px;
+      margin: 0 0 20px;
+      font-size: 34px;
       text-transform: uppercase; }
     .directive.gifable-index-header .call-to-action .input {
-      margin-bottom: 64px; }
+      margin-bottom: 50px; }
     .directive.gifable-index-header .call-to-action p {
-      max-width: 512px;
+      max-width: 500px;
       margin: 0 auto;
       line-height: 22.652px; }
 
@@ -166,14 +169,13 @@ html, body {
       visibility: hidden; }
   .directive.gifable-file-input button {
     width: 256px;
-    font-size: 16px; }
-    .directive.gifable-file-input button .fa {
-      margin-right: 8px; }
+    border: 2px solid #fff; }
   .directive.gifable-file-input:hover button {
-    background-color: #1abcff; }
+    background-color: #fff;
+    color: #59c2e6; }
   .directive.gifable-file-input:active button {
-    background-color: #00a2e6;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); }
+    background-color: #fff;
+    color: #59c2e6; }
 
 .directive.gifable-header {
   display: inline-block;
@@ -192,9 +194,9 @@ html, body {
     .directive.gifable-header button .fa {
       margin-right: 8px; }
   .directive.gifable-header:hover button {
-    background-color: #1abcff; }
+    background-color: #6fcae9; }
   .directive.gifable-header:active button {
-    background-color: #00a2e6;
+    background-color: #43bae3;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); }
 
 html .outer-container, body .outer-container {

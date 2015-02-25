@@ -27,12 +27,12 @@
     }
     &:hover {
         button {
-            background-color: lighten($blue, 5%);
+            background-color: lighten($primary-color, 5%);
         }
     }
     &:active {
         button {
-            background-color: darken($blue, 5%);
+            background-color: darken($primary-color, 5%);
 
             @include box-shadow(inset 0 1px 2px rgba(#000, 0.2));
         }

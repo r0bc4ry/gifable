@@ -1,21 +1,26 @@
 button {
-    background-color: $blue;
-    padding: 16px;
+    background-color: $primary-color;
+    padding: 0 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
 
     color: #fff;
-    font-weight: 600;
+    font-weight: 700;
+    line-height: 50px;
+    text-transform: uppercase;
 
-    @include box-shadow(inset 0 1px 0 rgba(#fff, 0.2), 0 1px 2px rgba(#000, 0.2));
     cursor: pointer;
 
     &:hover {
-        background-color: lighten($blue, 5%);
+        background-color: lighten($primary-color, 5%);
     }
     &:active {
-        background-color: darken($blue, 5%);
+        background-color: darken($primary-color, 5%);
+    }
+    .fa {
+        margin-right: 10px;
 
-        @include box-shadow(inset 0 1px 2px rgba(#000, 0.2));
+        font-size: 18px;
+        vertical-align: middle;
     }
 }
