@@ -21,7 +21,7 @@
     <main>
         <section class="outer-container">
             <div class="gif-wrapper">
-                <video autoplay loop webkit-playsinline>
+                <video preload="auto" autoplay="autoplay" muted="muted" loop="loop" webkit-playsinline>
                     <source src="{{ $gif->mp4_https_url }}" type="video/webm">
                     <source src="{{ $gif->webm_https_url }}" type="video/mp4">
                     <img src="{{ $gif->gif_https_url }}">

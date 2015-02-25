@@ -123,6 +123,7 @@ html, body {
     display: block;
     width: 25.58941%;
     width: 25%;
+    background-color: #e1ecf7;
     position: relative;
     cursor: pointer;
     overflow: hidden; }

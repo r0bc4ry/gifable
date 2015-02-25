@@ -3,13 +3,12 @@
     <div class="outer-container">
         <div class="gif-tile-wrapper">
             <div class="gif-tile" ng-repeat="gif in gifs" gifable-repeat-events ng-click="navigateToGif(gif)">
-                <video loop webkit-playsinline ng-mouseover="playGif($event)" ng-mouseout="pauseGif($event)" ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">
+                <video preload="auto" muted="muted" loop="loop" webkit-playsinline ng-mouseover="playGif($event)" ng-mouseout="pauseGif($event)" ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">
                     <source ng-src="{{ gif.mp4_https_url }}" type="video/webm">
                     <source ng-src="{{ gif.webm_https_url }}" type="video/mp4">
                     <img ng-src="{{ gif.gif_https_url }}">
                 </video>
             </div>
-
         </div>
     </div>
 </section>
