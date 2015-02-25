@@ -3,6 +3,8 @@
 
     position: relative;
 
+//    cursor: pointer;
+
     input[type=file] {
         width: 100%;
 
@@ -12,12 +14,14 @@
 
         color: transparent;
 
+        cursor: pointer;
+
         &::-webkit-file-upload-button {
             visibility: hidden;
         }
     }
     button {
-        width: 280px;
+        width: 256px;
 
         font-size: 16px;
 

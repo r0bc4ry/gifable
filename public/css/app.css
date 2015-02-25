@@ -105,7 +105,7 @@ html, body {
       clear: both; }
 
 .directive.gifable-index-header {
-  background: url(/img/index-header-background.jpg) center bottom;
+  background: #34495e url(/img/index-header-background.jpg) center;
   background-size: cover;
   color: #fff; }
   .directive.gifable-index-header .navigation {
@@ -143,11 +143,14 @@ html, body {
     text-align: center; }
     .directive.gifable-index-header .call-to-action h1 {
       margin: 0 0 32px;
+      font-size: 28px;
       text-transform: uppercase; }
     .directive.gifable-index-header .call-to-action .input {
-      margin-bottom: 128px; }
+      margin-bottom: 64px; }
     .directive.gifable-index-header .call-to-action p {
-      margin: 0; }
+      max-width: 512px;
+      margin: 0 auto;
+      line-height: 22.652px; }
 
 .directive.gifable-file-input {
   display: inline-block;
@@ -157,11 +160,12 @@ html, body {
     position: absolute;
     top: 0;
     bottom: 0;
-    color: transparent; }
+    color: transparent;
+    cursor: pointer; }
     .directive.gifable-file-input input[type=file]::-webkit-file-upload-button {
       visibility: hidden; }
   .directive.gifable-file-input button {
-    width: 280px;
+    width: 256px;
     font-size: 16px; }
     .directive.gifable-file-input button .fa {
       margin-right: 8px; }
@@ -193,7 +197,5 @@ html, body {
     background-color: #00a2e6;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); }
 
-html, body {
-  background-color: #ecf0f1; }
-  html .outer-container, body .outer-container {
-    max-width: 1024px; }
+html .outer-container, body .outer-container {
+  max-width: 1024px; }

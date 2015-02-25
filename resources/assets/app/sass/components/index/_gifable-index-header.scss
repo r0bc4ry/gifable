@@ -1,5 +1,5 @@
 .directive.gifable-index-header {
-    background: url(/img/index-header-background.jpg) center bottom;
+    background: #34495e url(/img/index-header-background.jpg) center;
     background-size: cover;
 
     color: #fff;
@@ -60,13 +60,17 @@
         h1 {
             margin: 0 0 32px;
 
+            font-size: 28px;
             text-transform: uppercase;
         }
         .input {
-            margin-bottom: 128px;
+            margin-bottom: 64px;
         }
         p {
-            margin: 0;
+            max-width: 512px;
+            margin: 0 auto;
+
+            line-height: golden-ratio(14px, 1);
         }
     }
 }
