@@ -64,6 +64,26 @@
         }
         .input {
             margin-bottom: 50px;
+
+            .directive.gifable-file-input {
+                button {
+                    width: 256px;
+                    background: none;
+                    border: 2px solid #fff;
+                }
+                &:hover {
+                    button {
+                        background-color: #fff;
+                        color: $primary-color;
+                    }
+                }
+                &:active {
+                    button {
+                        background-color: #fff;
+                        color: $primary-color;
+                    }
+                }
+            }
         }
         p {
             max-width: 500px;

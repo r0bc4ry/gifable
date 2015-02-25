@@ -52,8 +52,10 @@ html, body {
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
   color: #4f5f6f; }
-  html *:focus, body *:focus {
-    outline: 0; }
+  html *, body * {
+    box-sizing: border-box; }
+    html *:focus, body *:focus {
+      outline: 0; }
   html a, body a {
     color: #59c2e6;
     text-decoration: none; }
@@ -94,19 +96,50 @@ html, body {
               clear: both; }
             html main footer .outer-container .links ul li, body main footer .outer-container .links ul li {
               display: inline-block;
-              margin-right: 32px; }
+              margin-right: 38px;
+              text-transform: uppercase; }
               html main footer .outer-container .links ul li:last-child, body main footer .outer-container .links ul li:last-child {
                 margin: 0; }
   html .outer-container, body .outer-container {
     max-width: 68em;
     margin-left: auto;
     margin-right: auto;
-    padding-right: 16px;
-    padding-left: 16px; }
+    padding-right: 20px;
+    padding-left: 20px; }
     html .outer-container:after, body .outer-container:after {
       content: "";
       display: table;
       clear: both; }
+
+.component.index .outer-container .gif-tile-wrapper {
+  display: block;
+  margin: 50px 0; }
+  .component.index .outer-container .gif-tile-wrapper:after {
+    content: "";
+    display: table;
+    clear: both; }
+  .component.index .outer-container .gif-tile-wrapper .gif-tile {
+    float: left;
+    display: block;
+    width: 25.58941%;
+    width: 25%;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden; }
+    .component.index .outer-container .gif-tile-wrapper .gif-tile:last-child {
+      width: 23.23176%; }
+    .component.index .outer-container .gif-tile-wrapper .gif-tile:last-child {
+      width: 25%; }
+    .component.index .outer-container .gif-tile-wrapper .gif-tile:after {
+      padding-top: 100%;
+      display: block;
+      content: ""; }
+    .component.index .outer-container .gif-tile-wrapper .gif-tile video {
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 0;
+      left: 0; }
 
 .directive.gifable-index-header {
   background: #59c2e6 url(/img/index-header-background.jpg) no-repeat center center;
@@ -150,6 +183,16 @@ html, body {
       text-transform: uppercase; }
     .directive.gifable-index-header .call-to-action .input {
       margin-bottom: 50px; }
+      .directive.gifable-index-header .call-to-action .input .directive.gifable-file-input button {
+        width: 256px;
+        background: none;
+        border: 2px solid #fff; }
+      .directive.gifable-index-header .call-to-action .input .directive.gifable-file-input:hover button {
+        background-color: #fff;
+        color: #59c2e6; }
+      .directive.gifable-index-header .call-to-action .input .directive.gifable-file-input:active button {
+        background-color: #fff;
+        color: #59c2e6; }
     .directive.gifable-index-header .call-to-action p {
       max-width: 500px;
       margin: 0 auto;
@@ -167,37 +210,41 @@ html, body {
     cursor: pointer; }
     .directive.gifable-file-input input[type=file]::-webkit-file-upload-button {
       visibility: hidden; }
-  .directive.gifable-file-input button {
-    width: 256px;
-    border: 2px solid #fff; }
   .directive.gifable-file-input:hover button {
-    background-color: #fff;
-    color: #59c2e6; }
+    background-color: #6fcae9; }
   .directive.gifable-file-input:active button {
-    background-color: #fff;
-    color: #59c2e6; }
+    background-color: #43bae3; }
 
 .directive.gifable-header {
-  display: inline-block;
-  position: relative; }
-  .directive.gifable-header input[type=file] {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    color: transparent; }
-    .directive.gifable-header input[type=file]::-webkit-file-upload-button {
-      visibility: hidden; }
-  .directive.gifable-header button {
-    width: 280px;
-    font-size: 16px; }
-    .directive.gifable-header button .fa {
-      margin-right: 8px; }
-  .directive.gifable-header:hover button {
-    background-color: #6fcae9; }
-  .directive.gifable-header:active button {
-    background-color: #43bae3;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); }
+  background-color: #59c2e6;
+  color: #fff; }
+  .directive.gifable-header .navigation .outer-container .logo {
+    float: left; }
+    .directive.gifable-header .navigation .outer-container .logo img {
+      margin: 10px 0;
+      vertical-align: top; }
+  .directive.gifable-header .navigation .outer-container .links {
+    overflow: hidden;
+    text-align: right;
+    line-height: 50px; }
+    .directive.gifable-header .navigation .outer-container .links ul {
+      padding: 0;
+      margin: 0;
+      list-style-type: none; }
+      .directive.gifable-header .navigation .outer-container .links ul:after {
+        content: "";
+        display: table;
+        clear: both; }
+      .directive.gifable-header .navigation .outer-container .links ul li {
+        display: inline-block;
+        margin-right: 38px;
+        text-transform: uppercase; }
+        .directive.gifable-header .navigation .outer-container .links ul li:last-child {
+          margin: 0; }
+        .directive.gifable-header .navigation .outer-container .links ul li a {
+          color: inherit; }
+          .directive.gifable-header .navigation .outer-container .links ul li a:hover {
+            text-decoration: none; }
 
 html .outer-container, body .outer-container {
   max-width: 1024px; }

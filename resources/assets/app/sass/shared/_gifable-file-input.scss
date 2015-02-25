@@ -3,8 +3,6 @@
 
     position: relative;
 
-//    cursor: pointer;
-
     input[type=file] {
         width: 100%;
 
@@ -20,20 +18,14 @@
             visibility: hidden;
         }
     }
-    button {
-        width: 256px;
-        border: 2px solid #fff;
-    }
     &:hover {
         button {
-            background-color: #fff;
-            color: $primary-color;
+            background-color: lighten($primary-color, 5%);
         }
     }
     &:active {
         button {
-            background-color: #fff;
-            color: $primary-color;
+            background-color: darken($primary-color, 5%);
         }
     }
 }

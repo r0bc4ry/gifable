@@ -19,8 +19,12 @@ html, body {
     font-size: 14px;
     color: $text-color;
 
-    *:focus {
-        outline: 0;
+    * {
+        box-sizing: border-box;
+
+        &:focus {
+            outline: 0;
+        }
     }
     a {
         color: $primary-color;
@@ -76,7 +80,9 @@ html, body {
 
                         li {
                             display: inline-block;
-                            margin-right: 32px;
+                            margin-right: 38px;
+
+                            text-transform: uppercase;
 
                             &:last-child {
                                 margin: 0;
@@ -89,7 +95,7 @@ html, body {
     }
     .outer-container {
         @include outer-container;
-        padding-right: 16px;
-        padding-left: 16px;
+        padding-right: 20px;
+        padding-left: 20px;
     }
 }

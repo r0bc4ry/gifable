@@ -1,1 +1,37 @@
+.component.index {
+    .outer-container {
+        .gif-tile-wrapper {
+            @include row();
 
+            margin: 50px 0;
+
+            .gif-tile {
+                @include span-columns(3, block-collapse);
+
+                width: 25%;
+
+                position: relative;
+
+                cursor: pointer;
+                overflow: hidden;
+
+                &:last-child {
+                    width: 25%;
+                }
+                &:after {
+                    padding-top: 100%;
+                    display: block;
+                    content: "";
+                }
+                video {
+                    width: auto;
+                    height: auto;
+
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+            }
+        }
+    }
+}

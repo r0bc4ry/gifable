@@ -25,6 +25,10 @@
 @stop
 
 @section('scripts')
+    <script>
+        var $gifs = {!! json_encode($gifs)  !!};
+    </script>
+
     <script src="/js/app/app.js"></script>
     <script src="/js/app/templates.js"></script>
 @stop

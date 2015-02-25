@@ -52,8 +52,10 @@ html, body {
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
   color: #4f5f6f; }
-  html *:focus, body *:focus {
-    outline: 0; }
+  html *, body * {
+    box-sizing: border-box; }
+    html *:focus, body *:focus {
+      outline: 0; }
   html a, body a {
     color: #59c2e6;
     text-decoration: none; }
@@ -94,15 +96,16 @@ html, body {
               clear: both; }
             html main footer .outer-container .links ul li, body main footer .outer-container .links ul li {
               display: inline-block;
-              margin-right: 32px; }
+              margin-right: 38px;
+              text-transform: uppercase; }
               html main footer .outer-container .links ul li:last-child, body main footer .outer-container .links ul li:last-child {
                 margin: 0; }
   html .outer-container, body .outer-container {
     max-width: 68em;
     margin-left: auto;
     margin-right: auto;
-    padding-right: 16px;
-    padding-left: 16px; }
+    padding-right: 20px;
+    padding-left: 20px; }
     html .outer-container:after, body .outer-container:after {
       content: "";
       display: table;
