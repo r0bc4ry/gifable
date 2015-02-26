@@ -18,15 +18,17 @@ class CreateGifsTable extends Migration {
             $table->string('shortcode')->unique();
             $table->string('width');
             $table->string('height');
+            $table->string('png_http_url');
+            $table->string('png_https_url');
             $table->string('gif_http_url');
             $table->string('gif_https_url');
             $table->integer('gif_size')->unsigned();
-            $table->string('webm_http_url');
-            $table->string('webm_https_url');
-            $table->integer('webm_size')->unsigned();
-            $table->string('mp4_http_url');
-            $table->string('mp4_https_url');
-            $table->integer('mp4_size')->unsigned();
+            $table->string('webm_http_url')->nullable();
+            $table->string('webm_https_url')->nullable();
+            $table->integer('webm_size')->unsigned()->nullable();
+            $table->string('mp4_http_url')->nullable();
+            $table->string('mp4_https_url')->nullable();
+            $table->integer('mp4_size')->unsigned()->nullable();
             $table->timestamps();
         });
 	}
