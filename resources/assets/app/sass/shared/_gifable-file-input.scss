@@ -3,21 +3,6 @@
 
     position: relative;
 
-    input[type=file] {
-        width: 100%;
-
-        position: absolute;
-        top: 0;
-        bottom: 0;
-
-        color: transparent;
-
-        cursor: pointer;
-
-        &::-webkit-file-upload-button {
-            visibility: hidden;
-        }
-    }
     &:hover {
         button {
             background-color: lighten($primary-color, 5%);

@@ -195,6 +195,12 @@ html, body {
       .directive.gifable-index-header .call-to-action .input .directive.gifable-file-input:active button {
         background-color: #fff;
         color: #59c2e6; }
+      .directive.gifable-index-header .call-to-action .input .directive.gifable-file-input.disabled {
+        pointer-events: none; }
+        .directive.gifable-index-header .call-to-action .input .directive.gifable-file-input.disabled button {
+          background-color: #fff;
+          color: #59c2e6;
+          cursor: progress; }
     .directive.gifable-index-header .call-to-action p {
       max-width: 500px;
       margin: 0 auto;
@@ -203,15 +209,6 @@ html, body {
 .directive.gifable-file-input {
   display: inline-block;
   position: relative; }
-  .directive.gifable-file-input input[type=file] {
-    width: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    color: transparent;
-    cursor: pointer; }
-    .directive.gifable-file-input input[type=file]::-webkit-file-upload-button {
-      visibility: hidden; }
   .directive.gifable-file-input:hover button {
     background-color: #6fcae9; }
   .directive.gifable-file-input:active button {

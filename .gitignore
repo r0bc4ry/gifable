@@ -1,6 +1,7 @@
 # Laravel
 /vendor
 /node_modules
+/resources/assets/shared/bower_components
 .env
 
 # Intellij

@@ -83,6 +83,16 @@
                         color: $primary-color;
                     }
                 }
+                &.disabled {
+                    pointer-events: none;
+
+                    button {
+                        background-color: #fff;
+                        color: $primary-color;
+
+                        cursor: progress;
+                    }
+                }
             }
         }
         p {

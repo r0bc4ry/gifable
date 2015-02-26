@@ -8,17 +8,13 @@ angular.module('gifable.app.controllers')
         '$scope',
         '$templateCache',
         '$window',
-
-        'FileUploader',
         function(
             $document,
             $interval,
             $q,
             $scope,
             $templateCache,
-            $window,
-
-            FileUploader
+            $window
         ) {
             $scope.gifs = $window.$gifs;
             $scope.ngRepeatStartedDeferred = $q.defer();
@@ -35,24 +31,6 @@ angular.module('gifable.app.controllers')
             $interval(function() {
                 $scope.uploadingMessage = uploadingMessages[Math.floor(Math.random() * uploadingMessages.length)];
             }, 5000);
-
-            $scope.uploader = new FileUploader({
-                url: '/api/v1/gifs',
-                filters: [{
-                    name: 'imageFilter',
-                    fn: function(file, options) {
-                        var type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
-                        return '|gif|'.indexOf(type) !== -1;
-                    }
-                }],
-                autoUpload: true,
-                onSuccessItem: function(fileItem, response, status, headers) {
-                    $window.location.href = '/' + response.data.gif.shortcode;
-                },
-                onErrorItem: function(fileItem, response, status, headers) {
-                    console.info('onErrorItem', fileItem, response, status, headers);
-                }
-            });
 
             $scope.navigateToGif = function(gif) {
                 $window.location.href = '/' + gif.shortcode;

@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.3.13
+ * @license AngularJS v1.3.14
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -54,7 +54,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.3.13/' +
+    message = message + '\nhttp://errors.angularjs.org/1.3.14/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i - 2) + '=' +
@@ -2121,11 +2121,11 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.3.13',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.3.14',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 3,
-  dot: 13,
-  codeName: 'meticulous-riffleshuffle'
+  dot: 14,
+  codeName: 'instantaneous-browserification'
 };
 
 
@@ -17854,20 +17854,23 @@ var htmlAnchorDirective = valueFn({
  *
  * @description
  *
- * We shouldn't do this, because it will make the button enabled on Chrome/Firefox but not on IE8 and older IEs:
+ * This directive sets the `disabled` attribute on the element if the
+ * {@link guide/expression expression} inside `ngDisabled` evaluates to truthy.
+ *
+ * A special directive is necessary because we cannot use interpolation inside the `disabled`
+ * attribute.  The following example would make the button enabled on Chrome/Firefox
+ * but not on older IEs:
+ *
  * ```html
- * <div ng-init="scope = { isDisabled: false }">
- *  <button disabled="{{scope.isDisabled}}">Disabled</button>
+ * <div ng-init="isDisabled = false">
+ *  <button disabled="{{isDisabled}}">Disabled</button>
  * </div>
  * ```
  *
- * The HTML specification does not require browsers to preserve the values of boolean attributes
- * such as disabled. (Their presence means true and their absence means false.)
+ * This is because the HTML specification does not require browsers to preserve the values of
+ * boolean attributes such as `disabled` (Their presence means true and their absence means false.)
  * If we put an Angular interpolation expression into such an attribute then the
  * binding information would be lost when the browser removes the attribute.
- * The `ngDisabled` directive solves this problem for the `disabled` attribute.
- * This complementary directive is not removed by the browser and so provides
- * a permanent reliable place to store the binding information.
  *
  * @example
     <example>
@@ -17886,7 +17889,7 @@ var htmlAnchorDirective = valueFn({
  *
  * @element INPUT
  * @param {expression} ngDisabled If the {@link guide/expression expression} is truthy,
- *     then special attribute "disabled" will be set on the element
+ *     then the `disabled` attribute will be set on the element
  */
 
 
@@ -19888,7 +19891,7 @@ function numberInputType(scope, element, attr, ctrl, $sniffer, $browser) {
     return value;
   });
 
-  if (attr.min || attr.ngMin) {
+  if (isDefined(attr.min) || attr.ngMin) {
     var minVal;
     ctrl.$validators.min = function(value) {
       return ctrl.$isEmpty(value) || isUndefined(minVal) || value >= minVal;
@@ -19904,7 +19907,7 @@ function numberInputType(scope, element, attr, ctrl, $sniffer, $browser) {
     });
   }
 
-  if (attr.max || attr.ngMax) {
+  if (isDefined(attr.max) || attr.ngMax) {
     var maxVal;
     ctrl.$validators.max = function(value) {
       return ctrl.$isEmpty(value) || isUndefined(maxVal) || value <= maxVal;
@@ -22710,6 +22713,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
       ngModelGet = parsedNgModel,
       ngModelSet = parsedNgModelAssign,
       pendingDebounce = null,
+      parserValid,
       ctrl = this;
 
   this.$$setOptions = function(options) {
@@ -22982,16 +22986,12 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
     // the model although neither viewValue nor the model on the scope changed
     var modelValue = ctrl.$$rawModelValue;
 
-    // Check if the there's a parse error, so we don't unset it accidentially
-    var parserName = ctrl.$$parserName || 'parse';
-    var parserValid = ctrl.$error[parserName] ? false : undefined;
-
     var prevValid = ctrl.$valid;
     var prevModelValue = ctrl.$modelValue;
 
     var allowInvalid = ctrl.$options && ctrl.$options.allowInvalid;
 
-    ctrl.$$runValidators(parserValid, modelValue, viewValue, function(allValid) {
+    ctrl.$$runValidators(modelValue, viewValue, function(allValid) {
       // If there was no change in validity, don't update the model
       // This prevents changing an invalid modelValue to undefined
       if (!allowInvalid && prevValid !== allValid) {
@@ -23009,12 +23009,12 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
 
   };
 
-  this.$$runValidators = function(parseValid, modelValue, viewValue, doneCallback) {
+  this.$$runValidators = function(modelValue, viewValue, doneCallback) {
     currentValidationRunId++;
     var localValidationRunId = currentValidationRunId;
 
     // check parser error
-    if (!processParseErrors(parseValid)) {
+    if (!processParseErrors()) {
       validationDone(false);
       return;
     }
@@ -23024,21 +23024,22 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
     }
     processAsyncValidators();
 
-    function processParseErrors(parseValid) {
+    function processParseErrors() {
       var errorKey = ctrl.$$parserName || 'parse';
-      if (parseValid === undefined) {
+      if (parserValid === undefined) {
         setValidity(errorKey, null);
       } else {
-        setValidity(errorKey, parseValid);
-        if (!parseValid) {
+        if (!parserValid) {
           forEach(ctrl.$validators, function(v, name) {
             setValidity(name, null);
           });
           forEach(ctrl.$asyncValidators, function(v, name) {
             setValidity(name, null);
           });
-          return false;
         }
+        // Set the parse error last, to prevent unsetting it, should a $validators key == parserName
+        setValidity(errorKey, parserValid);
+        return parserValid;
       }
       return true;
     }
@@ -23133,7 +23134,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
   this.$$parseAndValidate = function() {
     var viewValue = ctrl.$$lastCommittedViewValue;
     var modelValue = viewValue;
-    var parserValid = isUndefined(modelValue) ? undefined : true;
+    parserValid = isUndefined(modelValue) ? undefined : true;
 
     if (parserValid) {
       for (var i = 0; i < ctrl.$parsers.length; i++) {
@@ -23159,7 +23160,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
 
     // Pass the $$lastCommittedViewValue here, because the cached viewValue might be out of date.
     // This can happen if e.g. $setViewValue is called from inside a parser
-    ctrl.$$runValidators(parserValid, modelValue, ctrl.$$lastCommittedViewValue, function(allValid) {
+    ctrl.$$runValidators(modelValue, ctrl.$$lastCommittedViewValue, function(allValid) {
       if (!allowInvalid) {
         // Note: Don't check ctrl.$valid here, as we could have
         // external validators (e.g. calculated on the server),
@@ -23280,6 +23281,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
     // TODO(perf): why not move this to the action fn?
     if (modelValue !== ctrl.$modelValue) {
       ctrl.$modelValue = ctrl.$$rawModelValue = modelValue;
+      parserValid = undefined;
 
       var formatters = ctrl.$formatters,
           idx = formatters.length;
@@ -23292,7 +23294,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
         ctrl.$viewValue = ctrl.$$lastCommittedViewValue = viewValue;
         ctrl.$render();
 
-        ctrl.$$runValidators(undefined, modelValue, viewValue, noop);
+        ctrl.$$runValidators(modelValue, viewValue, noop);
       }
     }
 
@@ -24108,6 +24110,55 @@ var ngPluralizeDirective = ['$locale', '$interpolate', function($locale, $interp
  * when keys are deleted and reinstated.
  *
  *
+ * # Tracking and Duplicates
+ *
+ * When the contents of the collection change, `ngRepeat` makes the corresponding changes to the DOM:
+ *
+ * * When an item is added, a new instance of the template is added to the DOM.
+ * * When an item is removed, its template instance is removed from the DOM.
+ * * When items are reordered, their respective templates are reordered in the DOM.
+ *
+ * By default, `ngRepeat` does not allow duplicate items in arrays. This is because when
+ * there are duplicates, it is not possible to maintain a one-to-one mapping between collection
+ * items and DOM elements.
+ *
+ * If you do need to repeat duplicate items, you can substitute the default tracking behavior
+ * with your own using the `track by` expression.
+ *
+ * For example, you may track items by the index of each item in the collection, using the
+ * special scope property `$index`:
+ * ```html
+ *    <div ng-repeat="n in [42, 42, 43, 43] track by $index">
+ *      {{n}}
+ *    </div>
+ * ```
+ *
+ * You may use arbitrary expressions in `track by`, including references to custom functions
+ * on the scope:
+ * ```html
+ *    <div ng-repeat="n in [42, 42, 43, 43] track by myTrackingFunction(n)">
+ *      {{n}}
+ *    </div>
+ * ```
+ *
+ * If you are working with objects that have an identifier property, you can track
+ * by the identifier instead of the whole object. Should you reload your data later, `ngRepeat`
+ * will not have to rebuild the DOM elements for items it has already rendered, even if the
+ * JavaScript objects in the collection have been substituted for new ones:
+ * ```html
+ *    <div ng-repeat="model in collection track by model.id">
+ *      {{model.name}}
+ *    </div>
+ * ```
+ *
+ * When no `track by` expression is provided, it is equivalent to tracking by the built-in
+ * `$id` function, which tracks items by their identity:
+ * ```html
+ *    <div ng-repeat="obj in collection track by $id(obj)">
+ *      {{obj.prop}}
+ *    </div>
+ * ```
+ *
  * # Special repeat start and end points
  * To repeat a series of elements instead of just one parent element, ngRepeat (as well as other ng directives) supports extending
  * the range of the repeater by defining explicit start and end points by using **ng-repeat-start** and **ng-repeat-end** respectively.
@@ -24175,12 +24226,12 @@ var ngPluralizeDirective = ['$locale', '$interpolate', function($locale, $interp
  *
  *     For example: `(name, age) in {'adam':10, 'amalie':12}`.
  *
- *   * `variable in expression track by tracking_expression` – You can also provide an optional tracking function
- *     which can be used to associate the objects in the collection with the DOM elements. If no tracking function
- *     is specified the ng-repeat associates elements by identity in the collection. It is an error to have
- *     more than one tracking function to resolve to the same key. (This would mean that two distinct objects are
- *     mapped to the same DOM element, which is not possible.)  Filters should be applied to the expression,
- *     before specifying a tracking expression.
+ *   * `variable in expression track by tracking_expression` – You can also provide an optional tracking expression
+ *     which can be used to associate the objects in the collection with the DOM elements. If no tracking expression
+ *     is specified, ng-repeat associates elements by identity. It is an error to have
+ *     more than one tracking expression value resolve to the same key. (This would mean that two distinct objects are
+ *     mapped to the same DOM element, which is not possible.)  If filters are used in the expression, they should be
+ *     applied before the tracking expression.
  *
  *     For example: `item in items` is equivalent to `item in items track by $id(item)`. This implies that the DOM elements
  *     will be associated by item identity in the array.
@@ -26129,7 +26180,7 @@ var minlengthDirective = function() {
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
 /**
- * @license AngularJS v1.3.13
+ * @license AngularJS v1.3.14
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -27118,2773 +27169,984 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-/*!
- * https://github.com/es-shims/es5-shim
- * @license es5-shim Copyright 2009-2014 by contributors, MIT License
- * see https://github.com/es-shims/es5-shim/blob/master/LICENSE
+/**!
+ * AngularJS file upload/drop directive and service with progress and abort
+ * @author  Danial  <danial.farid@gmail.com>
+ * @version 3.0.7
  */
-
-// vim: ts=4 sts=4 sw=4 expandtab
-
-// Add semicolon to prevent IIFE from being passed as argument to concatenated code.
-;
-
-// UMD (Universal Module Definition)
-// see https://github.com/umdjs/umd/blob/master/returnExports.js
-(function (root, factory) {
-    'use strict';
-    /*global define, exports, module */
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like enviroments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
-        root.returnExports = factory();
-    }
-}(this, function () {
-
-/**
- * Brings an environment as close to ECMAScript 5 compliance
- * as is possible with the facilities of erstwhile engines.
- *
- * Annotated ES5: http://es5.github.com/ (specific links below)
- * ES5 Spec: http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf
- * Required reading: http://javascriptweblog.wordpress.com/2011/12/05/extending-javascript-natives/
- */
-
-// Shortcut to an often accessed properties, in order to avoid multiple
-// dereference that costs universally.
-var ArrayPrototype = Array.prototype;
-var ObjectPrototype = Object.prototype;
-var FunctionPrototype = Function.prototype;
-var StringPrototype = String.prototype;
-var NumberPrototype = Number.prototype;
-var array_slice = ArrayPrototype.slice;
-var array_splice = ArrayPrototype.splice;
-var array_push = ArrayPrototype.push;
-var array_unshift = ArrayPrototype.unshift;
-var call = FunctionPrototype.call;
-
-// Having a toString local variable name breaks in Opera so use to_string.
-var to_string = ObjectPrototype.toString;
-
-var isArray = Array.isArray || function isArray(obj) {
-    return to_string.call(obj) === '[object Array]';
-};
-
-var hasToStringTag = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
-var isCallable; /* inlined from https://npmjs.com/is-callable */ var fnToStr = Function.prototype.toString, tryFunctionObject = function tryFunctionObject(value) { try { fnToStr.call(value); return true; } catch (e) { return false; } }, fnClass = '[object Function]', genClass = '[object GeneratorFunction]'; isCallable = function isCallable(value) { if (typeof value !== 'function') { return false; } if (hasToStringTag) { return tryFunctionObject(value); } var strClass = to_string.call(value); return strClass === fnClass || strClass === genClass; };
-var isRegex; /* inlined from https://npmjs.com/is-regex */ var regexExec = RegExp.prototype.exec, tryRegexExec = function tryRegexExec(value) { try { regexExec.call(value); return true; } catch (e) { return false; } }, regexClass = '[object RegExp]'; isRegex = function isRegex(value) { if (typeof value !== 'object') { return false; } return hasToStringTag ? tryRegexExec(value) : to_string.call(value) === regexClass; };
-var isString; /* inlined from https://npmjs.com/is-string */ var strValue = String.prototype.valueOf, tryStringObject = function tryStringObject(value) { try { strValue.call(value); return true; } catch (e) { return false; } }, stringClass = '[object String]'; isString = function isString(value) { if (typeof value === 'string') { return true; } if (typeof value !== 'object') { return false; } return hasToStringTag ? tryStringObject(value) : to_string.call(value) === stringClass; };
-
-var isArguments = function isArguments(value) {
-    var str = to_string.call(value);
-    var isArgs = str === '[object Arguments]';
-    if (!isArgs) {
-        isArgs = !isArray(value) &&
-          value !== null &&
-          typeof value === 'object' &&
-          typeof value.length === 'number' &&
-          value.length >= 0 &&
-          isCallable(value.callee);
-    }
-    return isArgs;
-};
-
-/* inlined from http://npmjs.com/define-properties */
-var defineProperties = (function (has) {
-  var supportsDescriptors = Object.defineProperty && (function () {
-      try {
-          Object.defineProperty({}, 'x', {});
-          return true;
-      } catch (e) { /* this is ES3 */
-          return false;
-      }
-  }());
-
-  // Define configurable, writable and non-enumerable props
-  // if they don't exist.
-  var defineProperty;
-  if (supportsDescriptors) {
-      defineProperty = function (object, name, method, forceAssign) {
-          if (!forceAssign && (name in object)) { return; }
-          Object.defineProperty(object, name, {
-              configurable: true,
-              enumerable: false,
-              writable: true,
-              value: method
-          });
-      };
-  } else {
-      defineProperty = function (object, name, method, forceAssign) {
-          if (!forceAssign && (name in object)) { return; }
-          object[name] = method;
-      };
-  }
-  return function defineProperties(object, map, forceAssign) {
-      for (var name in map) {
-          if (has.call(map, name)) {
-            defineProperty(object, name, map[name], forceAssign);
-          }
-      }
-  };
-}(ObjectPrototype.hasOwnProperty));
-
-//
-// Util
-// ======
-//
-
-/* replaceable with https://npmjs.com/package/es-abstract /helpers/isPrimitive */
-function isPrimitive(input) {
-    var type = typeof input;
-    return input === null ||
-        type === 'undefined' ||
-        type === 'boolean' ||
-        type === 'number' ||
-        type === 'string';
+(function() {
+	
+function patchXHR(fnName, newFn) {
+	window.XMLHttpRequest.prototype[fnName] = newFn(window.XMLHttpRequest.prototype[fnName]);
 }
 
-var ES = {
-    // ES5 9.4
-    // http://es5.github.com/#x9.4
-    // http://jsperf.com/to-integer
-    /* replaceable with https://npmjs.com/package/es-abstract ES5.ToInteger */
-    ToInteger: function ToInteger(num) {
-        var n = +num;
-        if (n !== n) { // isNaN
-            n = 0;
-        } else if (n !== 0 && n !== (1 / 0) && n !== -(1 / 0)) {
-            n = (n > 0 || -1) * Math.floor(Math.abs(n));
-        }
-        return n;
-    },
-
-    /* replaceable with https://npmjs.com/package/es-abstract ES5.ToPrimitive */
-    ToPrimitive: function ToPrimitive(input) {
-        var val, valueOf, toStr;
-        if (isPrimitive(input)) {
-            return input;
-        }
-        valueOf = input.valueOf;
-        if (isCallable(valueOf)) {
-            val = valueOf.call(input);
-            if (isPrimitive(val)) {
-                return val;
-            }
-        }
-        toStr = input.toString;
-        if (isCallable(toStr)) {
-            val = toStr.call(input);
-            if (isPrimitive(val)) {
-                return val;
-            }
-        }
-        throw new TypeError();
-    },
-
-    // ES5 9.9
-    // http://es5.github.com/#x9.9
-    /* replaceable with https://npmjs.com/package/es-abstract ES5.ToObject */
-    ToObject: function (o) {
-        /*jshint eqnull: true */
-        if (o == null) { // this matches both null and undefined
-            throw new TypeError("can't convert " + o + ' to object');
-        }
-        return Object(o);
-    },
-
-    /* replaceable with https://npmjs.com/package/es-abstract ES5.ToUint32 */
-    ToUint32: function ToUint32(x) {
-        return x >>> 0;
-    }
-};
-
-//
-// Function
-// ========
-//
-
-// ES-5 15.3.4.5
-// http://es5.github.com/#x15.3.4.5
-
-var Empty = function Empty() {};
-
-defineProperties(FunctionPrototype, {
-    bind: function bind(that) { // .length is 1
-        // 1. Let Target be the this value.
-        var target = this;
-        // 2. If IsCallable(Target) is false, throw a TypeError exception.
-        if (!isCallable(target)) {
-            throw new TypeError('Function.prototype.bind called on incompatible ' + target);
-        }
-        // 3. Let A be a new (possibly empty) internal list of all of the
-        //   argument values provided after thisArg (arg1, arg2 etc), in order.
-        // XXX slicedArgs will stand in for "A" if used
-        var args = array_slice.call(arguments, 1); // for normal call
-        // 4. Let F be a new native ECMAScript object.
-        // 11. Set the [[Prototype]] internal property of F to the standard
-        //   built-in Function prototype object as specified in 15.3.3.1.
-        // 12. Set the [[Call]] internal property of F as described in
-        //   15.3.4.5.1.
-        // 13. Set the [[Construct]] internal property of F as described in
-        //   15.3.4.5.2.
-        // 14. Set the [[HasInstance]] internal property of F as described in
-        //   15.3.4.5.3.
-        var bound;
-        var binder = function () {
-
-            if (this instanceof bound) {
-                // 15.3.4.5.2 [[Construct]]
-                // When the [[Construct]] internal method of a function object,
-                // F that was created using the bind function is called with a
-                // list of arguments ExtraArgs, the following steps are taken:
-                // 1. Let target be the value of F's [[TargetFunction]]
-                //   internal property.
-                // 2. If target has no [[Construct]] internal method, a
-                //   TypeError exception is thrown.
-                // 3. Let boundArgs be the value of F's [[BoundArgs]] internal
-                //   property.
-                // 4. Let args be a new list containing the same values as the
-                //   list boundArgs in the same order followed by the same
-                //   values as the list ExtraArgs in the same order.
-                // 5. Return the result of calling the [[Construct]] internal
-                //   method of target providing args as the arguments.
-
-                var result = target.apply(
-                    this,
-                    args.concat(array_slice.call(arguments))
-                );
-                if (Object(result) === result) {
-                    return result;
-                }
-                return this;
-
-            } else {
-                // 15.3.4.5.1 [[Call]]
-                // When the [[Call]] internal method of a function object, F,
-                // which was created using the bind function is called with a
-                // this value and a list of arguments ExtraArgs, the following
-                // steps are taken:
-                // 1. Let boundArgs be the value of F's [[BoundArgs]] internal
-                //   property.
-                // 2. Let boundThis be the value of F's [[BoundThis]] internal
-                //   property.
-                // 3. Let target be the value of F's [[TargetFunction]] internal
-                //   property.
-                // 4. Let args be a new list containing the same values as the
-                //   list boundArgs in the same order followed by the same
-                //   values as the list ExtraArgs in the same order.
-                // 5. Return the result of calling the [[Call]] internal method
-                //   of target providing boundThis as the this value and
-                //   providing args as the arguments.
-
-                // equiv: target.call(this, ...boundArgs, ...args)
-                return target.apply(
-                    that,
-                    args.concat(array_slice.call(arguments))
-                );
-
-            }
-
-        };
-
-        // 15. If the [[Class]] internal property of Target is "Function", then
-        //     a. Let L be the length property of Target minus the length of A.
-        //     b. Set the length own property of F to either 0 or L, whichever is
-        //       larger.
-        // 16. Else set the length own property of F to 0.
-
-        var boundLength = Math.max(0, target.length - args.length);
-
-        // 17. Set the attributes of the length own property of F to the values
-        //   specified in 15.3.5.1.
-        var boundArgs = [];
-        for (var i = 0; i < boundLength; i++) {
-            boundArgs.push('$' + i);
-        }
-
-        // XXX Build a dynamic function with desired amount of arguments is the only
-        // way to set the length property of a function.
-        // In environments where Content Security Policies enabled (Chrome extensions,
-        // for ex.) all use of eval or Function costructor throws an exception.
-        // However in all of these environments Function.prototype.bind exists
-        // and so this code will never be executed.
-        bound = Function('binder', 'return function (' + boundArgs.join(',') + '){ return binder.apply(this, arguments); }')(binder);
-
-        if (target.prototype) {
-            Empty.prototype = target.prototype;
-            bound.prototype = new Empty();
-            // Clean up dangling references.
-            Empty.prototype = null;
-        }
-
-        // TODO
-        // 18. Set the [[Extensible]] internal property of F to true.
-
-        // TODO
-        // 19. Let thrower be the [[ThrowTypeError]] function Object (13.2.3).
-        // 20. Call the [[DefineOwnProperty]] internal method of F with
-        //   arguments "caller", PropertyDescriptor {[[Get]]: thrower, [[Set]]:
-        //   thrower, [[Enumerable]]: false, [[Configurable]]: false}, and
-        //   false.
-        // 21. Call the [[DefineOwnProperty]] internal method of F with
-        //   arguments "arguments", PropertyDescriptor {[[Get]]: thrower,
-        //   [[Set]]: thrower, [[Enumerable]]: false, [[Configurable]]: false},
-        //   and false.
-
-        // TODO
-        // NOTE Function objects created using Function.prototype.bind do not
-        // have a prototype property or the [[Code]], [[FormalParameters]], and
-        // [[Scope]] internal properties.
-        // XXX can't delete prototype in pure-js.
-
-        // 22. Return F.
-        return bound;
-    }
-});
-
-// _Please note: Shortcuts are defined after `Function.prototype.bind` as we
-// us it in defining shortcuts.
-var owns = call.bind(ObjectPrototype.hasOwnProperty);
-
-//
-// Array
-// =====
-//
-
-// ES5 15.4.4.12
-// http://es5.github.com/#x15.4.4.12
-var spliceNoopReturnsEmptyArray = (function () {
-    var a = [1, 2];
-    var result = a.splice();
-    return a.length === 2 && isArray(result) && result.length === 0;
-}());
-defineProperties(ArrayPrototype, {
-    // Safari 5.0 bug where .splice() returns undefined
-    splice: function splice(start, deleteCount) {
-        if (arguments.length === 0) {
-            return [];
-        } else {
-            return array_splice.apply(this, arguments);
-        }
-    }
-}, !spliceNoopReturnsEmptyArray);
-
-var spliceWorksWithEmptyObject = (function () {
-    var obj = {};
-    ArrayPrototype.splice.call(obj, 0, 0, 1);
-    return obj.length === 1;
-}());
-defineProperties(ArrayPrototype, {
-    splice: function splice(start, deleteCount) {
-        if (arguments.length === 0) { return []; }
-        var args = arguments;
-        this.length = Math.max(ES.ToInteger(this.length), 0);
-        if (arguments.length > 0 && typeof deleteCount !== 'number') {
-            args = array_slice.call(arguments);
-            if (args.length < 2) {
-                args.push(this.length - start);
-            } else {
-                args[1] = ES.ToInteger(deleteCount);
-            }
-        }
-        return array_splice.apply(this, args);
-    }
-}, !spliceWorksWithEmptyObject);
-
-// ES5 15.4.4.12
-// http://es5.github.com/#x15.4.4.13
-// Return len+argCount.
-// [bugfix, ielt8]
-// IE < 8 bug: [].unshift(0) === undefined but should be "1"
-var hasUnshiftReturnValueBug = [].unshift(0) !== 1;
-defineProperties(ArrayPrototype, {
-    unshift: function () {
-        array_unshift.apply(this, arguments);
-        return this.length;
-    }
-}, hasUnshiftReturnValueBug);
-
-// ES5 15.4.3.2
-// http://es5.github.com/#x15.4.3.2
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/isArray
-defineProperties(Array, { isArray: isArray });
-
-// The IsCallable() check in the Array functions
-// has been replaced with a strict check on the
-// internal class of the object to trap cases where
-// the provided function was actually a regular
-// expression literal, which in V8 and
-// JavaScriptCore is a typeof "function".  Only in
-// V8 are regular expression literals permitted as
-// reduce parameters, so it is desirable in the
-// general case for the shim to match the more
-// strict and common behavior of rejecting regular
-// expressions.
-
-// ES5 15.4.4.18
-// http://es5.github.com/#x15.4.4.18
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/array/forEach
-
-// Check failure of by-index access of string characters (IE < 9)
-// and failure of `0 in boxedString` (Rhino)
-var boxedString = Object('a');
-var splitString = boxedString[0] !== 'a' || !(0 in boxedString);
-
-var properlyBoxesContext = function properlyBoxed(method) {
-    // Check node 0.6.21 bug where third parameter is not boxed
-    var properlyBoxesNonStrict = true;
-    var properlyBoxesStrict = true;
-    if (method) {
-        method.call('foo', function (_, __, context) {
-            if (typeof context !== 'object') { properlyBoxesNonStrict = false; }
-        });
-
-        method.call([1], function () {
-            'use strict';
-            properlyBoxesStrict = typeof this === 'string';
-        }, 'x');
-    }
-    return !!method && properlyBoxesNonStrict && properlyBoxesStrict;
-};
-
-defineProperties(ArrayPrototype, {
-    forEach: function forEach(fun /*, thisp*/) {
-        var object = ES.ToObject(this),
-            self = splitString && isString(this) ? this.split('') : object,
-            thisp = arguments[1],
-            i = -1,
-            length = self.length >>> 0;
-
-        // If no callback function or if callback is not a callable function
-        if (!isCallable(fun)) {
-            throw new TypeError(); // TODO message
-        }
-
-        while (++i < length) {
-            if (i in self) {
-                // Invoke the callback function with call, passing arguments:
-                // context, property value, property key, thisArg object
-                // context
-                fun.call(thisp, self[i], i, object);
-            }
-        }
-    }
-}, !properlyBoxesContext(ArrayPrototype.forEach));
-
-// ES5 15.4.4.19
-// http://es5.github.com/#x15.4.4.19
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/map
-defineProperties(ArrayPrototype, {
-    map: function map(fun /*, thisp*/) {
-        var object = ES.ToObject(this),
-            self = splitString && isString(this) ? this.split('') : object,
-            length = self.length >>> 0,
-            result = Array(length),
-            thisp = arguments[1];
-
-        // If no callback function or if callback is not a callable function
-        if (!isCallable(fun)) {
-            throw new TypeError(fun + ' is not a function');
-        }
-
-        for (var i = 0; i < length; i++) {
-            if (i in self) {
-                result[i] = fun.call(thisp, self[i], i, object);
-            }
-        }
-        return result;
-    }
-}, !properlyBoxesContext(ArrayPrototype.map));
-
-// ES5 15.4.4.20
-// http://es5.github.com/#x15.4.4.20
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/filter
-defineProperties(ArrayPrototype, {
-    filter: function filter(fun /*, thisp */) {
-        var object = ES.ToObject(this),
-            self = splitString && isString(this) ? this.split('') : object,
-            length = self.length >>> 0,
-            result = [],
-            value,
-            thisp = arguments[1];
-
-        // If no callback function or if callback is not a callable function
-        if (!isCallable(fun)) {
-            throw new TypeError(fun + ' is not a function');
-        }
-
-        for (var i = 0; i < length; i++) {
-            if (i in self) {
-                value = self[i];
-                if (fun.call(thisp, value, i, object)) {
-                    result.push(value);
-                }
-            }
-        }
-        return result;
-    }
-}, !properlyBoxesContext(ArrayPrototype.filter));
-
-// ES5 15.4.4.16
-// http://es5.github.com/#x15.4.4.16
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/every
-defineProperties(ArrayPrototype, {
-    every: function every(fun /*, thisp */) {
-        var object = ES.ToObject(this),
-            self = splitString && isString(this) ? this.split('') : object,
-            length = self.length >>> 0,
-            thisp = arguments[1];
-
-        // If no callback function or if callback is not a callable function
-        if (!isCallable(fun)) {
-            throw new TypeError(fun + ' is not a function');
-        }
-
-        for (var i = 0; i < length; i++) {
-            if (i in self && !fun.call(thisp, self[i], i, object)) {
-                return false;
-            }
-        }
-        return true;
-    }
-}, !properlyBoxesContext(ArrayPrototype.every));
-
-// ES5 15.4.4.17
-// http://es5.github.com/#x15.4.4.17
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/some
-defineProperties(ArrayPrototype, {
-    some: function some(fun /*, thisp */) {
-        var object = ES.ToObject(this),
-            self = splitString && isString(this) ? this.split('') : object,
-            length = self.length >>> 0,
-            thisp = arguments[1];
-
-        // If no callback function or if callback is not a callable function
-        if (!isCallable(fun)) {
-            throw new TypeError(fun + ' is not a function');
-        }
-
-        for (var i = 0; i < length; i++) {
-            if (i in self && fun.call(thisp, self[i], i, object)) {
-                return true;
-            }
-        }
-        return false;
-    }
-}, !properlyBoxesContext(ArrayPrototype.some));
-
-// ES5 15.4.4.21
-// http://es5.github.com/#x15.4.4.21
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduce
-var reduceCoercesToObject = false;
-if (ArrayPrototype.reduce) {
-    reduceCoercesToObject = typeof ArrayPrototype.reduce.call('es5', function (_, __, ___, list) { return list; }) === 'object';
+if (window.XMLHttpRequest && !window.XMLHttpRequest.__isFileAPIShim) {
+	patchXHR('setRequestHeader', function(orig) {
+		return function(header, value) {
+			if (header === '__setXHR_') {
+				var val = value(this);
+				// fix for angular < 1.2.0
+				if (val instanceof Function) {
+					val(this);
+				}
+			} else {
+				orig.apply(this, arguments);
+			}
+		}
+	});
 }
-defineProperties(ArrayPrototype, {
-    reduce: function reduce(fun /*, initial*/) {
-        var object = ES.ToObject(this),
-            self = splitString && isString(this) ? this.split('') : object,
-            length = self.length >>> 0;
-
-        // If no callback function or if callback is not a callable function
-        if (!isCallable(fun)) {
-            throw new TypeError(fun + ' is not a function');
-        }
-
-        // no value to return if no initial value and an empty array
-        if (!length && arguments.length === 1) {
-            throw new TypeError('reduce of empty array with no initial value');
-        }
-
-        var i = 0;
-        var result;
-        if (arguments.length >= 2) {
-            result = arguments[1];
-        } else {
-            do {
-                if (i in self) {
-                    result = self[i++];
-                    break;
-                }
-
-                // if array contains no values, no initial value to return
-                if (++i >= length) {
-                    throw new TypeError('reduce of empty array with no initial value');
-                }
-            } while (true);
-        }
-
-        for (; i < length; i++) {
-            if (i in self) {
-                result = fun.call(void 0, result, self[i], i, object);
-            }
-        }
-
-        return result;
-    }
-}, !reduceCoercesToObject);
-
-// ES5 15.4.4.22
-// http://es5.github.com/#x15.4.4.22
-// https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/Array/reduceRight
-var reduceRightCoercesToObject = false;
-if (ArrayPrototype.reduceRight) {
-    reduceRightCoercesToObject = typeof ArrayPrototype.reduceRight.call('es5', function (_, __, ___, list) { return list; }) === 'object';
-}
-defineProperties(ArrayPrototype, {
-    reduceRight: function reduceRight(fun /*, initial*/) {
-        var object = ES.ToObject(this),
-            self = splitString && isString(this) ? this.split('') : object,
-            length = self.length >>> 0;
-
-        // If no callback function or if callback is not a callable function
-        if (!isCallable(fun)) {
-            throw new TypeError(fun + ' is not a function');
-        }
-
-        // no value to return if no initial value, empty array
-        if (!length && arguments.length === 1) {
-            throw new TypeError('reduceRight of empty array with no initial value');
-        }
-
-        var result, i = length - 1;
-        if (arguments.length >= 2) {
-            result = arguments[1];
-        } else {
-            do {
-                if (i in self) {
-                    result = self[i--];
-                    break;
-                }
-
-                // if array contains no values, no initial value to return
-                if (--i < 0) {
-                    throw new TypeError('reduceRight of empty array with no initial value');
-                }
-            } while (true);
-        }
-
-        if (i < 0) {
-            return result;
-        }
-
-        do {
-            if (i in self) {
-                result = fun.call(void 0, result, self[i], i, object);
-            }
-        } while (i--);
-
-        return result;
-    }
-}, !reduceRightCoercesToObject);
-
-// ES5 15.4.4.14
-// http://es5.github.com/#x15.4.4.14
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/indexOf
-var hasFirefox2IndexOfBug = Array.prototype.indexOf && [0, 1].indexOf(1, 2) !== -1;
-defineProperties(ArrayPrototype, {
-    indexOf: function indexOf(sought /*, fromIndex */) {
-        var self = splitString && isString(this) ? this.split('') : ES.ToObject(this),
-            length = self.length >>> 0;
-
-        if (!length) {
-            return -1;
-        }
-
-        var i = 0;
-        if (arguments.length > 1) {
-            i = ES.ToInteger(arguments[1]);
-        }
-
-        // handle negative indices
-        i = i >= 0 ? i : Math.max(0, length + i);
-        for (; i < length; i++) {
-            if (i in self && self[i] === sought) {
-                return i;
-            }
-        }
-        return -1;
-    }
-}, hasFirefox2IndexOfBug);
-
-// ES5 15.4.4.15
-// http://es5.github.com/#x15.4.4.15
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/lastIndexOf
-var hasFirefox2LastIndexOfBug = Array.prototype.lastIndexOf && [0, 1].lastIndexOf(0, -3) !== -1;
-defineProperties(ArrayPrototype, {
-    lastIndexOf: function lastIndexOf(sought /*, fromIndex */) {
-        var self = splitString && isString(this) ? this.split('') : ES.ToObject(this),
-            length = self.length >>> 0;
-
-        if (!length) {
-            return -1;
-        }
-        var i = length - 1;
-        if (arguments.length > 1) {
-            i = Math.min(i, ES.ToInteger(arguments[1]));
-        }
-        // handle negative indices
-        i = i >= 0 ? i : length - Math.abs(i);
-        for (; i >= 0; i--) {
-            if (i in self && sought === self[i]) {
-                return i;
-            }
-        }
-        return -1;
-    }
-}, hasFirefox2LastIndexOfBug);
-
-//
-// Object
-// ======
-//
-
-// ES5 15.2.3.14
-// http://es5.github.com/#x15.2.3.14
-
-// http://whattheheadsaid.com/2010/10/a-safer-object-keys-compatibility-implementation
-var hasDontEnumBug = !({'toString': null}).propertyIsEnumerable('toString'),
-    hasProtoEnumBug = function () {}.propertyIsEnumerable('prototype'),
-    hasStringEnumBug = !owns('x', '0'),
-    dontEnums = [
-        'toString',
-        'toLocaleString',
-        'valueOf',
-        'hasOwnProperty',
-        'isPrototypeOf',
-        'propertyIsEnumerable',
-        'constructor'
-    ],
-    dontEnumsLength = dontEnums.length;
-
-defineProperties(Object, {
-    keys: function keys(object) {
-        var isFn = isCallable(object),
-            isArgs = isArguments(object),
-            isObject = object !== null && typeof object === 'object',
-            isStr = isObject && isString(object);
-
-        if (!isObject && !isFn && !isArgs) {
-            throw new TypeError('Object.keys called on a non-object');
-        }
-
-        var theKeys = [];
-        var skipProto = hasProtoEnumBug && isFn;
-        if ((isStr && hasStringEnumBug) || isArgs) {
-            for (var i = 0; i < object.length; ++i) {
-                theKeys.push(String(i));
-            }
-        }
-
-        if (!isArgs) {
-            for (var name in object) {
-                if (!(skipProto && name === 'prototype') && owns(object, name)) {
-                    theKeys.push(String(name));
-                }
-            }
-        }
-
-        if (hasDontEnumBug) {
-            var ctor = object.constructor,
-                skipConstructor = ctor && ctor.prototype === object;
-            for (var j = 0; j < dontEnumsLength; j++) {
-                var dontEnum = dontEnums[j];
-                if (!(skipConstructor && dontEnum === 'constructor') && owns(object, dontEnum)) {
-                    theKeys.push(dontEnum);
-                }
-            }
-        }
-        return theKeys;
-    }
-});
-
-var keysWorksWithArguments = Object.keys && (function () {
-    // Safari 5.0 bug
-    return Object.keys(arguments).length === 2;
-}(1, 2));
-var originalKeys = Object.keys;
-defineProperties(Object, {
-    keys: function keys(object) {
-        if (isArguments(object)) {
-            return originalKeys(ArrayPrototype.slice.call(object));
-        } else {
-            return originalKeys(object);
-        }
-    }
-}, !keysWorksWithArguments);
-
-//
-// Date
-// ====
-//
-
-// ES5 15.9.5.43
-// http://es5.github.com/#x15.9.5.43
-// This function returns a String value represent the instance in time
-// represented by this Date object. The format of the String is the Date Time
-// string format defined in 15.9.1.15. All fields are present in the String.
-// The time zone is always UTC, denoted by the suffix Z. If the time value of
-// this object is not a finite Number a RangeError exception is thrown.
-var negativeDate = -62198755200000;
-var negativeYearString = '-000001';
-var hasNegativeDateBug = Date.prototype.toISOString && new Date(negativeDate).toISOString().indexOf(negativeYearString) === -1;
-
-defineProperties(Date.prototype, {
-    toISOString: function toISOString() {
-        var result, length, value, year, month;
-        if (!isFinite(this)) {
-            throw new RangeError('Date.prototype.toISOString called on non-finite value.');
-        }
-
-        year = this.getUTCFullYear();
-
-        month = this.getUTCMonth();
-        // see https://github.com/es-shims/es5-shim/issues/111
-        year += Math.floor(month / 12);
-        month = (month % 12 + 12) % 12;
-
-        // the date time string format is specified in 15.9.1.15.
-        result = [month + 1, this.getUTCDate(), this.getUTCHours(), this.getUTCMinutes(), this.getUTCSeconds()];
-        year = (
-            (year < 0 ? '-' : (year > 9999 ? '+' : '')) +
-            ('00000' + Math.abs(year)).slice((0 <= year && year <= 9999) ? -4 : -6)
-        );
-
-        length = result.length;
-        while (length--) {
-            value = result[length];
-            // pad months, days, hours, minutes, and seconds to have two
-            // digits.
-            if (value < 10) {
-                result[length] = '0' + value;
-            }
-        }
-        // pad milliseconds to have three digits.
-        return (
-            year + '-' + result.slice(0, 2).join('-') +
-            'T' + result.slice(2).join(':') + '.' +
-            ('000' + this.getUTCMilliseconds()).slice(-3) + 'Z'
-        );
-    }
-}, hasNegativeDateBug);
-
-
-// ES5 15.9.5.44
-// http://es5.github.com/#x15.9.5.44
-// This function provides a String representation of a Date object for use by
-// JSON.stringify (15.12.3).
-var dateToJSONIsSupported = false;
-try {
-    dateToJSONIsSupported = (
-        Date.prototype.toJSON &&
-        new Date(NaN).toJSON() === null &&
-        new Date(negativeDate).toJSON().indexOf(negativeYearString) !== -1 &&
-        Date.prototype.toJSON.call({ // generic
-            toISOString: function () {
-                return true;
-            }
-        })
-    );
-} catch (e) {
-}
-if (!dateToJSONIsSupported) {
-    Date.prototype.toJSON = function toJSON(key) {
-        // When the toJSON method is called with argument key, the following
-        // steps are taken:
-
-        // 1.  Let O be the result of calling ToObject, giving it the this
-        // value as its argument.
-        // 2. Let tv be ES.ToPrimitive(O, hint Number).
-        var o = Object(this),
-            tv = ES.ToPrimitive(o),
-            toISO;
-        // 3. If tv is a Number and is not finite, return null.
-        if (typeof tv === 'number' && !isFinite(tv)) {
-            return null;
-        }
-        // 4. Let toISO be the result of calling the [[Get]] internal method of
-        // O with argument "toISOString".
-        toISO = o.toISOString;
-        // 5. If IsCallable(toISO) is false, throw a TypeError exception.
-        if (typeof toISO !== 'function') {
-            throw new TypeError('toISOString property is not callable');
-        }
-        // 6. Return the result of calling the [[Call]] internal method of
-        //  toISO with O as the this value and an empty argument list.
-        return toISO.call(o);
-
-        // NOTE 1 The argument is ignored.
-
-        // NOTE 2 The toJSON function is intentionally generic; it does not
-        // require that its this value be a Date object. Therefore, it can be
-        // transferred to other kinds of objects for use as a method. However,
-        // it does require that any such object have a toISOString method. An
-        // object is free to use the argument key to filter its
-        // stringification.
-    };
-}
-
-// ES5 15.9.4.2
-// http://es5.github.com/#x15.9.4.2
-// based on work shared by Daniel Friesen (dantman)
-// http://gist.github.com/303249
-var supportsExtendedYears = Date.parse('+033658-09-27T01:46:40.000Z') === 1e15;
-var acceptsInvalidDates = !isNaN(Date.parse('2012-04-04T24:00:00.500Z')) || !isNaN(Date.parse('2012-11-31T23:59:59.000Z'));
-var doesNotParseY2KNewYear = isNaN(Date.parse('2000-01-01T00:00:00.000Z'));
-if (!Date.parse || doesNotParseY2KNewYear || acceptsInvalidDates || !supportsExtendedYears) {
-    // XXX global assignment won't work in embeddings that use
-    // an alternate object for the context.
-    /*global Date: true */
-    /*eslint-disable no-undef*/
-    Date = (function (NativeDate) {
-    /*eslint-enable no-undef*/
-        // Date.length === 7
-        function Date(Y, M, D, h, m, s, ms) {
-            var length = arguments.length;
-            if (this instanceof NativeDate) {
-                var date = length === 1 && String(Y) === Y ? // isString(Y)
-                    // We explicitly pass it through parse:
-                    new NativeDate(Date.parse(Y)) :
-                    // We have to manually make calls depending on argument
-                    // length here
-                    length >= 7 ? new NativeDate(Y, M, D, h, m, s, ms) :
-                    length >= 6 ? new NativeDate(Y, M, D, h, m, s) :
-                    length >= 5 ? new NativeDate(Y, M, D, h, m) :
-                    length >= 4 ? new NativeDate(Y, M, D, h) :
-                    length >= 3 ? new NativeDate(Y, M, D) :
-                    length >= 2 ? new NativeDate(Y, M) :
-                    length >= 1 ? new NativeDate(Y) :
-                                  new NativeDate();
-                // Prevent mixups with unfixed Date object
-                date.constructor = Date;
-                return date;
-            }
-            return NativeDate.apply(this, arguments);
-        }
-
-        // 15.9.1.15 Date Time String Format.
-        var isoDateExpression = new RegExp('^' +
-            '(\\d{4}|[+-]\\d{6})' + // four-digit year capture or sign +
-                                      // 6-digit extended year
-            '(?:-(\\d{2})' + // optional month capture
-            '(?:-(\\d{2})' + // optional day capture
-            '(?:' + // capture hours:minutes:seconds.milliseconds
-                'T(\\d{2})' + // hours capture
-                ':(\\d{2})' + // minutes capture
-                '(?:' + // optional :seconds.milliseconds
-                    ':(\\d{2})' + // seconds capture
-                    '(?:(\\.\\d{1,}))?' + // milliseconds capture
-                ')?' +
-            '(' + // capture UTC offset component
-                'Z|' + // UTC capture
-                '(?:' + // offset specifier +/-hours:minutes
-                    '([-+])' + // sign capture
-                    '(\\d{2})' + // hours offset capture
-                    ':(\\d{2})' + // minutes offset capture
-                ')' +
-            ')?)?)?)?' +
-        '$');
-
-        var months = [
-            0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
-        ];
-
-        function dayFromMonth(year, month) {
-            var t = month > 1 ? 1 : 0;
-            return (
-                months[month] +
-                Math.floor((year - 1969 + t) / 4) -
-                Math.floor((year - 1901 + t) / 100) +
-                Math.floor((year - 1601 + t) / 400) +
-                365 * (year - 1970)
-            );
-        }
-
-        function toUTC(t) {
-            return Number(new NativeDate(1970, 0, 1, 0, 0, 0, t));
-        }
-
-        // Copy any custom methods a 3rd party library may have added
-        for (var key in NativeDate) {
-            Date[key] = NativeDate[key];
-        }
-
-        // Copy "native" methods explicitly; they may be non-enumerable
-        Date.now = NativeDate.now;
-        Date.UTC = NativeDate.UTC;
-        Date.prototype = NativeDate.prototype;
-        Date.prototype.constructor = Date;
-
-        // Upgrade Date.parse to handle simplified ISO 8601 strings
-        Date.parse = function parse(string) {
-            var match = isoDateExpression.exec(string);
-            if (match) {
-                // parse months, days, hours, minutes, seconds, and milliseconds
-                // provide default values if necessary
-                // parse the UTC offset component
-                var year = Number(match[1]),
-                    month = Number(match[2] || 1) - 1,
-                    day = Number(match[3] || 1) - 1,
-                    hour = Number(match[4] || 0),
-                    minute = Number(match[5] || 0),
-                    second = Number(match[6] || 0),
-                    millisecond = Math.floor(Number(match[7] || 0) * 1000),
-                    // When time zone is missed, local offset should be used
-                    // (ES 5.1 bug)
-                    // see https://bugs.ecmascript.org/show_bug.cgi?id=112
-                    isLocalTime = Boolean(match[4] && !match[8]),
-                    signOffset = match[9] === '-' ? 1 : -1,
-                    hourOffset = Number(match[10] || 0),
-                    minuteOffset = Number(match[11] || 0),
-                    result;
-                if (
-                    hour < (
-                        minute > 0 || second > 0 || millisecond > 0 ?
-                        24 : 25
-                    ) &&
-                    minute < 60 && second < 60 && millisecond < 1000 &&
-                    month > -1 && month < 12 && hourOffset < 24 &&
-                    minuteOffset < 60 && // detect invalid offsets
-                    day > -1 &&
-                    day < (
-                        dayFromMonth(year, month + 1) -
-                        dayFromMonth(year, month)
-                    )
-                ) {
-                    result = (
-                        (dayFromMonth(year, month) + day) * 24 +
-                        hour +
-                        hourOffset * signOffset
-                    ) * 60;
-                    result = (
-                        (result + minute + minuteOffset * signOffset) * 60 +
-                        second
-                    ) * 1000 + millisecond;
-                    if (isLocalTime) {
-                        result = toUTC(result);
-                    }
-                    if (-8.64e15 <= result && result <= 8.64e15) {
-                        return result;
-                    }
-                }
-                return NaN;
-            }
-            return NativeDate.parse.apply(this, arguments);
-        };
-
-        return Date;
-    }(Date));
-    /*global Date: false */
-}
-
-// ES5 15.9.4.4
-// http://es5.github.com/#x15.9.4.4
-if (!Date.now) {
-    Date.now = function now() {
-        return new Date().getTime();
-    };
-}
-
-
-//
-// Number
-// ======
-//
-
-// ES5.1 15.7.4.5
-// http://es5.github.com/#x15.7.4.5
-var hasToFixedBugs = NumberPrototype.toFixed && (
-  (0.00008).toFixed(3) !== '0.000' ||
-  (0.9).toFixed(0) !== '1' ||
-  (1.255).toFixed(2) !== '1.25' ||
-  (1000000000000000128).toFixed(0) !== '1000000000000000128'
-);
-
-var toFixedHelpers = {
-  base: 1e7,
-  size: 6,
-  data: [0, 0, 0, 0, 0, 0],
-  multiply: function multiply(n, c) {
-      var i = -1;
-      while (++i < toFixedHelpers.size) {
-          c += n * toFixedHelpers.data[i];
-          toFixedHelpers.data[i] = c % toFixedHelpers.base;
-          c = Math.floor(c / toFixedHelpers.base);
-      }
-  },
-  divide: function divide(n) {
-      var i = toFixedHelpers.size, c = 0;
-      while (--i >= 0) {
-          c += toFixedHelpers.data[i];
-          toFixedHelpers.data[i] = Math.floor(c / n);
-          c = (c % n) * toFixedHelpers.base;
-      }
-  },
-  numToString: function numToString() {
-      var i = toFixedHelpers.size;
-      var s = '';
-      while (--i >= 0) {
-          if (s !== '' || i === 0 || toFixedHelpers.data[i] !== 0) {
-              var t = String(toFixedHelpers.data[i]);
-              if (s === '') {
-                  s = t;
-              } else {
-                  s += '0000000'.slice(0, 7 - t.length) + t;
-              }
-          }
-      }
-      return s;
-  },
-  pow: function pow(x, n, acc) {
-      return (n === 0 ? acc : (n % 2 === 1 ? pow(x, n - 1, acc * x) : pow(x * x, n / 2, acc)));
-  },
-  log: function log(x) {
-      var n = 0;
-      while (x >= 4096) {
-          n += 12;
-          x /= 4096;
-      }
-      while (x >= 2) {
-          n += 1;
-          x /= 2;
-      }
-      return n;
-  }
-};
-
-defineProperties(NumberPrototype, {
-    toFixed: function toFixed(fractionDigits) {
-        var f, x, s, m, e, z, j, k;
-
-        // Test for NaN and round fractionDigits down
-        f = Number(fractionDigits);
-        f = f !== f ? 0 : Math.floor(f);
-
-        if (f < 0 || f > 20) {
-            throw new RangeError('Number.toFixed called with invalid number of decimals');
-        }
-
-        x = Number(this);
-
-        // Test for NaN
-        if (x !== x) {
-            return 'NaN';
-        }
-
-        // If it is too big or small, return the string value of the number
-        if (x <= -1e21 || x >= 1e21) {
-            return String(x);
-        }
-
-        s = '';
-
-        if (x < 0) {
-            s = '-';
-            x = -x;
-        }
-
-        m = '0';
-
-        if (x > 1e-21) {
-            // 1e-21 < x < 1e21
-            // -70 < log2(x) < 70
-            e = toFixedHelpers.log(x * toFixedHelpers.pow(2, 69, 1)) - 69;
-            z = (e < 0 ? x * toFixedHelpers.pow(2, -e, 1) : x / toFixedHelpers.pow(2, e, 1));
-            z *= 0x10000000000000; // Math.pow(2, 52);
-            e = 52 - e;
-
-            // -18 < e < 122
-            // x = z / 2 ^ e
-            if (e > 0) {
-                toFixedHelpers.multiply(0, z);
-                j = f;
-
-                while (j >= 7) {
-                    toFixedHelpers.multiply(1e7, 0);
-                    j -= 7;
-                }
-
-                toFixedHelpers.multiply(toFixedHelpers.pow(10, j, 1), 0);
-                j = e - 1;
-
-                while (j >= 23) {
-                    toFixedHelpers.divide(1 << 23);
-                    j -= 23;
-                }
-
-                toFixedHelpers.divide(1 << j);
-                toFixedHelpers.multiply(1, 1);
-                toFixedHelpers.divide(2);
-                m = toFixedHelpers.numToString();
-            } else {
-                toFixedHelpers.multiply(0, z);
-                toFixedHelpers.multiply(1 << (-e), 0);
-                m = toFixedHelpers.numToString() + '0.00000000000000000000'.slice(2, 2 + f);
-            }
-        }
-
-        if (f > 0) {
-            k = m.length;
-
-            if (k <= f) {
-                m = s + '0.0000000000000000000'.slice(0, f - k + 2) + m;
-            } else {
-                m = s + m.slice(0, k - f) + '.' + m.slice(k - f);
-            }
-        } else {
-            m = s + m;
-        }
-
-        return m;
-    }
-}, hasToFixedBugs);
-
-
-//
-// String
-// ======
-//
-
-// ES5 15.5.4.14
-// http://es5.github.com/#x15.5.4.14
-
-// [bugfix, IE lt 9, firefox 4, Konqueror, Opera, obscure browsers]
-// Many browsers do not split properly with regular expressions or they
-// do not perform the split correctly under obscure conditions.
-// See http://blog.stevenlevithan.com/archives/cross-browser-split
-// I've tested in many browsers and this seems to cover the deviant ones:
-//    'ab'.split(/(?:ab)*/) should be ["", ""], not [""]
-//    '.'.split(/(.?)(.?)/) should be ["", ".", "", ""], not ["", ""]
-//    'tesst'.split(/(s)*/) should be ["t", undefined, "e", "s", "t"], not
-//       [undefined, "t", undefined, "e", ...]
-//    ''.split(/.?/) should be [], not [""]
-//    '.'.split(/()()/) should be ["."], not ["", "", "."]
-
-var string_split = StringPrototype.split;
-if (
-    'ab'.split(/(?:ab)*/).length !== 2 ||
-    '.'.split(/(.?)(.?)/).length !== 4 ||
-    'tesst'.split(/(s)*/)[1] === 't' ||
-    'test'.split(/(?:)/, -1).length !== 4 ||
-    ''.split(/.?/).length ||
-    '.'.split(/()()/).length > 1
-) {
-    (function () {
-        var compliantExecNpcg = typeof (/()??/).exec('')[1] === 'undefined'; // NPCG: nonparticipating capturing group
-
-        StringPrototype.split = function (separator, limit) {
-            var string = this;
-            if (typeof separator === 'undefined' && limit === 0) {
-                return [];
-            }
-
-            // If `separator` is not a regex, use native split
-            if (!isRegex(separator)) {
-                return string_split.call(this, separator, limit);
-            }
-
-            var output = [],
-                flags = (separator.ignoreCase ? 'i' : '') +
-                        (separator.multiline ? 'm' : '') +
-                        (separator.extended ? 'x' : '') + // Proposed for ES6
-                        (separator.sticky ? 'y' : ''), // Firefox 3+
-                lastLastIndex = 0,
-                // Make `global` and avoid `lastIndex` issues by working with a copy
-                separator2, match, lastIndex, lastLength;
-            separator = new RegExp(separator.source, flags + 'g');
-            string += ''; // Type-convert
-            if (!compliantExecNpcg) {
-                // Doesn't need flags gy, but they don't hurt
-                separator2 = new RegExp('^' + separator.source + '$(?!\\s)', flags);
-            }
-            /* Values for `limit`, per the spec:
-             * If undefined: 4294967295 // Math.pow(2, 32) - 1
-             * If 0, Infinity, or NaN: 0
-             * If positive number: limit = Math.floor(limit); if (limit > 4294967295) limit -= 4294967296;
-             * If negative number: 4294967296 - Math.floor(Math.abs(limit))
-             * If other: Type-convert, then use the above rules
-             */
-            limit = typeof limit === 'undefined' ?
-                -1 >>> 0 : // Math.pow(2, 32) - 1
-                ES.ToUint32(limit);
-            match = separator.exec(string);
-            while (match) {
-                // `separator.lastIndex` is not reliable cross-browser
-                lastIndex = match.index + match[0].length;
-                if (lastIndex > lastLastIndex) {
-                    output.push(string.slice(lastLastIndex, match.index));
-                    // Fix browsers whose `exec` methods don't consistently return `undefined` for
-                    // nonparticipating capturing groups
-                    if (!compliantExecNpcg && match.length > 1) {
-                        /*eslint-disable no-loop-func */
-                        match[0].replace(separator2, function () {
-                            for (var i = 1; i < arguments.length - 2; i++) {
-                                if (typeof arguments[i] === 'undefined') {
-                                    match[i] = void 0;
-                                }
-                            }
-                        });
-                        /*eslint-enable no-loop-func */
-                    }
-                    if (match.length > 1 && match.index < string.length) {
-                        array_push.apply(output, match.slice(1));
-                    }
-                    lastLength = match[0].length;
-                    lastLastIndex = lastIndex;
-                    if (output.length >= limit) {
-                        break;
-                    }
-                }
-                if (separator.lastIndex === match.index) {
-                    separator.lastIndex++; // Avoid an infinite loop
-                }
-                match = separator.exec(string);
-            }
-            if (lastLastIndex === string.length) {
-                if (lastLength || !separator.test('')) {
-                    output.push('');
-                }
-            } else {
-                output.push(string.slice(lastLastIndex));
-            }
-            return output.length > limit ? output.slice(0, limit) : output;
-        };
-    }());
-
-// [bugfix, chrome]
-// If separator is undefined, then the result array contains just one String,
-// which is the this value (converted to a String). If limit is not undefined,
-// then the output array is truncated so that it contains no more than limit
-// elements.
-// "0".split(undefined, 0) -> []
-} else if ('0'.split(void 0, 0).length) {
-    StringPrototype.split = function split(separator, limit) {
-        if (typeof separator === 'undefined' && limit === 0) { return []; }
-        return string_split.call(this, separator, limit);
-    };
-}
-
-var str_replace = StringPrototype.replace;
-var replaceReportsGroupsCorrectly = (function () {
-    var groups = [];
-    'x'.replace(/x(.)?/g, function (match, group) {
-        groups.push(group);
+	
+var angularFileUpload = angular.module('angularFileUpload', []);
+
+angularFileUpload.version = '3.0.7';
+angularFileUpload.service('$upload', ['$http', '$q', '$timeout', function($http, $q, $timeout) {
+	function sendHttp(config) {
+		config.method = config.method || 'POST';
+		config.headers = config.headers || {};
+		config.transformRequest = config.transformRequest || function(data, headersGetter) {
+			if (window.ArrayBuffer && data instanceof window.ArrayBuffer) {
+				return data;
+			}
+			return $http.defaults.transformRequest[0](data, headersGetter);
+		};
+		var deferred = $q.defer();
+		var promise = deferred.promise;
+
+		config.headers['__setXHR_'] = function() {
+			return function(xhr) {
+				if (!xhr) return;
+				config.__XHR = xhr;
+				config.xhrFn && config.xhrFn(xhr);
+				xhr.upload.addEventListener('progress', function(e) {
+					e.config = config;
+					deferred.notify ? deferred.notify(e) : promise.progress_fn && $timeout(function(){promise.progress_fn(e)});
+				}, false);
+				//fix for firefox not firing upload progress end, also IE8-9
+				xhr.upload.addEventListener('load', function(e) {
+					if (e.lengthComputable) {
+						e.config = config;
+						deferred.notify ? deferred.notify(e) : promise.progress_fn && $timeout(function(){promise.progress_fn(e)});
+					}
+				}, false);
+			};
+		};
+
+		$http(config).then(function(r){deferred.resolve(r)}, function(e){deferred.reject(e)}, function(n){deferred.notify(n)});
+		
+		promise.success = function(fn) {
+			promise.then(function(response) {
+				fn(response.data, response.status, response.headers, config);
+			});
+			return promise;
+		};
+
+		promise.error = function(fn) {
+			promise.then(null, function(response) {
+				fn(response.data, response.status, response.headers, config);
+			});
+			return promise;
+		};
+
+		promise.progress = function(fn) {
+			promise.progress_fn = fn;
+			promise.then(null, null, function(update) {
+				fn(update);
+			});
+			return promise;
+		};
+		promise.abort = function() {
+			if (config.__XHR) {
+				$timeout(function() {
+					config.__XHR.abort();
+				});
+			}
+			return promise;
+		};
+		promise.xhr = function(fn) {
+			config.xhrFn = (function(origXhrFn) {
+				return function() {
+					origXhrFn && origXhrFn.apply(promise, arguments);
+					fn.apply(promise, arguments);
+				}
+			})(config.xhrFn);
+			return promise;
+		};
+		
+		return promise;
+	}
+
+	this.upload = function(config) {
+		config.headers = config.headers || {};
+		config.headers['Content-Type'] = undefined;
+		var origTransformRequest = config.transformRequest;
+		config.transformRequest = config.transformRequest ? 
+				(Object.prototype.toString.call(config.transformRequest) === '[object Array]' ? 
+						config.transformRequest : [config.transformRequest]) : [];
+		config.transformRequest.push(function(data, headerGetter) {
+			var formData = new FormData();
+			var allFields = {};
+			for (var key in config.fields) allFields[key] = config.fields[key];
+			if (data) allFields['data'] = data;
+			
+			if (config.formDataAppender) {
+				for (var key in allFields) {
+					config.formDataAppender(formData, key, allFields[key]);
+				}
+			} else {
+				for (var key in allFields) {
+					var val = allFields[key];
+					if (val !== undefined) {
+						if (Object.prototype.toString.call(val) === '[object String]') {
+							formData.append(key, val);
+						} else {
+							if (config.sendObjectsAsJsonBlob && typeof val === 'object') {
+								formData.append(key, new Blob([val], { type: 'application/json' }));
+							} else {
+								formData.append(key, JSON.stringify(val));
+							}
+						}
+					}
+				}
+			}
+
+			if (config.file != null) {
+				var fileFormName = config.fileFormDataName || 'file';
+
+				if (Object.prototype.toString.call(config.file) === '[object Array]') {
+					var isFileFormNameString = Object.prototype.toString.call(fileFormName) === '[object String]';
+					for (var i = 0; i < config.file.length; i++) {
+						formData.append(isFileFormNameString ? fileFormName : fileFormName[i], config.file[i], 
+								(config.fileName && config.fileName[i]) || config.file[i].name);
+					}
+				} else {
+					formData.append(fileFormName, config.file, config.fileName || config.file.name);
+				}
+			}
+			return formData;
+		});
+
+		return sendHttp(config);
+	};
+
+	this.http = function(config) {
+		return sendHttp(config);
+	};
+}]);
+
+angularFileUpload.directive('ngFileSelect', [ '$parse', '$timeout', '$compile', 
+                                              function($parse, $timeout, $compile) { return {
+	restrict: 'AEC',
+	require:'?ngModel',
+	link: function(scope, elem, attr, ngModel) {
+		handleFileSelect(scope, elem, attr, ngModel, $parse, $timeout, $compile);
+	}
+}}]);
+
+function handleFileSelect(scope, elem, attr, ngModel, $parse, $timeout, $compile) {
+	function isInputTypeFile() {
+		return elem[0].tagName.toLowerCase() === 'input' && elem.attr('type') && elem.attr('type').toLowerCase() === 'file'; 
+	}
+	
+	var watchers = [];
+
+	function watch(attrVal) {
+		$timeout(function() {
+			if (elem.parent().length) {
+				watchers.push(scope.$watch(attrVal, function(val, oldVal) {
+					if (val != oldVal) {
+						recompileElem();
+					}
+				}));
+			}
+		});
+	}
+
+	function recompileElem() {
+		var clone = elem.clone();
+		if (elem.attr('__afu_gen__')) {
+			angular.element(document.getElementById(elem.attr('id').substring(1))).remove();
+		}
+		if (elem.parent().length) {
+			for (var i = 0; i < watchers.length; i++) {
+				watchers[i]();
+			}
+			elem.replaceWith(clone);
+			$compile(clone)(scope);
+		}
+		return clone;
+	}
+	
+	function bindAttr(bindAttr, attrName) {
+		if (bindAttr) {
+			watch(bindAttr);
+			var val = $parse(bindAttr)(scope);
+			if (val) {
+				elem.attr(attrName, val);
+				attr[attrName] = val;
+			} else {
+				elem.attr(attrName, null);
+				delete attr[attrName];				
+			}
+		}
+	}
+	
+	bindAttr(attr.ngMultiple, 'multiple');
+	bindAttr(attr.ngAccept, 'accept');
+	bindAttr(attr.ngCapture, 'capture');
+	
+	if (attr['ngFileSelect'] != '') {
+		attr.ngFileChange = attr.ngFileSelect;
+	}
+	
+	function onChangeFn(evt) {
+		var files = [], fileList, i;
+		fileList = evt.__files_ || (evt.target && evt.target.files);
+		updateModel(fileList, attr, ngModel, scope, evt);
+	};
+	
+	var fileElem = elem;
+	if (!isInputTypeFile()) {
+		fileElem = angular.element('<input type="file">')
+		if (attr['multiple']) fileElem.attr('multiple', attr['multiple']);
+		if (attr['accept']) fileElem.attr('accept', attr['accept']);
+		if (attr['capture']) fileElem.attr('capture', attr['capture']);
+		for (var key in attr) {
+			if (key.indexOf('inputFile') == 0) {
+				var name = key.substring('inputFile'.length);
+				name = name[0].toLowerCase() + name.substring(1);
+				fileElem.attr(name, attr[key]);
+			}
+		}
+
+		fileElem.css('width', '0px').css('height', '0px').css('position', 'absolute').css('padding', 0).css('margin', 0)
+				.css('overflow', 'hidden').attr('tabindex', '-1').css('opacity', 0).attr('__afu_gen__', true);
+		elem.attr('__refElem__', true);
+		fileElem[0].__refElem__ = elem[0];
+		elem.parent()[0].insertBefore(fileElem[0], elem[0])
+		elem.css('overflow', 'hidden');
+		elem.bind('click', function(e) {
+			if (!resetAndClick(e)) {
+				fileElem[0].click();
+			}
+		});
+	} else {
+		elem.bind('click', resetAndClick);
+	}
+	
+	function resetAndClick(evt) {
+		if (fileElem[0].value != null && fileElem[0].value != '') {
+			fileElem[0].value = null;
+			// IE 11 already fires change event when you set the value to null
+			if (navigator.userAgent.indexOf("Trident/7") === -1) {
+				onChangeFn({target: {files: []}});
+			}
+		}
+		// if this is manual click trigger we don't need to reset again 
+		if (!elem.attr('__afu_clone__')) {
+			// fix for IE10 cannot set the value of the input to null programmatically by cloning and replacing input
+			// IE 11 setting the value to null event will be fired after file change clearing the selected file so 
+			// we just recreate the element for IE 11 as well
+			if (navigator.appVersion.indexOf("MSIE 10") !== -1 || navigator.userAgent.indexOf("Trident/7") !== -1) {
+				var clone = recompileElem();
+				clone.attr('__afu_clone__', true);
+				clone[0].click();
+				evt.preventDefault();
+				evt.stopPropagation();
+				return true;
+			}
+		} else {
+			elem.attr('__afu_clone__', null);
+		}
+	}
+	
+	fileElem.bind('change', onChangeFn);
+	
+    elem.on('$destroy', function() {
+		for (var i = 0; i < watchers.length; i++) {
+			watchers[i]();
+		}
+		if (elem[0] != fileElem[0]) fileElem.remove();
     });
-    return groups.length === 1 && typeof groups[0] === 'undefined';
-}());
+	
+	watchers.push(scope.$watch(attr.ngModel, function(val, oldVal) {
+		if (val != oldVal && (val == null || !val.length)) {
+			if (navigator.appVersion.indexOf("MSIE 10") !== -1) {
+				recompileElem();
+			} else {
+				fileElem[0].value = null;
+			}
+		}
+	}));
+	
+	function updateModel(fileList, attr, ngModel, scope, evt) {
+		var files = [], rejFiles = [];
+		var regexp = attr['accept'] ? new RegExp(globStringToRegex(attr['accept']), 'gi') : null;
 
-if (!replaceReportsGroupsCorrectly) {
-    StringPrototype.replace = function replace(searchValue, replaceValue) {
-        var isFn = isCallable(replaceValue);
-        var hasCapturingGroups = isRegex(searchValue) && (/\)[*?]/).test(searchValue.source);
-        if (!isFn || !hasCapturingGroups) {
-            return str_replace.call(this, searchValue, replaceValue);
-        } else {
-            var wrappedReplaceValue = function (match) {
-                var length = arguments.length;
-                var originalLastIndex = searchValue.lastIndex;
-                searchValue.lastIndex = 0;
-                var args = searchValue.exec(match) || [];
-                searchValue.lastIndex = originalLastIndex;
-                args.push(arguments[length - 2], arguments[length - 1]);
-                return replaceValue.apply(this, args);
-            };
-            return str_replace.call(this, searchValue, wrappedReplaceValue);
-        }
-    };
+		for (var i = 0; i < fileList.length; i++) {
+			var file = fileList.item(i);
+			if (!regexp || file.type.match(regexp) || (file.name != null && file.name.match(regexp))) {
+				files.push(file);
+			} else {
+				rejFiles.push(file);
+			}
+		}
+		$timeout(function() {
+			if (ngModel) {
+				$parse(attr.ngModel).assign(scope, files);
+				ngModel && ngModel.$setViewValue(files != null && files.length == 0 ? '' : files);
+				if (attr.ngModelRejected) {
+					$parse(attr.ngModelRejected).assign(scope, rejFiles);
+				}
+			}
+			if (attr.ngFileChange && attr.ngFileChange != "") {
+				$parse(attr.ngFileChange)(scope, {
+					$files: files,
+					$rejectedFiles: rejFiles,
+					$event: evt
+				});
+			}
+		});
+	}
 }
 
-// ECMA-262, 3rd B.2.3
-// Not an ECMAScript standard, although ECMAScript 3rd Edition has a
-// non-normative section suggesting uniform semantics and it should be
-// normalized across all browsers
-// [bugfix, IE lt 9] IE < 9 substr() with negative value not working in IE
-var string_substr = StringPrototype.substr;
-var hasNegativeSubstrBug = ''.substr && '0b'.substr(-1) !== 'b';
-defineProperties(StringPrototype, {
-    substr: function substr(start, length) {
-        return string_substr.call(
-            this,
-            start < 0 ? ((start = this.length + start) < 0 ? 0 : start) : start,
-            length
-        );
-    }
-}, hasNegativeSubstrBug);
+angularFileUpload.directive('ngFileDrop', [ '$parse', '$timeout', '$location', function($parse, $timeout, $location) { return {
+	restrict: 'AEC',
+	require:'?ngModel',
+	link: function(scope, elem, attr, ngModel) {
+		handleDrop(scope, elem, attr, ngModel, $parse, $timeout, $location);
+	}
+}}]);
 
-// ES5 15.5.4.20
-// whitespace from: http://es5.github.io/#x15.5.4.20
-var ws = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
-    '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028' +
-    '\u2029\uFEFF';
-var zeroWidth = '\u200b';
-var wsRegexChars = '[' + ws + ']';
-var trimBeginRegexp = new RegExp('^' + wsRegexChars + wsRegexChars + '*');
-var trimEndRegexp = new RegExp(wsRegexChars + wsRegexChars + '*$');
-var hasTrimWhitespaceBug = StringPrototype.trim && (ws.trim() || !zeroWidth.trim());
-defineProperties(StringPrototype, {
-    // http://blog.stevenlevithan.com/archives/faster-trim-javascript
-    // http://perfectionkills.com/whitespace-deviations/
-    trim: function trim() {
-        if (typeof this === 'undefined' || this === null) {
-            throw new TypeError("can't convert " + this + ' to object');
-        }
-        return String(this).replace(trimBeginRegexp, '').replace(trimEndRegexp, '');
-    }
-}, hasTrimWhitespaceBug);
+angularFileUpload.directive('ngNoFileDrop', function() { 
+	return function(scope, elem, attr) {
+		if (dropAvailable()) elem.css('display', 'none')
+	}
+});
 
-// ES-5 15.1.2.2
-if (parseInt(ws + '08') !== 8 || parseInt(ws + '0x16') !== 22) {
-    /*global parseInt: true */
-    parseInt = (function (origParseInt) {
-        var hexRegex = /^0[xX]/;
-        return function parseIntES5(str, radix) {
-            str = String(str).trim();
-            if (!Number(radix)) {
-                radix = hexRegex.test(str) ? 16 : 10;
-            }
-            return origParseInt(str, radix);
-        };
-    }(parseInt));
+//for backward compatibility
+angularFileUpload.directive('ngFileDropAvailable', [ '$parse', '$timeout', function($parse, $timeout) { 
+	return function(scope, elem, attr) {
+		if (dropAvailable()) {
+			var fn = $parse(attr['ngFileDropAvailable']);
+			$timeout(function() {
+				fn(scope);
+			});
+		}
+	}
+}]);
+
+function handleDrop(scope, elem, attr, ngModel, $parse, $timeout, $location) {
+	var available = dropAvailable();
+	if (attr['dropAvailable']) {
+		$timeout(function() {
+			scope.dropAvailable ? scope.dropAvailable.value = available : scope.dropAvailable = available;
+		});
+	}
+	if (!available) {
+		if ($parse(attr.hideOnDropNotAvailable)(scope) != false) {
+			elem.css('display', 'none');
+		}
+		return;
+	}
+	var leaveTimeout = null;
+	var stopPropagation = $parse(attr.stopPropagation)(scope);
+	var dragOverDelay = 1;
+	var accept = $parse(attr.ngAccept)(scope) || attr.accept;
+	var regexp = accept ? new RegExp(globStringToRegex(accept), 'gi') : null;
+	var actualDragOverClass;
+	elem[0].addEventListener('dragover', function(evt) {
+		evt.preventDefault();
+		if (stopPropagation) evt.stopPropagation();
+		// handling dragover events from the Chrome download bar
+		if (navigator.userAgent.indexOf("Chrome") > -1) {
+			var b = evt.dataTransfer.effectAllowed;
+			evt.dataTransfer.dropEffect = ('move' === b || 'linkMove' === b) ? 'move' : 'copy';
+		}
+		$timeout.cancel(leaveTimeout);
+		if (!scope.actualDragOverClass) {
+			actualDragOverClass = calculateDragOverClass(scope, attr, evt);
+		}
+		elem.addClass(actualDragOverClass);
+	}, false);
+	elem[0].addEventListener('dragenter', function(evt) {
+		evt.preventDefault();
+		if (stopPropagation) evt.stopPropagation();
+	}, false);
+	elem[0].addEventListener('dragleave', function(evt) {
+		leaveTimeout = $timeout(function() {
+			elem.removeClass(actualDragOverClass);
+			actualDragOverClass = null;
+		}, dragOverDelay || 1);
+	}, false);
+	if (attr['ngFileDrop'] != '') {
+		attr.ngFileChange = scope.ngFileDrop;
+	}
+	elem[0].addEventListener('drop', function(evt) {
+		evt.preventDefault();
+		if (stopPropagation) evt.stopPropagation();
+		elem.removeClass(actualDragOverClass);
+		actualDragOverClass = null;
+		extractFiles(evt, function(files, rejFiles) {
+			$timeout(function() {
+				if (ngModel) {
+					$parse(attr.ngModel).assign(scope, files);
+					ngModel && ngModel.$setViewValue(files != null && files.length == 0 ? '' : files);
+				}
+				if (attr['ngModelRejected']) {
+					if (scope[attr.ngModelRejected]) {
+						$parse(attr.ngModelRejected).assign(scope, rejFiles);
+					}
+				}
+			});
+			$timeout(function() {
+				$parse(attr.ngFileChange)(scope, {
+					$files: files,
+					$rejectedFiles: rejFiles,
+					$event: evt
+				});
+			});
+		}, $parse(attr.allowDir)(scope) != false, attr.multiple || $parse(attr.ngMultiple)(scope));
+	}, false);
+	
+	function calculateDragOverClass(scope, attr, evt) {
+		var valid = true;
+		if (regexp) {
+			var items = evt.dataTransfer.items;
+			if (items != null) {
+				for (var i = 0 ; i < items.length && valid; i++) {
+					valid = valid && (items[i].kind == 'file' || items[i].kind == '') && 
+						(items[i].type.match(regexp) != null || (items[i].name != null && items[i].name.match(regexp) != null));
+				}
+			}
+		}
+		var clazz = $parse(attr.dragOverClass)(scope, {$event : evt});
+		if (clazz) {
+			if (clazz.delay) dragOverDelay = clazz.delay; 
+			if (clazz.accept) clazz = valid ? clazz.accept : clazz.reject;
+		}
+		return clazz || attr['dragOverClass'] || 'dragover';
+	}
+				
+	function extractFiles(evt, callback, allowDir, multiple) {
+		var files = [], rejFiles = [], items = evt.dataTransfer.items, processing = 0;
+		
+		function addFile(file) {
+			if (!regexp || file.type.match(regexp) || (file.name != null && file.name.match(regexp))) {
+				files.push(file);
+			} else {
+				rejFiles.push(file);
+			}
+		}
+		
+		if (items && items.length > 0 && $location.protocol() != 'file') {
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].webkitGetAsEntry && items[i].webkitGetAsEntry() && items[i].webkitGetAsEntry().isDirectory) {
+					var entry = items[i].webkitGetAsEntry();
+					if (entry.isDirectory && !allowDir) {
+						continue;
+					}
+					if (entry != null) {
+						traverseFileTree(files, entry);
+					}
+				} else {
+					var f = items[i].getAsFile();
+					if (f != null) addFile(f);
+				}
+				if (!multiple && files.length > 0) break;
+			}
+		} else {
+			var fileList = evt.dataTransfer.files;
+			if (fileList != null) {
+				for (var i = 0; i < fileList.length; i++) {
+					addFile(fileList.item(i));
+					if (!multiple && files.length > 0) break;
+				}
+			}
+		}
+		var delays = 0;
+		(function waitForProcess(delay) {
+			$timeout(function() {
+				if (!processing) {
+					if (!multiple && files.length > 1) {
+						var i = 0;
+						while (files[i].type == 'directory') i++;
+						files = [files[i]];
+					}
+					callback(files, rejFiles);
+				} else {
+					if (delays++ * 10 < 20 * 1000) {
+						waitForProcess(10);
+					}
+				}
+			}, delay || 0)
+		})();
+		
+		function traverseFileTree(files, entry, path) {
+			if (entry != null) {
+				if (entry.isDirectory) {
+					var filePath = (path || '') + entry.name;
+					addFile({name: entry.name, type: 'directory', path: filePath});
+					var dirReader = entry.createReader();
+					var entries = [];
+					processing++;
+					var readEntries = function() {
+						dirReader.readEntries(function(results) {
+							try {
+								if (!results.length) {
+									for (var i = 0; i < entries.length; i++) {
+										traverseFileTree(files, entries[i], (path ? path : '') + entry.name + '/');
+									}
+									processing--;
+								} else {
+									entries = entries.concat(Array.prototype.slice.call(results || [], 0));
+									readEntries();
+								}
+							} catch (e) {
+								processing--;
+								console.error(e);
+							}
+						}, function() {
+							processing--;
+						});
+					};
+					readEntries();
+				} else {
+					processing++;
+					entry.file(function(file) {
+						try {
+							processing--;
+							file.path = (path ? path : '') + file.name;
+							addFile(file);
+						} catch (e) {
+							processing--;
+							console.error(e);
+						}
+					}, function(e) {
+						processing--;
+					});
+				}
+			}
+		}
+	}
 }
 
-}));
+function dropAvailable() {
+    var div = document.createElement('div');
+    return ('draggable' in div) && ('ondrop' in div);
+}
 
-/*
- angular-file-upload v1.1.5
- https://github.com/nervgh/angular-file-upload
-*/
-(function(angular, factory) {
-    if (typeof define === 'function' && define.amd) {
-        define('angular-file-upload', ['angular'], function(angular) {
-            return factory(angular);
-        });
-    } else {
-        return factory(angular);
-    }
-}(typeof angular === 'undefined' ? null : angular, function(angular) {
+function globStringToRegex(str) {
+	if (str.length > 2 && str[0] === '/' && str[str.length -1] === '/') {
+		return str.substring(1, str.length - 1);
+	}
+	var split = str.split(','), result = '';
+	if (split.length > 1) {
+		for (var i = 0; i < split.length; i++) {
+			result += '(' + globStringToRegex(split[i]) + ')';
+			if (i < split.length - 1) {
+				result += '|'
+			}
+		}
+	} else {
+		if (str.indexOf('.') == 0) {
+			str= '*' + str;
+		}
+		result = '^' + str.replace(new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\' + '-]', 'g'), '\\$&') + '$';
+		result = result.replace(/\\\*/g, '.*').replace(/\\\?/g, '.');
+	}
+	return result;
+}
 
-var module = angular.module('angularFileUpload', []);
+var ngFileUpload = angular.module('ngFileUpload', []);
 
-'use strict';
+for (var key in angularFileUpload) {
+	ngFileUpload[key] = angularFileUpload[key];
+}
 
-/**
- * Classes
- *
- * FileUploader
- * FileUploader.FileLikeObject
- * FileUploader.FileItem
- * FileUploader.FileDirective
- * FileUploader.FileSelect
- * FileUploader.FileDrop
- * FileUploader.FileOver
+})();
+
+/**!
+ * AngularJS file upload/drop directive and service with progress and abort
+ * FileAPI Flash shim for old browsers not supporting FormData 
+ * @author  Danial  <danial.farid@gmail.com>
+ * @version 3.0.7
  */
 
-module
-
-
-    .value('fileUploaderOptions', {
-        url: '/',
-        alias: 'file',
-        headers: {},
-        queue: [],
-        progress: 0,
-        autoUpload: false,
-        removeAfterUpload: false,
-        method: 'POST',
-        filters: [],
-        formData: [],
-        queueLimit: Number.MAX_VALUE,
-        withCredentials: false
-    })
-
-
-    .factory('FileUploader', ['fileUploaderOptions', '$rootScope', '$http', '$window', '$compile',
-        function(fileUploaderOptions, $rootScope, $http, $window, $compile) {
-            /**
-             * Creates an instance of FileUploader
-             * @param {Object} [options]
-             * @constructor
-             */
-            function FileUploader(options) {
-                var settings = angular.copy(fileUploaderOptions);
-                angular.extend(this, settings, options, {
-                    isUploading: false,
-                    _nextIndex: 0,
-                    _failFilterIndex: -1,
-                    _directives: {select: [], drop: [], over: []}
-                });
-
-                // add default filters
-                this.filters.unshift({name: 'queueLimit', fn: this._queueLimitFilter});
-                this.filters.unshift({name: 'folder', fn: this._folderFilter});
-            }
-            /**********************
-             * PUBLIC
-             **********************/
-            /**
-             * Checks a support the html5 uploader
-             * @returns {Boolean}
-             * @readonly
-             */
-            FileUploader.prototype.isHTML5 = !!($window.File && $window.FormData);
-            /**
-             * Adds items to the queue
-             * @param {File|HTMLInputElement|Object|FileList|Array<Object>} files
-             * @param {Object} [options]
-             * @param {Array<Function>|String} filters
-             */
-            FileUploader.prototype.addToQueue = function(files, options, filters) {
-                var list = this.isArrayLikeObject(files) ? files: [files];
-                var arrayOfFilters = this._getFilters(filters);
-                var count = this.queue.length;
-                var addedFileItems = [];
-
-                angular.forEach(list, function(some /*{File|HTMLInputElement|Object}*/) {
-                    var temp = new FileUploader.FileLikeObject(some);
-
-                    if (this._isValidFile(temp, arrayOfFilters, options)) {
-                        var fileItem = new FileUploader.FileItem(this, some, options);
-                        addedFileItems.push(fileItem);
-                        this.queue.push(fileItem);
-                        this._onAfterAddingFile(fileItem);
-                    } else {
-                        var filter = this.filters[this._failFilterIndex];
-                        this._onWhenAddingFileFailed(temp, filter, options);
-                    }
-                }, this);
-
-                if(this.queue.length !== count) {
-                    this._onAfterAddingAll(addedFileItems);
-                    this.progress = this._getTotalProgress();
-                }
-
-                this._render();
-                if (this.autoUpload) this.uploadAll();
-            };
-            /**
-             * Remove items from the queue. Remove last: index = -1
-             * @param {FileItem|Number} value
-             */
-            FileUploader.prototype.removeFromQueue = function(value) {
-                var index = this.getIndexOfItem(value);
-                var item = this.queue[index];
-                if (item.isUploading) item.cancel();
-                this.queue.splice(index, 1);
-                item._destroy();
-                this.progress = this._getTotalProgress();
-            };
-            /**
-             * Clears the queue
-             */
-            FileUploader.prototype.clearQueue = function() {
-                while(this.queue.length) {
-                    this.queue[0].remove();
-                }
-                this.progress = 0;
-            };
-            /**
-             * Uploads a item from the queue
-             * @param {FileItem|Number} value
-             */
-            FileUploader.prototype.uploadItem = function(value) {
-                var index = this.getIndexOfItem(value);
-                var item = this.queue[index];
-                var transport = this.isHTML5 ? '_xhrTransport' : '_iframeTransport';
-
-                item._prepareToUploading();
-                if(this.isUploading) return;
-
-                this.isUploading = true;
-                this[transport](item);
-            };
-            /**
-             * Cancels uploading of item from the queue
-             * @param {FileItem|Number} value
-             */
-            FileUploader.prototype.cancelItem = function(value) {
-                var index = this.getIndexOfItem(value);
-                var item = this.queue[index];
-                var prop = this.isHTML5 ? '_xhr' : '_form';
-                if (item && item.isUploading) item[prop].abort();
-            };
-            /**
-             * Uploads all not uploaded items of queue
-             */
-            FileUploader.prototype.uploadAll = function() {
-                var items = this.getNotUploadedItems().filter(function(item) {
-                    return !item.isUploading;
-                });
-                if (!items.length) return;
-
-                angular.forEach(items, function(item) {
-                    item._prepareToUploading();
-                });
-                items[0].upload();
-            };
-            /**
-             * Cancels all uploads
-             */
-            FileUploader.prototype.cancelAll = function() {
-                var items = this.getNotUploadedItems();
-                angular.forEach(items, function(item) {
-                    item.cancel();
-                });
-            };
-            /**
-             * Returns "true" if value an instance of File
-             * @param {*} value
-             * @returns {Boolean}
-             * @private
-             */
-            FileUploader.prototype.isFile = function(value) {
-                var fn = $window.File;
-                return (fn && value instanceof fn);
-            };
-            /**
-             * Returns "true" if value an instance of FileLikeObject
-             * @param {*} value
-             * @returns {Boolean}
-             * @private
-             */
-            FileUploader.prototype.isFileLikeObject = function(value) {
-                return value instanceof FileUploader.FileLikeObject;
-            };
-            /**
-             * Returns "true" if value is array like object
-             * @param {*} value
-             * @returns {Boolean}
-             */
-            FileUploader.prototype.isArrayLikeObject = function(value) {
-                return (angular.isObject(value) && 'length' in value);
-            };
-            /**
-             * Returns a index of item from the queue
-             * @param {Item|Number} value
-             * @returns {Number}
-             */
-            FileUploader.prototype.getIndexOfItem = function(value) {
-                return angular.isNumber(value) ? value : this.queue.indexOf(value);
-            };
-            /**
-             * Returns not uploaded items
-             * @returns {Array}
-             */
-            FileUploader.prototype.getNotUploadedItems = function() {
-                return this.queue.filter(function(item) {
-                    return !item.isUploaded;
-                });
-            };
-            /**
-             * Returns items ready for upload
-             * @returns {Array}
-             */
-            FileUploader.prototype.getReadyItems = function() {
-                return this.queue
-                    .filter(function(item) {
-                        return (item.isReady && !item.isUploading);
-                    })
-                    .sort(function(item1, item2) {
-                        return item1.index - item2.index;
-                    });
-            };
-            /**
-             * Destroys instance of FileUploader
-             */
-            FileUploader.prototype.destroy = function() {
-                angular.forEach(this._directives, function(key) {
-                    angular.forEach(this._directives[key], function(object) {
-                        object.destroy();
-                    }, this);
-                }, this);
-            };
-            /**
-             * Callback
-             * @param {Array} fileItems
-             */
-            FileUploader.prototype.onAfterAddingAll = function(fileItems) {};
-            /**
-             * Callback
-             * @param {FileItem} fileItem
-             */
-            FileUploader.prototype.onAfterAddingFile = function(fileItem) {};
-            /**
-             * Callback
-             * @param {File|Object} item
-             * @param {Object} filter
-             * @param {Object} options
-             * @private
-             */
-            FileUploader.prototype.onWhenAddingFileFailed = function(item, filter, options) {};
-            /**
-             * Callback
-             * @param {FileItem} fileItem
-             */
-            FileUploader.prototype.onBeforeUploadItem = function(fileItem) {};
-            /**
-             * Callback
-             * @param {FileItem} fileItem
-             * @param {Number} progress
-             */
-            FileUploader.prototype.onProgressItem = function(fileItem, progress) {};
-            /**
-             * Callback
-             * @param {Number} progress
-             */
-            FileUploader.prototype.onProgressAll = function(progress) {};
-            /**
-             * Callback
-             * @param {FileItem} item
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             */
-            FileUploader.prototype.onSuccessItem = function(item, response, status, headers) {};
-            /**
-             * Callback
-             * @param {FileItem} item
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             */
-            FileUploader.prototype.onErrorItem = function(item, response, status, headers) {};
-            /**
-             * Callback
-             * @param {FileItem} item
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             */
-            FileUploader.prototype.onCancelItem = function(item, response, status, headers) {};
-            /**
-             * Callback
-             * @param {FileItem} item
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             */
-            FileUploader.prototype.onCompleteItem = function(item, response, status, headers) {};
-            /**
-             * Callback
-             */
-            FileUploader.prototype.onCompleteAll = function() {};
-            /**********************
-             * PRIVATE
-             **********************/
-            /**
-             * Returns the total progress
-             * @param {Number} [value]
-             * @returns {Number}
-             * @private
-             */
-            FileUploader.prototype._getTotalProgress = function(value) {
-                if(this.removeAfterUpload) return value || 0;
-
-                var notUploaded = this.getNotUploadedItems().length;
-                var uploaded = notUploaded ? this.queue.length - notUploaded : this.queue.length;
-                var ratio = 100 / this.queue.length;
-                var current = (value || 0) * ratio / 100;
-
-                return Math.round(uploaded * ratio + current);
-            };
-            /**
-             * Returns array of filters
-             * @param {Array<Function>|String} filters
-             * @returns {Array<Function>}
-             * @private
-             */
-            FileUploader.prototype._getFilters = function(filters) {
-                if (angular.isUndefined(filters)) return this.filters;
-                if (angular.isArray(filters)) return filters;
-                var names = filters.match(/[^\s,]+/g);
-                return this.filters.filter(function(filter) {
-                    return names.indexOf(filter.name) !== -1;
-                }, this);
-            };
-            /**
-             * Updates html
-             * @private
-             */
-            FileUploader.prototype._render = function() {
-                if (!$rootScope.$$phase) $rootScope.$apply();
-            };
-            /**
-             * Returns "true" if item is a file (not folder)
-             * @param {File|FileLikeObject} item
-             * @returns {Boolean}
-             * @private
-             */
-            FileUploader.prototype._folderFilter = function(item) {
-                return !!(item.size || item.type);
-            };
-            /**
-             * Returns "true" if the limit has not been reached
-             * @returns {Boolean}
-             * @private
-             */
-            FileUploader.prototype._queueLimitFilter = function() {
-                return this.queue.length < this.queueLimit;
-            };
-            /**
-             * Returns "true" if file pass all filters
-             * @param {File|Object} file
-             * @param {Array<Function>} filters
-             * @param {Object} options
-             * @returns {Boolean}
-             * @private
-             */
-            FileUploader.prototype._isValidFile = function(file, filters, options) {
-                this._failFilterIndex = -1;
-                return !filters.length ? true : filters.every(function(filter) {
-                    this._failFilterIndex++;
-                    return filter.fn.call(this, file, options);
-                }, this);
-            };
-            /**
-             * Checks whether upload successful
-             * @param {Number} status
-             * @returns {Boolean}
-             * @private
-             */
-            FileUploader.prototype._isSuccessCode = function(status) {
-                return (status >= 200 && status < 300) || status === 304;
-            };
-            /**
-             * Transforms the server response
-             * @param {*} response
-             * @param {Object} headers
-             * @returns {*}
-             * @private
-             */
-            FileUploader.prototype._transformResponse = function(response, headers) {
-                var headersGetter = this._headersGetter(headers);
-                angular.forEach($http.defaults.transformResponse, function(transformFn) {
-                    response = transformFn(response, headersGetter);
-                });
-                return response;
-            };
-            /**
-             * Parsed response headers
-             * @param headers
-             * @returns {Object}
-             * @see https://github.com/angular/angular.js/blob/master/src/ng/http.js
-             * @private
-             */
-            FileUploader.prototype._parseHeaders = function(headers) {
-                var parsed = {}, key, val, i;
-
-                if (!headers) return parsed;
-
-                angular.forEach(headers.split('\n'), function(line) {
-                    i = line.indexOf(':');
-                    key = line.slice(0, i).trim().toLowerCase();
-                    val = line.slice(i + 1).trim();
-
-                    if (key) {
-                        parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
-                    }
-                });
-
-                return parsed;
-            };
-            /**
-             * Returns function that returns headers
-             * @param {Object} parsedHeaders
-             * @returns {Function}
-             * @private
-             */
-            FileUploader.prototype._headersGetter = function(parsedHeaders) {
-                return function(name) {
-                    if (name) {
-                        return parsedHeaders[name.toLowerCase()] || null;
-                    }
-                    return parsedHeaders;
-                };
-            };
-            /**
-             * The XMLHttpRequest transport
-             * @param {FileItem} item
-             * @private
-             */
-            FileUploader.prototype._xhrTransport = function(item) {
-                var xhr = item._xhr = new XMLHttpRequest();
-                var form = new FormData();
-                var that = this;
-
-                that._onBeforeUploadItem(item);
-
-                angular.forEach(item.formData, function(obj) {
-                    angular.forEach(obj, function(value, key) {
-                        form.append(key, value);
-                    });
-                });
-
-                form.append(item.alias, item._file, item.file.name);
-
-                xhr.upload.onprogress = function(event) {
-                    var progress = Math.round(event.lengthComputable ? event.loaded * 100 / event.total : 0);
-                    that._onProgressItem(item, progress);
-                };
-
-                xhr.onload = function() {
-                    var headers = that._parseHeaders(xhr.getAllResponseHeaders());
-                    var response = that._transformResponse(xhr.response, headers);
-                    var gist = that._isSuccessCode(xhr.status) ? 'Success' : 'Error';
-                    var method = '_on' + gist + 'Item';
-                    that[method](item, response, xhr.status, headers);
-                    that._onCompleteItem(item, response, xhr.status, headers);
-                };
-
-                xhr.onerror = function() {
-                    var headers = that._parseHeaders(xhr.getAllResponseHeaders());
-                    var response = that._transformResponse(xhr.response, headers);
-                    that._onErrorItem(item, response, xhr.status, headers);
-                    that._onCompleteItem(item, response, xhr.status, headers);
-                };
-
-                xhr.onabort = function() {
-                    var headers = that._parseHeaders(xhr.getAllResponseHeaders());
-                    var response = that._transformResponse(xhr.response, headers);
-                    that._onCancelItem(item, response, xhr.status, headers);
-                    that._onCompleteItem(item, response, xhr.status, headers);
-                };
-
-                xhr.open(item.method, item.url, true);
-
-                xhr.withCredentials = item.withCredentials;
-
-                angular.forEach(item.headers, function(value, name) {
-                    xhr.setRequestHeader(name, value);
-                });
-
-                xhr.send(form);
-                this._render();
-            };
-            /**
-             * The IFrame transport
-             * @param {FileItem} item
-             * @private
-             */
-            FileUploader.prototype._iframeTransport = function(item) {
-                var form = angular.element('<form style="display: none;" />');
-                var iframe = angular.element('<iframe name="iframeTransport' + Date.now() + '">');
-                var input = item._input;
-                var that = this;
-
-                if (item._form) item._form.replaceWith(input); // remove old form
-                item._form = form; // save link to new form
-
-                that._onBeforeUploadItem(item);
-
-                input.prop('name', item.alias);
-
-                angular.forEach(item.formData, function(obj) {
-                    angular.forEach(obj, function(value, key) {
-                        var element = angular.element('<input type="hidden" name="' + key + '" />');
-                        element.val(value);
-                        form.append(element);
-                    });
-                });
-
-                form.prop({
-                    action: item.url,
-                    method: 'POST',
-                    target: iframe.prop('name'),
-                    enctype: 'multipart/form-data',
-                    encoding: 'multipart/form-data' // old IE
-                });
-
-                iframe.bind('load', function() {
-                    try {
-                        // Fix for legacy IE browsers that loads internal error page
-                        // when failed WS response received. In consequence iframe
-                        // content access denied error is thrown becouse trying to
-                        // access cross domain page. When such thing occurs notifying
-                        // with empty response object. See more info at:
-                        // http://stackoverflow.com/questions/151362/access-is-denied-error-on-accessing-iframe-document-object
-                        // Note that if non standard 4xx or 5xx error code returned
-                        // from WS then response content can be accessed without error
-                        // but 'XHR' status becomes 200. In order to avoid confusion
-                        // returning response via same 'success' event handler.
-
-                        // fixed angular.contents() for iframes
-                        var html = iframe[0].contentDocument.body.innerHTML;
-                    } catch (e) {}
-
-                    var xhr = {response: html, status: 200, dummy: true};
-                    var headers = {};
-                    var response = that._transformResponse(xhr.response, headers);
-
-                    that._onSuccessItem(item, response, xhr.status, headers);
-                    that._onCompleteItem(item, response, xhr.status, headers);
-                });
-
-                form.abort = function() {
-                    var xhr = {status: 0, dummy: true};
-                    var headers = {};
-                    var response;
-
-                    iframe.unbind('load').prop('src', 'javascript:false;');
-                    form.replaceWith(input);
-
-                    that._onCancelItem(item, response, xhr.status, headers);
-                    that._onCompleteItem(item, response, xhr.status, headers);
-                };
-
-                input.after(form);
-                form.append(input).append(iframe);
-
-                form[0].submit();
-                this._render();
-            };
-            /**
-             * Inner callback
-             * @param {File|Object} item
-             * @param {Object} filter
-             * @param {Object} options
-             * @private
-             */
-            FileUploader.prototype._onWhenAddingFileFailed = function(item, filter, options) {
-                this.onWhenAddingFileFailed(item, filter, options);
-            };
-            /**
-             * Inner callback
-             * @param {FileItem} item
-             */
-            FileUploader.prototype._onAfterAddingFile = function(item) {
-                this.onAfterAddingFile(item);
-            };
-            /**
-             * Inner callback
-             * @param {Array<FileItem>} items
-             */
-            FileUploader.prototype._onAfterAddingAll = function(items) {
-                this.onAfterAddingAll(items);
-            };
-            /**
-             *  Inner callback
-             * @param {FileItem} item
-             * @private
-             */
-            FileUploader.prototype._onBeforeUploadItem = function(item) {
-                item._onBeforeUpload();
-                this.onBeforeUploadItem(item);
-            };
-            /**
-             * Inner callback
-             * @param {FileItem} item
-             * @param {Number} progress
-             * @private
-             */
-            FileUploader.prototype._onProgressItem = function(item, progress) {
-                var total = this._getTotalProgress(progress);
-                this.progress = total;
-                item._onProgress(progress);
-                this.onProgressItem(item, progress);
-                this.onProgressAll(total);
-                this._render();
-            };
-            /**
-             * Inner callback
-             * @param {FileItem} item
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             * @private
-             */
-            FileUploader.prototype._onSuccessItem = function(item, response, status, headers) {
-                item._onSuccess(response, status, headers);
-                this.onSuccessItem(item, response, status, headers);
-            };
-            /**
-             * Inner callback
-             * @param {FileItem} item
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             * @private
-             */
-            FileUploader.prototype._onErrorItem = function(item, response, status, headers) {
-                item._onError(response, status, headers);
-                this.onErrorItem(item, response, status, headers);
-            };
-            /**
-             * Inner callback
-             * @param {FileItem} item
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             * @private
-             */
-            FileUploader.prototype._onCancelItem = function(item, response, status, headers) {
-                item._onCancel(response, status, headers);
-                this.onCancelItem(item, response, status, headers);
-            };
-            /**
-             * Inner callback
-             * @param {FileItem} item
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             * @private
-             */
-            FileUploader.prototype._onCompleteItem = function(item, response, status, headers) {
-                item._onComplete(response, status, headers);
-                this.onCompleteItem(item, response, status, headers);
-
-                var nextItem = this.getReadyItems()[0];
-                this.isUploading = false;
-
-                if(angular.isDefined(nextItem)) {
-                    nextItem.upload();
-                    return;
-                }
-
-                this.onCompleteAll();
-                this.progress = this._getTotalProgress();
-                this._render();
-            };
-            /**********************
-             * STATIC
-             **********************/
-            /**
-             * @borrows FileUploader.prototype.isFile
-             */
-            FileUploader.isFile = FileUploader.prototype.isFile;
-            /**
-             * @borrows FileUploader.prototype.isFileLikeObject
-             */
-            FileUploader.isFileLikeObject = FileUploader.prototype.isFileLikeObject;
-            /**
-             * @borrows FileUploader.prototype.isArrayLikeObject
-             */
-            FileUploader.isArrayLikeObject = FileUploader.prototype.isArrayLikeObject;
-            /**
-             * @borrows FileUploader.prototype.isHTML5
-             */
-            FileUploader.isHTML5 = FileUploader.prototype.isHTML5;
-            /**
-             * Inherits a target (Class_1) by a source (Class_2)
-             * @param {Function} target
-             * @param {Function} source
-             */
-            FileUploader.inherit = function(target, source) {
-                target.prototype = Object.create(source.prototype);
-                target.prototype.constructor = target;
-                target.super_ = source;
-            };
-            FileUploader.FileLikeObject = FileLikeObject;
-            FileUploader.FileItem = FileItem;
-            FileUploader.FileDirective = FileDirective;
-            FileUploader.FileSelect = FileSelect;
-            FileUploader.FileDrop = FileDrop;
-            FileUploader.FileOver = FileOver;
-
-            // ---------------------------
-
-            /**
-             * Creates an instance of FileLikeObject
-             * @param {File|HTMLInputElement|Object} fileOrInput
-             * @constructor
-             */
-            function FileLikeObject(fileOrInput) {
-                var isInput = angular.isElement(fileOrInput);
-                var fakePathOrObject = isInput ? fileOrInput.value : fileOrInput;
-                var postfix = angular.isString(fakePathOrObject) ? 'FakePath' : 'Object';
-                var method = '_createFrom' + postfix;
-                this[method](fakePathOrObject);
-            }
-
-            /**
-             * Creates file like object from fake path string
-             * @param {String} path
-             * @private
-             */
-            FileLikeObject.prototype._createFromFakePath = function(path) {
-                this.lastModifiedDate = null;
-                this.size = null;
-                this.type = 'like/' + path.slice(path.lastIndexOf('.') + 1).toLowerCase();
-                this.name = path.slice(path.lastIndexOf('/') + path.lastIndexOf('\\') + 2);
-            };
-            /**
-             * Creates file like object from object
-             * @param {File|FileLikeObject} object
-             * @private
-             */
-            FileLikeObject.prototype._createFromObject = function(object) {
-                this.lastModifiedDate = angular.copy(object.lastModifiedDate);
-                this.size = object.size;
-                this.type = object.type;
-                this.name = object.name;
-            };
-
-            // ---------------------------
-
-            /**
-             * Creates an instance of FileItem
-             * @param {FileUploader} uploader
-             * @param {File|HTMLInputElement|Object} some
-             * @param {Object} options
-             * @constructor
-             */
-            function FileItem(uploader, some, options) {
-                var isInput = angular.isElement(some);
-                var input = isInput ? angular.element(some) : null;
-                var file = !isInput ? some : null;
-
-                angular.extend(this, {
-                    url: uploader.url,
-                    alias: uploader.alias,
-                    headers: angular.copy(uploader.headers),
-                    formData: angular.copy(uploader.formData),
-                    removeAfterUpload: uploader.removeAfterUpload,
-                    withCredentials: uploader.withCredentials,
-                    method: uploader.method
-                }, options, {
-                    uploader: uploader,
-                    file: new FileUploader.FileLikeObject(some),
-                    isReady: false,
-                    isUploading: false,
-                    isUploaded: false,
-                    isSuccess: false,
-                    isCancel: false,
-                    isError: false,
-                    progress: 0,
-                    index: null,
-                    _file: file,
-                    _input: input
-                });
-
-                if (input) this._replaceNode(input);
-            }
-            /**********************
-             * PUBLIC
-             **********************/
-            /**
-             * Uploads a FileItem
-             */
-            FileItem.prototype.upload = function() {
-                this.uploader.uploadItem(this);
-            };
-            /**
-             * Cancels uploading of FileItem
-             */
-            FileItem.prototype.cancel = function() {
-                this.uploader.cancelItem(this);
-            };
-            /**
-             * Removes a FileItem
-             */
-            FileItem.prototype.remove = function() {
-                this.uploader.removeFromQueue(this);
-            };
-            /**
-             * Callback
-             * @private
-             */
-            FileItem.prototype.onBeforeUpload = function() {};
-            /**
-             * Callback
-             * @param {Number} progress
-             * @private
-             */
-            FileItem.prototype.onProgress = function(progress) {};
-            /**
-             * Callback
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             */
-            FileItem.prototype.onSuccess = function(response, status, headers) {};
-            /**
-             * Callback
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             */
-            FileItem.prototype.onError = function(response, status, headers) {};
-            /**
-             * Callback
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             */
-            FileItem.prototype.onCancel = function(response, status, headers) {};
-            /**
-             * Callback
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             */
-            FileItem.prototype.onComplete = function(response, status, headers) {};
-            /**********************
-             * PRIVATE
-             **********************/
-            /**
-             * Inner callback
-             */
-            FileItem.prototype._onBeforeUpload = function() {
-                this.isReady = true;
-                this.isUploading = true;
-                this.isUploaded = false;
-                this.isSuccess = false;
-                this.isCancel = false;
-                this.isError = false;
-                this.progress = 0;
-                this.onBeforeUpload();
-            };
-            /**
-             * Inner callback
-             * @param {Number} progress
-             * @private
-             */
-            FileItem.prototype._onProgress = function(progress) {
-                this.progress = progress;
-                this.onProgress(progress);
-            };
-            /**
-             * Inner callback
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             * @private
-             */
-            FileItem.prototype._onSuccess = function(response, status, headers) {
-                this.isReady = false;
-                this.isUploading = false;
-                this.isUploaded = true;
-                this.isSuccess = true;
-                this.isCancel = false;
-                this.isError = false;
-                this.progress = 100;
-                this.index = null;
-                this.onSuccess(response, status, headers);
-            };
-            /**
-             * Inner callback
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             * @private
-             */
-            FileItem.prototype._onError = function(response, status, headers) {
-                this.isReady = false;
-                this.isUploading = false;
-                this.isUploaded = true;
-                this.isSuccess = false;
-                this.isCancel = false;
-                this.isError = true;
-                this.progress = 0;
-                this.index = null;
-                this.onError(response, status, headers);
-            };
-            /**
-             * Inner callback
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             * @private
-             */
-            FileItem.prototype._onCancel = function(response, status, headers) {
-                this.isReady = false;
-                this.isUploading = false;
-                this.isUploaded = false;
-                this.isSuccess = false;
-                this.isCancel = true;
-                this.isError = false;
-                this.progress = 0;
-                this.index = null;
-                this.onCancel(response, status, headers);
-            };
-            /**
-             * Inner callback
-             * @param {*} response
-             * @param {Number} status
-             * @param {Object} headers
-             * @private
-             */
-            FileItem.prototype._onComplete = function(response, status, headers) {
-                this.onComplete(response, status, headers);
-                if (this.removeAfterUpload) this.remove();
-            };
-            /**
-             * Destroys a FileItem
-             */
-            FileItem.prototype._destroy = function() {
-                if (this._input) this._input.remove();
-                if (this._form) this._form.remove();
-                delete this._form;
-                delete this._input;
-            };
-            /**
-             * Prepares to uploading
-             * @private
-             */
-            FileItem.prototype._prepareToUploading = function() {
-                this.index = this.index || ++this.uploader._nextIndex;
-                this.isReady = true;
-            };
-            /**
-             * Replaces input element on his clone
-             * @param {JQLite|jQuery} input
-             * @private
-             */
-            FileItem.prototype._replaceNode = function(input) {
-                var clone = $compile(input.clone())(input.scope());
-                clone.prop('value', null); // FF fix
-                input.css('display', 'none');
-                input.after(clone); // remove jquery dependency
-            };
-
-            // ---------------------------
-
-            /**
-             * Creates instance of {FileDirective} object
-             * @param {Object} options
-             * @param {Object} options.uploader
-             * @param {HTMLElement} options.element
-             * @param {Object} options.events
-             * @param {String} options.prop
-             * @constructor
-             */
-            function FileDirective(options) {
-                angular.extend(this, options);
-                this.uploader._directives[this.prop].push(this);
-                this._saveLinks();
-                this.bind();
-            }
-            /**
-             * Map of events
-             * @type {Object}
-             */
-            FileDirective.prototype.events = {};
-            /**
-             * Binds events handles
-             */
-            FileDirective.prototype.bind = function() {
-                for(var key in this.events) {
-                    var prop = this.events[key];
-                    this.element.bind(key, this[prop]);
-                }
-            };
-            /**
-             * Unbinds events handles
-             */
-            FileDirective.prototype.unbind = function() {
-                for(var key in this.events) {
-                    this.element.unbind(key, this.events[key]);
-                }
-            };
-            /**
-             * Destroys directive
-             */
-            FileDirective.prototype.destroy = function() {
-                var index = this.uploader._directives[this.prop].indexOf(this);
-                this.uploader._directives[this.prop].splice(index, 1);
-                this.unbind();
-                // this.element = null;
-            };
-            /**
-             * Saves links to functions
-             * @private
-             */
-            FileDirective.prototype._saveLinks = function() {
-                for(var key in this.events) {
-                    var prop = this.events[key];
-                    this[prop] = this[prop].bind(this);
-                }
-            };
-
-            // ---------------------------
-
-            FileUploader.inherit(FileSelect, FileDirective);
-
-            /**
-             * Creates instance of {FileSelect} object
-             * @param {Object} options
-             * @constructor
-             */
-            function FileSelect(options) {
-                FileSelect.super_.apply(this, arguments);
-
-                if(!this.uploader.isHTML5) {
-                    this.element.removeAttr('multiple');
-                }
-                this.element.prop('value', null); // FF fix
-            }
-            /**
-             * Map of events
-             * @type {Object}
-             */
-            FileSelect.prototype.events = {
-                $destroy: 'destroy',
-                change: 'onChange'
-            };
-            /**
-             * Name of property inside uploader._directive object
-             * @type {String}
-             */
-            FileSelect.prototype.prop = 'select';
-            /**
-             * Returns options
-             * @return {Object|undefined}
-             */
-            FileSelect.prototype.getOptions = function() {};
-            /**
-             * Returns filters
-             * @return {Array<Function>|String|undefined}
-             */
-            FileSelect.prototype.getFilters = function() {};
-            /**
-             * If returns "true" then HTMLInputElement will be cleared
-             * @returns {Boolean}
-             */
-            FileSelect.prototype.isEmptyAfterSelection = function() {
-                return !!this.element.attr('multiple');
-            };
-            /**
-             * Event handler
-             */
-            FileSelect.prototype.onChange = function() {
-                var files = this.uploader.isHTML5 ? this.element[0].files : this.element[0];
-                var options = this.getOptions();
-                var filters = this.getFilters();
-
-                if (!this.uploader.isHTML5) this.destroy();
-                this.uploader.addToQueue(files, options, filters);
-                if (this.isEmptyAfterSelection()) this.element.prop('value', null);
-            };
-
-            // ---------------------------
-
-            FileUploader.inherit(FileDrop, FileDirective);
-
-            /**
-             * Creates instance of {FileDrop} object
-             * @param {Object} options
-             * @constructor
-             */
-            function FileDrop(options) {
-                FileDrop.super_.apply(this, arguments);
-            }
-            /**
-             * Map of events
-             * @type {Object}
-             */
-            FileDrop.prototype.events = {
-                $destroy: 'destroy',
-                drop: 'onDrop',
-                dragover: 'onDragOver',
-                dragleave: 'onDragLeave'
-            };
-            /**
-             * Name of property inside uploader._directive object
-             * @type {String}
-             */
-            FileDrop.prototype.prop = 'drop';
-            /**
-             * Returns options
-             * @return {Object|undefined}
-             */
-            FileDrop.prototype.getOptions = function() {};
-            /**
-             * Returns filters
-             * @return {Array<Function>|String|undefined}
-             */
-            FileDrop.prototype.getFilters = function() {};
-            /**
-             * Event handler
-             */
-            FileDrop.prototype.onDrop = function(event) {
-                var transfer = this._getTransfer(event);
-                if (!transfer) return;
-                var options = this.getOptions();
-                var filters = this.getFilters();
-                this._preventAndStop(event);
-                angular.forEach(this.uploader._directives.over, this._removeOverClass, this);
-                this.uploader.addToQueue(transfer.files, options, filters);
-            };
-            /**
-             * Event handler
-             */
-            FileDrop.prototype.onDragOver = function(event) {
-                var transfer = this._getTransfer(event);
-                if(!this._haveFiles(transfer.types)) return;
-                transfer.dropEffect = 'copy';
-                this._preventAndStop(event);
-                angular.forEach(this.uploader._directives.over, this._addOverClass, this);
-            };
-            /**
-             * Event handler
-             */
-            FileDrop.prototype.onDragLeave = function(event) {
-                if (event.currentTarget !== this.element[0]) return;
-                this._preventAndStop(event);
-                angular.forEach(this.uploader._directives.over, this._removeOverClass, this);
-            };
-            /**
-             * Helper
-             */
-            FileDrop.prototype._getTransfer = function(event) {
-                return event.dataTransfer ? event.dataTransfer : event.originalEvent.dataTransfer; // jQuery fix;
-            };
-            /**
-             * Helper
-             */
-            FileDrop.prototype._preventAndStop = function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-            };
-            /**
-             * Returns "true" if types contains files
-             * @param {Object} types
-             */
-            FileDrop.prototype._haveFiles = function(types) {
-                if (!types) return false;
-                if (types.indexOf) {
-                    return types.indexOf('Files') !== -1;
-                } else if(types.contains) {
-                    return types.contains('Files');
-                } else {
-                    return false;
-                }
-            };
-            /**
-             * Callback
-             */
-            FileDrop.prototype._addOverClass = function(item) {
-                item.addOverClass();
-            };
-            /**
-             * Callback
-             */
-            FileDrop.prototype._removeOverClass = function(item) {
-                item.removeOverClass();
-            };
-
-            // ---------------------------
-
-            FileUploader.inherit(FileOver, FileDirective);
-
-            /**
-             * Creates instance of {FileDrop} object
-             * @param {Object} options
-             * @constructor
-             */
-            function FileOver(options) {
-                FileOver.super_.apply(this, arguments);
-            }
-            /**
-             * Map of events
-             * @type {Object}
-             */
-            FileOver.prototype.events = {
-                $destroy: 'destroy'
-            };
-            /**
-             * Name of property inside uploader._directive object
-             * @type {String}
-             */
-            FileOver.prototype.prop = 'over';
-            /**
-             * Over class
-             * @type {string}
-             */
-            FileOver.prototype.overClass = 'nv-file-over';
-            /**
-             * Adds over class
-             */
-            FileOver.prototype.addOverClass = function() {
-                this.element.addClass(this.getOverClass());
-            };
-            /**
-             * Removes over class
-             */
-            FileOver.prototype.removeOverClass = function() {
-                this.element.removeClass(this.getOverClass());
-            };
-            /**
-             * Returns over class
-             * @returns {String}
-             */
-            FileOver.prototype.getOverClass = function() {
-                return this.overClass;
-            };
-
-            return FileUploader;
-        }])
-
-
-    .directive('nvFileSelect', ['$parse', 'FileUploader', function($parse, FileUploader) {
-        return {
-            link: function(scope, element, attributes) {
-                var uploader = scope.$eval(attributes.uploader);
-
-                if (!(uploader instanceof FileUploader)) {
-                    throw new TypeError('"Uploader" must be an instance of FileUploader');
-                }
-
-                var object = new FileUploader.FileSelect({
-                    uploader: uploader,
-                    element: element
-                });
-
-                object.getOptions = $parse(attributes.options).bind(object, scope);
-                object.getFilters = function() {return attributes.filters;};
-            }
-        };
-    }])
-
-
-    .directive('nvFileDrop', ['$parse', 'FileUploader', function($parse, FileUploader) {
-        return {
-            link: function(scope, element, attributes) {
-                var uploader = scope.$eval(attributes.uploader);
-
-                if (!(uploader instanceof FileUploader)) {
-                    throw new TypeError('"Uploader" must be an instance of FileUploader');
-                }
-
-                if (!uploader.isHTML5) return;
-
-                var object = new FileUploader.FileDrop({
-                    uploader: uploader,
-                    element: element
-                });
-
-                object.getOptions = $parse(attributes.options).bind(object, scope);
-                object.getFilters = function() {return attributes.filters;};
-            }
-        };
-    }])
-
-
-    .directive('nvFileOver', ['FileUploader', function(FileUploader) {
-        return {
-            link: function(scope, element, attributes) {
-                var uploader = scope.$eval(attributes.uploader);
-
-                if (!(uploader instanceof FileUploader)) {
-                    throw new TypeError('"Uploader" must be an instance of FileUploader');
-                }
-
-                var object = new FileUploader.FileOver({
-                    uploader: uploader,
-                    element: element
-                });
-
-                object.getOverClass = function() {
-                    return attributes.overClass || this.overClass;
-                };
-            }
-        };
-    }])
-
-    return module;
-}));
+(function() {
+
+var hasFlash = function() {
+	try {
+	  var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
+	  if (fo) return true;
+	} catch(e) {
+	  if (navigator.mimeTypes['application/x-shockwave-flash'] != undefined) return true;
+	}
+	return false;
+}
+
+function patchXHR(fnName, newFn) {
+	window.XMLHttpRequest.prototype[fnName] = newFn(window.XMLHttpRequest.prototype[fnName]);
+};
+
+if ((window.XMLHttpRequest && !window.FormData) || (window.FileAPI && FileAPI.forceLoad)) {
+	var initializeUploadListener = function(xhr) {
+		if (!xhr.__listeners) {
+			if (!xhr.upload) xhr.upload = {};
+			xhr.__listeners = [];
+			var origAddEventListener = xhr.upload.addEventListener;
+			xhr.upload.addEventListener = function(t, fn, b) {
+				xhr.__listeners[t] = fn;
+				origAddEventListener && origAddEventListener.apply(this, arguments);
+			};
+		}
+	}
+	
+	patchXHR('open', function(orig) {
+		return function(m, url, b) {
+			initializeUploadListener(this);
+			this.__url = url;
+			try {
+				orig.apply(this, [m, url, b]);
+			} catch (e) {
+				if (e.message.indexOf('Access is denied') > -1) {
+					this.__origError = e;
+					orig.apply(this, [m, '_fix_for_ie_crossdomain__', b]);
+				}
+			}
+		}
+	});
+
+	patchXHR('getResponseHeader', function(orig) {
+		return function(h) {
+			return this.__fileApiXHR && this.__fileApiXHR.getResponseHeader ? this.__fileApiXHR.getResponseHeader(h) : (orig == null ? null : orig.apply(this, [h]));
+		};
+	});
+
+	patchXHR('getAllResponseHeaders', function(orig) {
+		return function() {
+			return this.__fileApiXHR && this.__fileApiXHR.getAllResponseHeaders ? this.__fileApiXHR.getAllResponseHeaders() : (orig == null ? null : orig.apply(this));
+		}
+	});
+
+	patchXHR('abort', function(orig) {
+		return function() {
+			return this.__fileApiXHR && this.__fileApiXHR.abort ? this.__fileApiXHR.abort() : (orig == null ? null : orig.apply(this));
+		}
+	});
+
+	patchXHR('setRequestHeader', function(orig) {
+		return function(header, value) {
+			if (header === '__setXHR_') {
+				initializeUploadListener(this);
+				var val = value(this);
+				// fix for angular < 1.2.0
+				if (val instanceof Function) {
+					val(this);
+				}
+			} else {
+				this.__requestHeaders = this.__requestHeaders || {};
+				this.__requestHeaders[header] = value;
+				orig.apply(this, arguments);
+			}
+		}
+	});
+	
+	function redefineProp(xhr, prop, fn) {
+		try {
+			Object.defineProperty(xhr, prop, {get: fn});
+		} catch (e) {/*ignore*/}
+	}
+
+	patchXHR('send', function(orig) {
+		return function() {
+			var xhr = this;
+			if (arguments[0] && arguments[0].__isFileAPIShim) {
+				var formData = arguments[0];
+				var config = {
+					url: xhr.__url,
+					jsonp: false, //removes the callback form param
+					cache: true, //removes the ?fileapiXXX in the url
+					complete: function(err, fileApiXHR) {
+						xhr.__completed = true;
+						if (!err && xhr.__listeners['load']) 
+							xhr.__listeners['load']({type: 'load', loaded: xhr.__loaded, total: xhr.__total, target: xhr, lengthComputable: true});
+						if (!err && xhr.__listeners['loadend']) 
+							xhr.__listeners['loadend']({type: 'loadend', loaded: xhr.__loaded, total: xhr.__total, target: xhr, lengthComputable: true});
+						if (err === 'abort' && xhr.__listeners['abort']) 
+							xhr.__listeners['abort']({type: 'abort', loaded: xhr.__loaded, total: xhr.__total, target: xhr, lengthComputable: true});
+						if (fileApiXHR.status !== undefined) redefineProp(xhr, 'status', function() {return (fileApiXHR.status == 0 && err && err !== 'abort') ? 500 : fileApiXHR.status});
+						if (fileApiXHR.statusText !== undefined) redefineProp(xhr, 'statusText', function() {return fileApiXHR.statusText});
+						redefineProp(xhr, 'readyState', function() {return 4});
+						if (fileApiXHR.response !== undefined) redefineProp(xhr, 'response', function() {return fileApiXHR.response});
+						var resp = fileApiXHR.responseText || (err && fileApiXHR.status == 0 && err !== 'abort' ? err : undefined);
+						redefineProp(xhr, 'responseText', function() {return resp});
+						redefineProp(xhr, 'response', function() {return resp});
+						if (err) redefineProp(xhr, 'err', function() {return err});
+						xhr.__fileApiXHR = fileApiXHR;
+						if (xhr.onreadystatechange) xhr.onreadystatechange();
+						if (xhr.onload) xhr.onload();
+					},
+					fileprogress: function(e) {
+						e.target = xhr;
+						xhr.__listeners['progress'] && xhr.__listeners['progress'](e);
+						xhr.__total = e.total;
+						xhr.__loaded = e.loaded;
+						if (e.total === e.loaded) {
+							// fix flash issue that doesn't call complete if there is no response text from the server  
+							var _this = this
+							setTimeout(function() {
+								if (!xhr.__completed) {
+									xhr.getAllResponseHeaders = function(){};
+									_this.complete(null, {status: 204, statusText: 'No Content'});
+								}
+							}, FileAPI.noContentTimeout || 10000);
+						}
+					},
+					headers: xhr.__requestHeaders
+				}
+				config.data = {};
+				config.files = {}
+				for (var i = 0; i < formData.data.length; i++) {
+					var item = formData.data[i];
+					if (item.val != null && item.val.name != null && item.val.size != null && item.val.type != null) {
+						config.files[item.key] = item.val;
+					} else {
+						config.data[item.key] = item.val;
+					}
+				}
+
+				setTimeout(function() {
+					if (!hasFlash()) {
+						throw 'Adode Flash Player need to be installed. To check ahead use "FileAPI.hasFlash"';
+					}
+					xhr.__fileApiXHR = FileAPI.upload(config);
+				}, 1);
+			} else {
+				if (this.__origError) {
+					throw this.__origError;
+				}
+				orig.apply(xhr, arguments);
+			}
+		}
+	});
+	window.XMLHttpRequest.__isFileAPIShim = true;
+
+	var addFlash = function(elem) {
+		if (!hasFlash()) {
+			throw 'Adode Flash Player need to be installed. To check ahead use "FileAPI.hasFlash"';
+		}
+		var el = angular.element(elem);
+		if (!el.attr('disabled')) {
+			var hasFileSelect = false;
+			for (var i = 0; i < el[0].attributes.length; i++) {
+				var attrib = el[0].attributes[i];
+				if (attrib.name.indexOf('file-select') !== -1) {
+					hasFileSelect = true;
+					break;
+				}
+			}
+			if (!el.hasClass('js-fileapi-wrapper') && (hasFileSelect || el.attr('__afu_gen__') != null)) {
+				
+				el.addClass('js-fileapi-wrapper');
+				if (el.attr('__afu_gen__') != null) {
+					var ref = (el[0].__refElem__ && angular.element(el[0].__refElem__)) || el;
+					while (ref && !ref.attr('__refElem__')) {
+						ref = angular.element(ref[0].nextSibling);
+					}
+					ref.bind('mouseover', function() {
+						if (el.parent().css('position') === '' || el.parent().css('position') === 'static') {
+							el.parent().css('position', 'relative');
+						}
+						el.css('position', 'absolute').css('top', ref[0].offsetTop + 'px').css('left', ref[0].offsetLeft + 'px')
+							.css('width', ref[0].offsetWidth + 'px').css('height', ref[0].offsetHeight + 'px')
+							.css('padding', ref.css('padding')).css('margin', ref.css('margin')).css('filter', 'alpha(opacity=0)');
+						ref.attr('onclick', '');
+						el.css('z-index', '1000');
+					});
+				}
+			}
+		}
+	};
+	var changeFnWrapper = function(fn) {
+		return function(evt) {
+			var files = FileAPI.getFiles(evt);
+			//just a double check for #233
+			for (var i = 0; i < files.length; i++) {
+				if (files[i].size === undefined) files[i].size = 0;
+				if (files[i].name === undefined) files[i].name = 'file';
+				if (files[i].type === undefined) files[i].type = 'undefined';
+			}
+			if (!evt.target) {
+				evt.target = {};
+			}
+			evt.target.files = files;
+			// if evt.target.files is not writable use helper field
+			if (evt.target.files != files) {
+				evt.__files_ = files;
+			}
+			(evt.__files_ || evt.target.files).item = function(i) {
+				return (evt.__files_ || evt.target.files)[i] || null;
+			}
+			if (fn) fn.apply(this, [evt]);
+		};
+	};
+	var isFileChange = function(elem, e) {
+		return (e.toLowerCase() === 'change' || e.toLowerCase() === 'onchange') && elem.getAttribute('type') == 'file';
+	}
+	if (HTMLInputElement.prototype.addEventListener) {
+		HTMLInputElement.prototype.addEventListener = (function(origAddEventListener) {
+			return function(e, fn, b, d) {
+				if (isFileChange(this, e)) {
+					addFlash(this);
+					origAddEventListener.apply(this, [e, changeFnWrapper(fn), b, d]);
+				} else {
+					origAddEventListener.apply(this, [e, fn, b, d]);
+				}
+			}
+		})(HTMLInputElement.prototype.addEventListener);
+	}
+	if (HTMLInputElement.prototype.attachEvent) {
+		HTMLInputElement.prototype.attachEvent = (function(origAttachEvent) {
+			return function(e, fn) {
+				if (isFileChange(this, e)) {
+					addFlash(this);
+					if (window.jQuery) {
+						// fix for #281 jQuery on IE8
+						angular.element(this).bind('change', changeFnWrapper(null));
+					} else {
+						origAttachEvent.apply(this, [e, changeFnWrapper(fn)]);
+					}
+				} else {
+					origAttachEvent.apply(this, [e, fn]);
+				}
+			}
+		})(HTMLInputElement.prototype.attachEvent);
+	}
+
+	window.FormData = FormData = function() {
+		return {
+			append: function(key, val, name) {
+				if (val.__isFileAPIBlobShim) {
+					val = val.data[0];
+				}
+				this.data.push({
+					key: key,
+					val: val,
+					name: name
+				});
+			},
+			data: [],
+			__isFileAPIShim: true
+		};
+	};
+
+	window.Blob = Blob = function(b) {
+		return {
+			data: b,
+			__isFileAPIBlobShim: true
+		};
+	};
+
+	(function () {
+		//load FileAPI
+		if (!window.FileAPI) {
+			window.FileAPI = {};
+		}
+		if (FileAPI.forceLoad) {
+			FileAPI.html5 = false;
+		}
+		
+		if (!FileAPI.upload) {
+			var jsUrl, basePath, script = document.createElement('script'), allScripts = document.getElementsByTagName('script'), i, index, src;
+			if (window.FileAPI.jsUrl) {
+				jsUrl = window.FileAPI.jsUrl;
+			} else if (window.FileAPI.jsPath) {
+				basePath = window.FileAPI.jsPath;
+			} else {
+				for (i = 0; i < allScripts.length; i++) {
+					src = allScripts[i].src;
+					index = src.search(/\/angular\-file\-upload[\-a-zA-z0-9\.]*\.js/)
+					if (index > -1) {
+						basePath = src.substring(0, index + 1);
+						break;
+					}
+				}
+			}
+
+			if (FileAPI.staticPath == null) FileAPI.staticPath = basePath;
+			script.setAttribute('src', jsUrl || basePath + 'FileAPI.min.js');
+			document.getElementsByTagName('head')[0].appendChild(script);
+			FileAPI.hasFlash = hasFlash();
+		}
+	})();
+	FileAPI.disableFileInput = function(elem, disable) {
+		if (disable) {
+			elem.removeClass('js-fileapi-wrapper')
+		} else {
+			elem.addClass('js-fileapi-wrapper');
+		}
+	}
+}
+
+
+if (!window.FileReader) {
+	window.FileReader = function() {
+		var _this = this, loadStarted = false;
+		this.listeners = {};
+		this.addEventListener = function(type, fn) {
+			_this.listeners[type] = _this.listeners[type] || [];
+			_this.listeners[type].push(fn);
+		};
+		this.removeEventListener = function(type, fn) {
+			_this.listeners[type] && _this.listeners[type].splice(_this.listeners[type].indexOf(fn), 1);
+		};
+		this.dispatchEvent = function(evt) {
+			var list = _this.listeners[evt.type];
+			if (list) {
+				for (var i = 0; i < list.length; i++) {
+					list[i].call(_this, evt);
+				}
+			}
+		};
+		this.onabort = this.onerror = this.onload = this.onloadstart = this.onloadend = this.onprogress = null;
+
+		var constructEvent = function(type, evt) {
+			var e = {type: type, target: _this, loaded: evt.loaded, total: evt.total, error: evt.error};
+			if (evt.result != null) e.target.result = evt.result;
+			return e;
+		};
+		var listener = function(evt) {
+			if (!loadStarted) {
+				loadStarted = true;
+				_this.onloadstart && _this.onloadstart(constructEvent('loadstart', evt));
+			}
+			if (evt.type === 'load') {
+				_this.onloadend && _this.onloadend(constructEvent('loadend', evt));
+				var e = constructEvent('load', evt);
+				_this.onload && _this.onload(e);
+				_this.dispatchEvent(e);
+			} else if (evt.type === 'progress') {
+				var e = constructEvent('progress', evt);
+				_this.onprogress && _this.onprogress(e);
+				_this.dispatchEvent(e);
+			} else {
+				var e = constructEvent('error', evt);
+				_this.onerror && _this.onerror(e);
+				_this.dispatchEvent(e);
+			}
+		};
+		this.readAsArrayBuffer = function(file) {
+			FileAPI.readAsBinaryString(file, listener);
+		}
+		this.readAsBinaryString = function(file) {
+			FileAPI.readAsBinaryString(file, listener);
+		}
+		this.readAsDataURL = function(file) {
+			FileAPI.readAsDataURL(file, listener);
+		}
+		this.readAsText = function(file) {
+			FileAPI.readAsText(file, listener);
+		}
+	}
+}
+})();
