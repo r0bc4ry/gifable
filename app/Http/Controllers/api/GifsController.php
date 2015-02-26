@@ -67,6 +67,8 @@ class GifsController extends Controller {
             throw new \Exception('Not shortcode found within 10 iterations.');
         }
 
+        Queue::push(new TranscodeGif($message));
+
         // Build output path form temporary directory and shortcode
         $outputFilePath = sys_get_temp_dir() . '/' . $shortcode;
 
