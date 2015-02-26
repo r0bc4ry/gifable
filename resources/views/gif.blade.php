@@ -1,5 +1,20 @@
 @extends('layouts/http')
 
+@section('head')
+    <meta property="og:title" content="gifable.io">
+    <meta property="og:site_name" content="gifable.io">
+    <meta property="og:url" content="{{ action('IndexController@getGif', ['gif' => $gif->shortcode]) }}">
+    <meta property="og:description" content="We squash your GIFs into super efficient HTML5 videos that can be viewed from any device - saving you time and bandwidth.">
+    <meta property="og:image" content="{{ $gif->png_https_url }}">
+
+    <meta property="og:type" content="video.other">
+    <meta property="og:video:url" content="{{ $gif->webm_http_url }}">
+    <meta property="og:video:secure_url" content="{{ $gif->webm_https_url }}">
+    <meta property="og:video:type" content="video/webm">
+    <meta property="og:video:width" content="{{ $gif->width }}">
+    <meta property="og:video:height" content="{{ $gif->height }}">
+@stop
+
 @section('styles')
     <link rel="stylesheet" type="text/css" href="/css/gif.css">
 @stop
@@ -21,7 +36,9 @@
     </header>
     <main>
         @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))
-            <div>Your GIF is currently processing. Most GIFs are optimized in about 30-60 seconds. Check back soon!</div>
+            <div class="outer-container">
+                <div class="test">Your GIF is currently processing. Most GIFs are optimized in about 30-60 seconds. Check back soon!</div>
+            </div>
         @endif
         <div class="gif-wrapper">
             @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))
@@ -34,7 +51,7 @@
                 </video>
             @endif
         </div>
-        <section class="outer-container">
+        <div class="outer-container">
             <div class="links">
                 <div class="row">
                     <label>Gifable Link</label>
@@ -45,7 +62,7 @@
                     <input type="url" value="{{ $gif->gif_https_url }}" onclick="select()">
                 </div>
             </div>
-        </section>
+        </div>
     </main>
     <footer>
         Made with <i class="fa fa-heart"></i> by <a href="https://github.com/r0bc4ry" target="_blank">Rob Cary</a>.

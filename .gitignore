@@ -7,3 +7,7 @@
 .idea/
 *.iml
 *.iws
+
+# Project
+/public/css
+/public/js

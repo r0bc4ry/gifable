@@ -7,6 +7,8 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        @yield('head')
+
         <link rel="icon" type="image/png" href="/img/favicon.png">
 
         <link rel="stylesheet" type="text/css" href="/css/vendors.css">

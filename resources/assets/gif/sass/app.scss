@@ -48,37 +48,41 @@ html, body {
         }
     }
     main {
-        section {
-            padding: 32px;
+        padding: 50px 0;
+        .gif-wrapper {
+            display: table;
+            background-color: #fff;
+            padding: 16px;
+            margin: 0 auto;
 
-            .gif-wrapper {
-                display: table;
-                background-color: #fff;
-                padding: 16px;
-                margin: 0 auto 32px;
+            position: relative;
 
-                position: relative;
+            &:after {
+                content: "";
 
-                &:after {
-                    content: "";
+                position: absolute;
+                top:50%;
+                bottom:0;
+                left:10px;
+                right:10px;
+                border-radius:100px / 10px;
 
-                    position: absolute;
-                    top:50%;
-                    bottom:0;
-                    left:10px;
-                    right:10px;
-                    border-radius:100px / 10px;
+                @include box-shadow(0 0 20px rgba(0, 0, 0, 0.8));
+                z-index: -1;
+            }
+            video {
+                max-width: 100%;
 
-                    @include box-shadow(0 0 20px rgba(0, 0, 0, 0.8));
-                    z-index: -1;
-                }
-                video {
-                    max-width: 100%;
-
-                    vertical-align: top;
-                }
+                vertical-align: top;
+            }
+        }
+        .outer-container {
+            .test {
+                margin-bottom: 50px;
             }
             .links {
+                margin-top: 50px;
+
                 .row {
                     &:last-child {
                         input[type=url] {

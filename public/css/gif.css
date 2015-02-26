@@ -140,15 +140,15 @@ html, body {
               html header .outer-container .span-columns-6 ul li a:hover, body header .outer-container .span-columns-6 ul li a:hover {
                 text-decoration: none;
                 border-bottom: 2px solid #fff; }
-  html main section, body main section {
-    padding: 32px; }
-    html main section .gif-wrapper, body main section .gif-wrapper {
+  html main, body main {
+    padding: 50px 0; }
+    html main .gif-wrapper, body main .gif-wrapper {
       display: table;
       background-color: #fff;
       padding: 16px;
-      margin: 0 auto 32px;
+      margin: 0 auto;
       position: relative; }
-      html main section .gif-wrapper:after, body main section .gif-wrapper:after {
+      html main .gif-wrapper:after, body main .gif-wrapper:after {
         content: "";
         position: absolute;
         top: 50%;
@@ -158,16 +158,20 @@ html, body {
         border-radius: 100px/10px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
         z-index: -1; }
-      html main section .gif-wrapper video, body main section .gif-wrapper video {
+      html main .gif-wrapper video, body main .gif-wrapper video {
         max-width: 100%;
         vertical-align: top; }
-    html main section .links .row:last-child input[type=url], body main section .links .row:last-child input[type=url] {
-      margin-bottom: 0; }
-    html main section .links .row label, body main section .links .row label {
-      display: block;
-      margin-bottom: 4px;
-      font-weight: 700; }
-    html main section .links .row input[type=url], body main section .links .row input[type=url] {
-      margin-bottom: 16px; }
+    html main .outer-container .test, body main .outer-container .test {
+      margin-bottom: 50px; }
+    html main .outer-container .links, body main .outer-container .links {
+      margin-top: 50px; }
+      html main .outer-container .links .row:last-child input[type=url], body main .outer-container .links .row:last-child input[type=url] {
+        margin-bottom: 0; }
+      html main .outer-container .links .row label, body main .outer-container .links .row label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 700; }
+      html main .outer-container .links .row input[type=url], body main .outer-container .links .row input[type=url] {
+        margin-bottom: 16px; }
   html .outer-container, body .outer-container {
     max-width: 800px; }
