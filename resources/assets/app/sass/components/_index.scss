@@ -1,5 +1,31 @@
 .component.index {
     .outer-container {
+        .row {
+            margin-bottom: 50px;
+
+            &:first-child {
+                margin-top: 50px;
+            }
+            .span-columns-6 {
+                h3 {
+                    margin: 0 0 14px;
+
+                    font-size: 24px;
+
+                    .fa {
+                        margin-right: 10px;
+
+                        font-size: 36px;
+                        vertical-align: middle;
+                    }
+                }
+                p {
+                    margin: 0;
+
+                    line-height: golden-ration(14px, 1);
+                }
+            }
+        }
         .gif-tile-wrapper {
             @include row();
 

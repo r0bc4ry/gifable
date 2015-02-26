@@ -1,6 +1,26 @@
 <gifable-index-header></gifable-index-header>
 <section class="component index">
     <div class="outer-container">
+        <div class="row">
+            <div class="span-columns-6">
+                <h3><i class="fa fa-file-image-o"></i>Efficient Files</h3>
+                <p>HTML5 vidoes are, on average, 25% the size of their original GIF - allowing you to load your high-quality cat GIFs without any waiting.</p>
+            </div>
+            <div class="span-columns-6">
+                <h3><i class="fa fa-globe"></i>Available Anywhere</h3>
+                <p>Using Rackspace's Cloud Files, Gifable is about to deliver your files to you as fast as possible, anywhere in the world.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span-columns-6">
+                <h3><i class="fa fa-code"></i>Open Source RESTful API</h3>
+                <p>Code is on GitHub. RESTful API available to get/add GIFs.</p>
+            </div>
+            <div class="span-columns-6">
+                <h3><i class="fa fa-mobile"></i>Mobile Ready</h3>
+                <p>View Gifable HTML5 videos and GIFs on any device.</p>
+            </div>
+        </div>
         <div class="gif-tile-wrapper">
             <div class="gif-tile" ng-repeat="gif in gifs" gifable-repeat-events ng-click="navigateToGif(gif)" ng-mouseover="visibleGif = $index" ng-mouseout="visibleGif = false" ng-style="{ 'background-image': 'url(' + gif.png_https_url + ')' }" style="background-position: center center; background-size: cover;">
                 <video preload="auto" muted="muted" loop="loop" webkit-playsinline ng-show="visibleGif === $index" ng-mouseover="playGif($event)" ng-mouseout="pauseGif($event)" ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">

@@ -110,7 +110,34 @@ html, body {
       content: "";
       display: table;
       clear: both; }
+    html .outer-container .row, body .outer-container .row {
+      display: block; }
+      html .outer-container .row:after, body .outer-container .row:after {
+        content: "";
+        display: table;
+        clear: both; }
+      html .outer-container .row .span-columns-6, body .outer-container .row .span-columns-6 {
+        float: left;
+        display: block;
+        margin-right: 2.35765%;
+        width: 48.82117%; }
+        html .outer-container .row .span-columns-6:last-child, body .outer-container .row .span-columns-6:last-child {
+          margin-right: 0; }
 
+.component.index .outer-container .row {
+  margin-bottom: 50px; }
+  .component.index .outer-container .row:first-child {
+    margin-top: 50px; }
+  .component.index .outer-container .row .span-columns-6 h3 {
+    margin: 0 0 14px;
+    font-size: 24px; }
+    .component.index .outer-container .row .span-columns-6 h3 .fa {
+      margin-right: 10px;
+      font-size: 36px;
+      vertical-align: middle; }
+  .component.index .outer-container .row .span-columns-6 p {
+    margin: 0;
+    line-height: golden-ration(14px, 1); }
 .component.index .outer-container .gif-tile-wrapper {
   display: block;
   border: 20px solid #fff;

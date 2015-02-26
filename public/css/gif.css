@@ -110,6 +110,19 @@ html, body {
       content: "";
       display: table;
       clear: both; }
+    html .outer-container .row, body .outer-container .row {
+      display: block; }
+      html .outer-container .row:after, body .outer-container .row:after {
+        content: "";
+        display: table;
+        clear: both; }
+      html .outer-container .row .span-columns-6, body .outer-container .row .span-columns-6 {
+        float: left;
+        display: block;
+        margin-right: 2.35765%;
+        width: 48.82117%; }
+        html .outer-container .row .span-columns-6:last-child, body .outer-container .row .span-columns-6:last-child {
+          margin-right: 0; }
 
 html, body {
   background-color: #ecf0f1; }
