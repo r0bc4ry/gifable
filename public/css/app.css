@@ -113,6 +113,7 @@ html, body {
 
 .component.index .outer-container .gif-tile-wrapper {
   display: block;
+  border: 20px solid #fff;
   margin: 50px 0; }
   .component.index .outer-container .gif-tile-wrapper:after {
     content: "";

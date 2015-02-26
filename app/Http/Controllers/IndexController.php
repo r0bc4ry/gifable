@@ -7,7 +7,7 @@ class IndexController extends Controller {
 	public function getIndex()
 	{
 		return view('app', [
-            'gifs' => Gif::where('width', '>=', 246)->where('height', '>=', 246)->orderBy('created_at', 'desc')->limit(8)->get(),
+            'gifs' => Gif::whereNotNull('webm_https_url')->where('webm_size', '<', 10000000)->orderBy('created_at', 'desc')->limit(8)->get(),
             'ngApp' => 'gifable.app'
         ]);
 	}

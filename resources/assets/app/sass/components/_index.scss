@@ -3,6 +3,7 @@
         .gif-tile-wrapper {
             @include row();
 
+            border: 20px solid #fff;
             margin: 50px 0;
 
             .gif-tile {

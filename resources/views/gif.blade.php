@@ -21,7 +21,7 @@
     </header>
     <main>
         @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))
-            <div>This GIF is currently being processed. Please check back in a few minutes.</div>
+            <div>Your GIF is currently processing. Most GIFs are optimized in about 30-60 seconds. Check back soon!</div>
         @endif
         <div class="gif-wrapper">
             @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))
@@ -30,7 +30,7 @@
                 <video preload="auto" autoplay="autoplay" muted="muted" loop="loop" webkit-playsinline>
                     <source src="{{ $gif->webm_https_url }}" type="video/webm">
                     <source src="{{ $gif->mp4_https_url }}" type="video/mp4">
-                    <img src="{{ $gif->gif_https_url }}">
+                    Your browser does not support the video tag.
                 </video>
             @endif
         </div>
