@@ -17,10 +17,9 @@ angular.module('gifable.app.directives')
                 link: function(scope, elem, attrs) {
                     var loadingMessages = [
                         'Reticulating splines',
-                        'Completing subpixel analysis',
+                        'Analyzing subpixels',
                         'Adding more JPEG',
-                        'Downloading more RAM',
-                        'Sprinkling pixie dust',
+                        'Downloading RAM',
                     ];
 
                     var _getNewLoadingMessage = function() {
