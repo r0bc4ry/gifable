@@ -1,6 +1,7 @@
 <div class="directive gifable-file-input" ng-class="{ 'disabled': file && file[0] }">
     <button ng-file-select ng-accept="'image/gif'" ng-model="file" ng-file-change="upload($files)">
         <div ng-hide="file && file[0]"><i class="fa fa-cloud-upload"></i>Upload GIF</div>
-        <div ng-show="file && file[0]"><i class="fa fa-spinner fa-pulse"></i>Uploading... {{ progressPercentage }}%</div>
+        <div ng-show="file && file[0] && progressPercentage < 100"><i class="fa fa-spinner fa-pulse"></i>Uploading... {{ progressPercentage }}%</div>
+        <div ng-show="file && file[0] && progressPercentage === 100"><i class="fa fa-spinner fa-pulse"></i>{{ loadingMessage }}...</div>
     </button>
 </div>

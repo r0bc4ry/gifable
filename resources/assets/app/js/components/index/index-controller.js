@@ -22,16 +22,6 @@ angular.module('gifable.app.controllers')
             var tileWidth = 246;
             var tileHeight = 246;
 
-            var uploadingMessages = [
-                'Reticulating splines',
-                'Starting subpixel analysis',
-                'Queuing elevator music'
-            ];
-
-            $interval(function() {
-                $scope.uploadingMessage = uploadingMessages[Math.floor(Math.random() * uploadingMessages.length)];
-            }, 5000);
-
             $scope.navigateToGif = function(gif) {
                 $window.location.href = '/' + gif.shortcode;
             };

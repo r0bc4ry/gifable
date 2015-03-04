@@ -2,9 +2,11 @@
 
 angular.module('gifable.app.directives')
     .directive('gifableFileInput', [
+        '$interval',
         '$upload',
         '$window',
         function(
+            $interval,
             $upload,
             $window
         ) {
@@ -13,6 +15,23 @@ angular.module('gifable.app.directives')
                 replace: 'true',
                 templateUrl: 'shared/gifable-file-input/gifable-file-input.html',
                 link: function(scope, elem, attrs) {
+                    var loadingMessages = [
+                        'Reticulating splines',
+                        'Completing subpixel analysis',
+                        'Adding more JPEG',
+                        'Downloading more RAM',
+                        'Sprinkling pixie dust',
+                    ];
+
+                    var _getNewLoadingMessage = function() {
+                        var randomNumber = Math.floor(Math.random() * loadingMessages.length);
+                        while (loadingMessages[randomNumber] === scope.loadingMessage) {
+                            randomNumber = Math.floor(Math.random() * loadingMessages.length);
+                        }
+                        scope.loadingMessage = loadingMessages[randomNumber];
+                    };
+
+                    var loadingMessageInterval;
                     scope.upload = function(files) {
                         if (files && files.length) {
                             for (var i = 0; i < files.length; i++) {
@@ -21,9 +40,14 @@ angular.module('gifable.app.directives')
                                     url: 'api/v1/gifs',
                                     file: file
                                 }).progress(function(evt) {
-                                    console.log(scope.file);
-                                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                                    scope.progressPercentage = progressPercentage;
+                                    scope.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+
+                                    if (scope.progressPercentage === 100 && !angular.isDefined(loadingMessageInterval)) {
+                                        _getNewLoadingMessage();
+                                        loadingMessageInterval = $interval(function() {
+                                            _getNewLoadingMessage();
+                                        }, 5000);
+                                    }
                                 }).success(function(data, status, headers, config) {
                                     $window.location.href = '/' + data.data.gif.shortcode;
                                 }).error(function(data, status, headers, config) {
@@ -32,6 +56,13 @@ angular.module('gifable.app.directives')
                             }
                         }
                     };
+
+                    scope.$on('$destroy', function() {
+                        if (angular.isDefined(loadingMessageInterval)) {
+                            $interval.cancel(loadingMessageInterval);
+                            loadingMessageInterval = undefined;
+                        }
+                    });
                 }
             };
         }
