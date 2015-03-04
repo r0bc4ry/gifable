@@ -1,45 +1,60 @@
 @import "../../shared/sass/base";
 
-html, body {
-    background-color: #ecf0f1;
+main {
+    background-color: $background-color;
 
     header {
         background-color: $primary-color;
 
-        .outer-container {
-            padding: 32px;
+        color: #fff;
 
-            .span-columns-6 {
-                font-size: 16px;
-                color: #fff;
-                line-height: 42px;
+        .navigation {
+            .outer-container {
+                .logo {
+                    float: left;
 
-                img {
-                    vertical-align: top;
+                    img {
+                        margin: 10px 0;
+                        vertical-align: top;
+                    }
                 }
-                ul {
-                    display: inline-block;
-                    padding: 0;
-                    margin: 0;
+                .links {
+                    overflow: hidden;
 
-                    list-style: none;
+                    text-align: right;
+                    line-height: 50px;
 
-                    li {
-                        display: inline-block;
+                    ul {
+                        @include clearfix;
+
                         padding: 0;
                         margin: 0;
 
-                        margin-right: 32px;
+                        list-style-type: none;
 
-                        &:last-child {
-                            margin-right: 0;
-                        }
-                        a {
-                            color: inherit;
+                        li {
+                            display: inline-block;
+                            margin-right: 38px;
 
-                            &:hover {
-                                text-decoration: none;
-                                border-bottom: 2px solid #fff;
+                            text-transform: uppercase;
+
+                            &:last-child {
+                                margin: 0;
+                            }
+                            a {
+                                color: inherit;
+
+                                &:hover {
+                                    text-decoration: none;
+                                }
+                            }
+                            input[type=submit] {
+                                background: none;
+                                padding: 0;
+                                border: none;
+                                margin: 0;
+
+                                text-transform: uppercase;
                             }
                         }
                     }
@@ -47,8 +62,9 @@ html, body {
             }
         }
     }
-    main {
+    section {
         padding: 50px 0;
+
         .gif-wrapper {
             display: table;
             background-color: #fff;
@@ -57,18 +73,35 @@ html, body {
 
             position: relative;
 
-            &:after {
-                content: "";
+            z-index: 10;
 
-                position: absolute;
-                top:50%;
-                bottom:0;
-                left:10px;
-                right:10px;
-                border-radius:100px / 10px;
-
-                @include box-shadow(0 0 20px rgba(0, 0, 0, 0.8));
+            &:before, &:after{
                 z-index: -1;
+                content: '';
+                width: 50%;
+                height: 10px;
+                position: absolute;
+                bottom: 15px;
+                left: 10px;
+                right: auto;
+                background: none;
+                -webkit-transform: rotate(-3deg);
+                -moz-transform: rotate(-3deg);
+                -o-transform: rotate(-3deg);
+                -ms-transform: rotate(-3deg);
+                transform: rotate(-3deg);
+                -webkit-box-shadow: 0 15px 10px #777;
+                -moz-box-shadow: 0 15px 10px #777;
+                box-shadow: 0 15px 10px #777;
+            }
+            &:after{
+                -webkit-transform: rotate(3deg);
+                -moz-transform: rotate(3deg);
+                -o-transform: rotate(3deg);
+                -ms-transform: rotate(3deg);
+                transform: rotate(3deg);
+                right: 10px;
+                left: auto;
             }
             video {
                 max-width: 100%;
@@ -103,6 +136,6 @@ html, body {
         }
     }
     .outer-container {
-        max-width: 800px;
+        max-width: 1024px;
     }
 }

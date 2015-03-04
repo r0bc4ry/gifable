@@ -1,1 +1,26 @@
+.component.documentation {
+    .outer-container {
+        padding-top: 50px;
+        padding-bottom: 50px;
 
+        h2 {
+            margin: 14px 0;
+
+            font-size: 24px;
+        }
+        h4 {
+            margin: 14px 0;
+
+            font-size: 16px;
+        }
+        p {
+            margin: 0;
+
+            line-height: golden-ratio(14px, 1);
+
+            code {
+                color: $primary-color;
+            }
+        }
+    }
+}

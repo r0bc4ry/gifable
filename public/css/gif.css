@@ -100,12 +100,20 @@ html, body {
               text-transform: uppercase; }
               html main footer .outer-container .links ul li:last-child, body main footer .outer-container .links ul li:last-child {
                 margin: 0; }
+              html main footer .outer-container .links ul li input[type=submit], body main footer .outer-container .links ul li input[type=submit] {
+                background: none;
+                padding: 0;
+                border: none;
+                margin: 0;
+                text-transform: uppercase; }
+                html main footer .outer-container .links ul li input[type=submit]:hover, body main footer .outer-container .links ul li input[type=submit]:hover {
+                  color: #fff; }
   html .outer-container, body .outer-container {
     max-width: 68em;
     margin-left: auto;
     margin-right: auto;
-    padding-right: 20px;
-    padding-left: 20px; }
+    padding-right: 32px;
+    padding-left: 32px; }
     html .outer-container:after, body .outer-container:after {
       content: "";
       display: table;
@@ -124,67 +132,93 @@ html, body {
         html .outer-container .row .span-columns-6:last-child, body .outer-container .row .span-columns-6:last-child {
           margin-right: 0; }
 
-html, body {
-  background-color: #ecf0f1; }
-  html header, body header {
-    background-color: #59c2e6; }
-    html header .outer-container, body header .outer-container {
-      padding: 32px; }
-      html header .outer-container .span-columns-6, body header .outer-container .span-columns-6 {
-        font-size: 16px;
-        color: #fff;
-        line-height: 42px; }
-        html header .outer-container .span-columns-6 img, body header .outer-container .span-columns-6 img {
-          vertical-align: top; }
-        html header .outer-container .span-columns-6 ul, body header .outer-container .span-columns-6 ul {
+main {
+  background-color: #e1ecf7; }
+  main header {
+    background-color: #59c2e6;
+    color: #fff; }
+    main header .navigation .outer-container .logo {
+      float: left; }
+      main header .navigation .outer-container .logo img {
+        margin: 10px 0;
+        vertical-align: top; }
+    main header .navigation .outer-container .links {
+      overflow: hidden;
+      text-align: right;
+      line-height: 50px; }
+      main header .navigation .outer-container .links ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none; }
+        main header .navigation .outer-container .links ul:after {
+          content: "";
+          display: table;
+          clear: both; }
+        main header .navigation .outer-container .links ul li {
           display: inline-block;
-          padding: 0;
-          margin: 0;
-          list-style: none; }
-          html header .outer-container .span-columns-6 ul li, body header .outer-container .span-columns-6 ul li {
-            display: inline-block;
+          margin-right: 38px;
+          text-transform: uppercase; }
+          main header .navigation .outer-container .links ul li:last-child {
+            margin: 0; }
+          main header .navigation .outer-container .links ul li a {
+            color: inherit; }
+            main header .navigation .outer-container .links ul li a:hover {
+              text-decoration: none; }
+          main header .navigation .outer-container .links ul li input[type=submit] {
+            background: none;
             padding: 0;
+            border: none;
             margin: 0;
-            margin-right: 32px; }
-            html header .outer-container .span-columns-6 ul li:last-child, body header .outer-container .span-columns-6 ul li:last-child {
-              margin-right: 0; }
-            html header .outer-container .span-columns-6 ul li a, body header .outer-container .span-columns-6 ul li a {
-              color: inherit; }
-              html header .outer-container .span-columns-6 ul li a:hover, body header .outer-container .span-columns-6 ul li a:hover {
-                text-decoration: none;
-                border-bottom: 2px solid #fff; }
-  html main, body main {
+            text-transform: uppercase; }
+  main section {
     padding: 50px 0; }
-    html main .gif-wrapper, body main .gif-wrapper {
+    main section .gif-wrapper {
       display: table;
       background-color: #fff;
       padding: 16px;
       margin: 0 auto;
-      position: relative; }
-      html main .gif-wrapper:after, body main .gif-wrapper:after {
-        content: "";
+      position: relative;
+      z-index: 10; }
+      main section .gif-wrapper:before, main section .gif-wrapper:after {
+        z-index: -1;
+        content: '';
+        width: 50%;
+        height: 10px;
         position: absolute;
-        top: 50%;
-        bottom: 0;
+        bottom: 15px;
         left: 10px;
+        right: auto;
+        background: none;
+        -webkit-transform: rotate(-3deg);
+        -moz-transform: rotate(-3deg);
+        -o-transform: rotate(-3deg);
+        -ms-transform: rotate(-3deg);
+        transform: rotate(-3deg);
+        -webkit-box-shadow: 0 15px 10px #777;
+        -moz-box-shadow: 0 15px 10px #777;
+        box-shadow: 0 15px 10px #777; }
+      main section .gif-wrapper:after {
+        -webkit-transform: rotate(3deg);
+        -moz-transform: rotate(3deg);
+        -o-transform: rotate(3deg);
+        -ms-transform: rotate(3deg);
+        transform: rotate(3deg);
         right: 10px;
-        border-radius: 100px/10px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-        z-index: -1; }
-      html main .gif-wrapper video, body main .gif-wrapper video {
+        left: auto; }
+      main section .gif-wrapper video {
         max-width: 100%;
         vertical-align: top; }
-    html main .outer-container .test, body main .outer-container .test {
+    main section .outer-container .test {
       margin-bottom: 50px; }
-    html main .outer-container .links, body main .outer-container .links {
+    main section .outer-container .links {
       margin-top: 50px; }
-      html main .outer-container .links .row:last-child input[type=url], body main .outer-container .links .row:last-child input[type=url] {
+      main section .outer-container .links .row:last-child input[type=url] {
         margin-bottom: 0; }
-      html main .outer-container .links .row label, body main .outer-container .links .row label {
+      main section .outer-container .links .row label {
         display: block;
         margin-bottom: 4px;
         font-weight: 700; }
-      html main .outer-container .links .row input[type=url], body main .outer-container .links .row input[type=url] {
+      main section .outer-container .links .row input[type=url] {
         margin-bottom: 16px; }
-  html .outer-container, body .outer-container {
-    max-width: 800px; }
+  main .outer-container {
+    max-width: 1024px; }

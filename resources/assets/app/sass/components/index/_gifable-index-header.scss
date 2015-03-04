@@ -46,6 +46,14 @@
                                 text-decoration: none;
                             }
                         }
+                        input[type=submit] {
+                            background: none;
+                            padding: 0;
+                            border: none;
+                            margin: 0;
+
+                            text-transform: uppercase;
+                        }
                     }
                 }
             }

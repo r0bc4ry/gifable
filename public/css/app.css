@@ -100,12 +100,20 @@ html, body {
               text-transform: uppercase; }
               html main footer .outer-container .links ul li:last-child, body main footer .outer-container .links ul li:last-child {
                 margin: 0; }
+              html main footer .outer-container .links ul li input[type=submit], body main footer .outer-container .links ul li input[type=submit] {
+                background: none;
+                padding: 0;
+                border: none;
+                margin: 0;
+                text-transform: uppercase; }
+                html main footer .outer-container .links ul li input[type=submit]:hover, body main footer .outer-container .links ul li input[type=submit]:hover {
+                  color: #fff; }
   html .outer-container, body .outer-container {
     max-width: 68em;
     margin-left: auto;
     margin-right: auto;
-    padding-right: 20px;
-    padding-left: 20px; }
+    padding-right: 32px;
+    padding-left: 32px; }
     html .outer-container:after, body .outer-container:after {
       content: "";
       display: table;
@@ -123,6 +131,21 @@ html, body {
         width: 48.82117%; }
         html .outer-container .row .span-columns-6:last-child, body .outer-container .row .span-columns-6:last-child {
           margin-right: 0; }
+
+.component.documentation .outer-container {
+  padding-top: 50px;
+  padding-bottom: 50px; }
+  .component.documentation .outer-container h2 {
+    margin: 14px 0;
+    font-size: 24px; }
+  .component.documentation .outer-container h4 {
+    margin: 14px 0;
+    font-size: 16px; }
+  .component.documentation .outer-container p {
+    margin: 0;
+    line-height: 22.652px; }
+    .component.documentation .outer-container p code {
+      color: #59c2e6; }
 
 .component.index .outer-container .row {
   margin-bottom: 50px; }
@@ -203,6 +226,12 @@ html, body {
             color: inherit; }
             .directive.gifable-index-header .navigation .outer-container .links ul li a:hover {
               text-decoration: none; }
+          .directive.gifable-index-header .navigation .outer-container .links ul li input[type=submit] {
+            background: none;
+            padding: 0;
+            border: none;
+            margin: 0;
+            text-transform: uppercase; }
   .directive.gifable-index-header .call-to-action {
     padding: 50px 0;
     text-align: center; }
@@ -271,6 +300,12 @@ html, body {
           color: inherit; }
           .directive.gifable-header .navigation .outer-container .links ul li a:hover {
             text-decoration: none; }
+        .directive.gifable-header .navigation .outer-container .links ul li input[type=submit] {
+          background: none;
+          padding: 0;
+          border: none;
+          margin: 0;
+          text-transform: uppercase; }
 
 html .outer-container, body .outer-container {
   max-width: 1024px; }
