@@ -68,40 +68,15 @@ main {
         .gif-wrapper {
             display: table;
             background-color: #fff;
-            padding: 16px;
             margin: 0 auto;
+            border: 10px solid #fff;
 
             position: relative;
 
-            z-index: 10;
+            box-shadow: 0 4px 8px rgba($text-color, 0.25);
 
-            &:before, &:after{
-                z-index: -1;
-                content: '';
-                width: 50%;
-                height: 10px;
-                position: absolute;
-                bottom: 15px;
-                left: 10px;
-                right: auto;
-                background: none;
-                -webkit-transform: rotate(-3deg);
-                -moz-transform: rotate(-3deg);
-                -o-transform: rotate(-3deg);
-                -ms-transform: rotate(-3deg);
-                transform: rotate(-3deg);
-                -webkit-box-shadow: 0 15px 10px #777;
-                -moz-box-shadow: 0 15px 10px #777;
-                box-shadow: 0 15px 10px #777;
-            }
-            &:after{
-                -webkit-transform: rotate(3deg);
-                -moz-transform: rotate(3deg);
-                -o-transform: rotate(3deg);
-                -ms-transform: rotate(3deg);
-                transform: rotate(3deg);
-                right: 10px;
-                left: auto;
+            img {
+                vertical-align: top;
             }
             video {
                 max-width: 100%;
@@ -110,8 +85,12 @@ main {
             }
         }
         .outer-container {
-            .test {
-                margin-bottom: 50px;
+            .processing-message {
+                margin-bottom: 25px;
+
+                font-weight: 700;
+                text-align: center;
+                color: $primary-color;
             }
             .links {
                 margin-top: 50px;

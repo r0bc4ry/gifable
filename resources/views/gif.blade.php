@@ -44,11 +44,11 @@
             </div>
         </header>
         <section>
-{{--            @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))--}}
+            @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))
                 <div class="outer-container">
-                    <div class="test">Your GIF is currently processing. Most GIFs are optimized in about 30-60 seconds. Check back soon!</div>
+                    <div class="processing-message">Your GIF is currently processing. Most GIFs are optimized in about 30-60 seconds. Check back soon!</div>
                 </div>
-            {{--@endif--}}
+            @endif
             <div class="gif-wrapper">
                 @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))
                     <img src="{{ $gif->gif_https_url }}">

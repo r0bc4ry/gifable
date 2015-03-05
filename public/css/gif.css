@@ -175,41 +175,20 @@ main {
     main section .gif-wrapper {
       display: table;
       background-color: #fff;
-      padding: 16px;
       margin: 0 auto;
+      border: 10px solid #fff;
       position: relative;
-      z-index: 10; }
-      main section .gif-wrapper:before, main section .gif-wrapper:after {
-        z-index: -1;
-        content: '';
-        width: 50%;
-        height: 10px;
-        position: absolute;
-        bottom: 15px;
-        left: 10px;
-        right: auto;
-        background: none;
-        -webkit-transform: rotate(-3deg);
-        -moz-transform: rotate(-3deg);
-        -o-transform: rotate(-3deg);
-        -ms-transform: rotate(-3deg);
-        transform: rotate(-3deg);
-        -webkit-box-shadow: 0 15px 10px #777;
-        -moz-box-shadow: 0 15px 10px #777;
-        box-shadow: 0 15px 10px #777; }
-      main section .gif-wrapper:after {
-        -webkit-transform: rotate(3deg);
-        -moz-transform: rotate(3deg);
-        -o-transform: rotate(3deg);
-        -ms-transform: rotate(3deg);
-        transform: rotate(3deg);
-        right: 10px;
-        left: auto; }
+      box-shadow: 0 4px 8px rgba(79, 95, 111, 0.25); }
+      main section .gif-wrapper img {
+        vertical-align: top; }
       main section .gif-wrapper video {
         max-width: 100%;
         vertical-align: top; }
-    main section .outer-container .test {
-      margin-bottom: 50px; }
+    main section .outer-container .processing-message {
+      margin-bottom: 25px;
+      font-weight: 700;
+      text-align: center;
+      color: #59c2e6; }
     main section .outer-container .links {
       margin-top: 50px; }
       main section .outer-container .links .row:last-child input[type=url] {
