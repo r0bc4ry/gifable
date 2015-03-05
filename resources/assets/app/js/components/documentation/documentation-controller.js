@@ -14,42 +14,34 @@ angular.module('gifable.app.controllers')
                 status: "success",
                 data: {
                     gif: {
-                        shortcode: "gdou2y",
-                        width: "640",
-                        height: "353",
-                        gif_url: "https://9df559997ef731b0b10b-132f0f81983e5ceec35f79f6532aa24c.ssl.cf5.rackcdn.com/gdou2y.gif",
-                        created_at: "2015-02-17 03:08:01",
-                        updated_at: "2015-02-17 03:08:01"
+                        shortcode: "luk9r1",
+                        width: "499",
+                        height: "350",
+                        gif_size: 2116005,
+                        created_at: "2015-03-05 07:12:14",
+                        updated_at: "2015-03-05 07:12:34",
+                        png_url: "http://files.gifable.io/luk9r1.png",
+                        gif_url: "http://files.gifable.io/luk9r1.gif"
                     }
                 }
             }, null, 4);
 
-            $scope.getBeforeResponse = JSON.stringify({
+            $scope.getResponse = JSON.stringify({
                 status: "success",
                 data: {
                     gif: {
-                        shortcode: "gdou2y",
-                        width: "640",
-                        height: "353",
-                        gif_url: "https://9df559997ef731b0b10b-132f0f81983e5ceec35f79f6532aa24c.ssl.cf5.rackcdn.com/gdou2y.gif",
-                        created_at: "2015-02-17 03:08:01",
-                        updated_at: "2015-02-17 03:08:01"
-                    }
-                }
-            }, null, 4);
-
-            $scope.getAfterResponse = JSON.stringify({
-                status: "success",
-                data: {
-                    gif: {
-                        shortcode: "gdou2y",
-                        width: "640",
-                        height: "353",
-                        gif_url: "https://9df559997ef731b0b10b-132f0f81983e5ceec35f79f6532aa24c.ssl.cf5.rackcdn.com/gdou2y.gif",
-                        webm_url: "https://9df559997ef731b0b10b-132f0f81983e5ceec35f79f6532aa24c.ssl.cf5.rackcdn.com/gdou2y.webm",
-                        mp4_url: "https://9df559997ef731b0b10b-132f0f81983e5ceec35f79f6532aa24c.ssl.cf5.rackcdn.com/gdou2y.mp4",
-                        created_at: "2015-02-17 03:08:01",
-                        updated_at: "2015-02-17 03:08:01"
+                        shortcode: "luk9r1",
+                        width: "499",
+                        height: "350",
+                        gif_size: 2116005,
+                        webm_size: 799891,
+                        mp4_size: 887815,
+                        created_at: "2015-03-05 07:12:14",
+                        updated_at: "2015-03-05 07:12:34",
+                        png_url: "http://files.gifable.io/luk9r1.png",
+                        gif_url: "http://files.gifable.io/luk9r1.gif",
+                        webm_url: "http://files.gifable.io/luk9r1.webm",
+                        mp4_url: "http://files.gifable.io/luk9r1.mp4"
                     }
                 }
             }, null, 4);
