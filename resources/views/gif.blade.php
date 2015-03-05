@@ -43,7 +43,7 @@
             </div>
         </header>
         <section>
-            @if(empty($gif->webm_url) && empty($gif->mp4_url))
+            @if(empty($gif->webm_http_url) && empty($gif->mp4_http_url))
                 <div class="outer-container">
                     <div class="processing-message">Your GIF is currently being optimized. Most GIFs finish this process in less than a minute. Check back soon!</div>
                 </div>
