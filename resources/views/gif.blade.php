@@ -52,7 +52,7 @@
                 @if(empty($gif->webm_http_url) && empty($gif->mp4_http_url))
                     <img src="{{ $gif->gif_url }}">
                 @else
-                    <video preload="auto" autoplay="autoplay" muted="muted" loop="loop">
+                    <video preload="auto" autoplay="autoplay" muted="muted" loop="loop" webkit-playsinline>
                         <source src="{{ $gif->webm_url }}" type="video/webm">
                         <source src="{{ $gif->mp4_url }}" type="video/mp4">
                         Your browser does not support the video tag.
