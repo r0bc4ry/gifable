@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Gifable</title>
-        <meta name="description" content="">
+        <meta name="description" content="Squash your GIFs into super efficient HTML5 videos that can be viewed from any device.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         @yield('head')
