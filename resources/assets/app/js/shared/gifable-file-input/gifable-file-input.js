@@ -21,6 +21,12 @@ angular.module('gifable.app.directives')
                         if (files && files.length) {
                             for (var i = 0; i < files.length; i++) {
                                 var file = files[i];
+
+                                if (file.size > 50000000) {
+                                    _showError('File must be less than 50MB.');
+                                    continue;
+                                }
+
                                 $upload.upload({
                                     url: 'api/v1/gifs',
                                     file: file
@@ -29,17 +35,21 @@ angular.module('gifable.app.directives')
                                 }).success(function(data, status, headers, config) {
                                     $window.location.href = '/' + data.data.gif.shortcode;
                                 }).error(function(data, status, headers, config) {
-                                    scope.errorMessage = data.message;
-
-                                    ngDialog.open({
-                                        template: 'shared/gifable-file-input/gifable-file-input-error-dialog.html',
-                                        scope: scope
-                                    });
-
-                                    scope.files = undefined;
+                                    _showError(data.message);
                                 });
                             }
                         }
+                    };
+
+                    var _showError = function(message) {
+                        scope.errorMessage = message;
+
+                        ngDialog.open({
+                            template: 'shared/gifable-file-input/gifable-file-input-error-dialog.html',
+                            scope: scope
+                        });
+
+                        scope.files = undefined;
                     };
                 }
             };
