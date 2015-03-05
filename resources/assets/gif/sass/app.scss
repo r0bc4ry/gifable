@@ -96,19 +96,29 @@ main {
                 margin-top: 50px;
 
                 .row {
+                    @include media($mobile) {
+                        @include span-columns(4);
+                    }
+
                     &:last-child {
                         input[type=url] {
                             margin-bottom: 0;
                         }
                     }
-                    label {
-                        display: block;
-                        margin-bottom: 4px;
+                    .span-columns-6 {
+                        @include media($mobile) {
+                            @include span-columns(4);
+                        }
 
-                        font-weight: 700;
-                    }
-                    input[type=url] {
-                        margin-bottom: 16px;
+                        label {
+                            display: block;
+                            margin-bottom: 4px;
+
+                            font-weight: 700;
+                        }
+                        input[type=url] {
+                            margin-bottom: 16px;
+                        }
                     }
                 }
             }

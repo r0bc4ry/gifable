@@ -46,7 +46,7 @@
         <section>
             @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))
                 <div class="outer-container">
-                    <div class="processing-message">Your GIF is currently processing. Most GIFs are optimized in about 30-60 seconds. Check back soon!</div>
+                    <div class="processing-message">Your GIF is currently being optimized. Most GIFs finish this process in less than a minute. Check back soon!</div>
                 </div>
             @endif
             <div class="gif-wrapper">
@@ -63,12 +63,14 @@
             <div class="outer-container">
                 <div class="links">
                     <div class="row">
-                        <label>Gifable Link</label>
-                        <input type="url" value="{{ action('IndexController@getGif', ['gif' => $gif->shortcode]) }}" onclick="select()">
-                    </div>
-                    <div class="row">
-                        <label>Direct GIF Link (Slower)</label>
-                        <input type="url" value="{{ $gif->gif_https_url }}" onclick="select()">
+                        <div class="span-columns-6">
+                            <label>Gifable Link</label>
+                            <input type="url" value="{{ action('IndexController@getGif', ['gif' => $gif->shortcode]) }}" onclick="select()">
+                        </div>
+                        <div class="span-columns-6">
+                            <label>Direct GIF Link (Slower)</label>
+                            <input type="url" value="{{ $gif->gif_https_url }}" onclick="select()">
+                        </div>
                     </div>
                 </div>
             </div>

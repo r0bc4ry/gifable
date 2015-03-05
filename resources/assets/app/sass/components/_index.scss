@@ -7,6 +7,14 @@
                 margin-top: 50px;
             }
             .span-columns-6 {
+                @include media($mobile) {
+                    @include span-columns(4);
+
+                    &:first-child {
+                        margin-bottom: 50px;
+                    }
+                }
+
                 h3 {
                     margin: 0 0 14px;
 
@@ -29,11 +37,17 @@
         .gif-tile-wrapper {
             @include row();
 
-            border: 20px solid #fff;
+            border: 10px solid #fff;
             margin: 50px 0;
 
             .gif-tile {
                 @include span-columns(3, block-collapse);
+
+                @include media($mobile) {
+                    @include span-columns(2, block-collapse);
+
+                    width: 50%;
+                }
 
                 width: 25%;
                 background-color: $background-color;
