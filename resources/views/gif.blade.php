@@ -49,7 +49,7 @@
                 </div>
             @endif
             <div class="gif-wrapper">
-                @if(empty($gif->webm_url) && empty($gif->webm_url))
+                @if(empty($gif->webm_http_url) && empty($gif->mp4_http_url))
                     <img src="{{ $gif->gif_url }}">
                 @else
                     <video preload="auto" autoplay="autoplay" muted="muted" loop="loop" webkit-playsinline>
