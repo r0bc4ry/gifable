@@ -5,11 +5,11 @@
     <meta property="og:site_name" content="gifable.io">
     <meta property="og:url" content="{{ action('IndexController@getGif', ['gif' => $gif->shortcode]) }}">
     <meta property="og:description" content="We squash your GIFs into super efficient HTML5 videos that can be viewed from any device - saving you time and bandwidth.">
-    <meta property="og:image" content="{{ $gif->png_https_url }}">
+    <meta property="og:image" content="{{ $gif->png_url }}">
 
     <meta property="og:type" content="video.other">
     <meta property="og:video:url" content="{{ $gif->webm_http_url }}">
-    <meta property="og:video:secure_url" content="{{ $gif->webm_https_url }}">
+    <meta property="og:video:secure_url" content="{{ $gif->webm_url }}">
     <meta property="og:video:type" content="video/webm">
     <meta property="og:video:width" content="{{ $gif->width }}">
     <meta property="og:video:height" content="{{ $gif->height }}">
@@ -44,18 +44,18 @@
             </div>
         </header>
         <section>
-            @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))
+            @if(empty($gif->webm_url) && empty($gif->mp4_url))
                 <div class="outer-container">
                     <div class="processing-message">Your GIF is currently being optimized. Most GIFs finish this process in less than a minute. Check back soon!</div>
                 </div>
             @endif
             <div class="gif-wrapper">
-                @if(empty($gif->webm_https_url) && empty($gif->webm_https_url))
-                    <img src="{{ $gif->gif_https_url }}">
+                @if(empty($gif->webm_url) && empty($gif->webm_url))
+                    <img src="{{ $gif->gif_url }}">
                 @else
                     <video preload="auto" autoplay="autoplay" muted="muted" loop="loop" webkit-playsinline>
-                        <source src="{{ $gif->webm_https_url }}" type="video/webm">
-                        <source src="{{ $gif->mp4_https_url }}" type="video/mp4">
+                        <source src="{{ $gif->webm_url }}" type="video/webm">
+                        <source src="{{ $gif->mp4_url }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                 @endif
@@ -69,7 +69,7 @@
                         </div>
                         <div class="span-columns-6">
                             <label>Direct GIF Link (Slower)</label>
-                            <input type="url" value="{{ $gif->gif_https_url }}" onclick="select()">
+                            <input type="url" value="{{ $gif->gif_url }}" onclick="select()">
                         </div>
                     </div>
                 </div>

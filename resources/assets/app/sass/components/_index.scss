@@ -40,6 +40,8 @@
             border: 10px solid #fff;
             margin: 50px 0;
 
+            box-shadow: 0 4px 8px rgba($text-color, 0.25);
+
             .gif-tile {
                 @include span-columns(3, block-collapse);
 
