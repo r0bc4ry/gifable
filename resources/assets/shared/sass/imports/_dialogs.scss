@@ -1,0 +1,21 @@
+.ngdialog.ngdialog-theme-default {
+    .ngdialog-content {
+        border-radius: 0;
+
+        h3 {
+            margin: 0 0 10px;
+
+            font-size: 18px;
+            color: $primary-color;
+            line-height: normal;
+            text-transform: uppercase;
+        }
+        p {
+            margin: 0;
+
+            font-size: 14px;
+            color: $text-color;
+            line-height: golden-ratio(14px, 1);
+        }
+    }
+}

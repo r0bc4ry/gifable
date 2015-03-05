@@ -71,7 +71,9 @@ gulp.task('vendor:js', function() {
 gulp.task('vendor:styles', function() {
     return gulp.src(mainBowerFiles())
         .pipe(plugins.filter([
-            'normalize.css'
+            'normalize.css',
+            'ngDialog.css',
+            'ngDialog-theme-default.css'
         ]))
         .pipe(plugins.concat('vendors.css'))
         .pipe(plugins.if(argv.production, plugins.minifyCss()))

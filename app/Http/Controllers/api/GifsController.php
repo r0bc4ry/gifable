@@ -6,6 +6,7 @@ use Gifable\Http\Controllers\Controller;
 use Gifable\Services\RackspaceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Validator;
 use OpenCloud\ObjectStore\Constants\UrlType;
 use OpenCloud\ObjectStore\Resource\DataObject;
 
@@ -13,9 +14,13 @@ class GifsController extends Controller {
 
     public function postIndex(Request $request)
     {
-        $this->validate($request, [
+        $v = Validator::make($request->all(), [
             'file' => 'required|image'
         ]);
+
+        if ($v->fails()) {
+            throw new \Exception($v->errors()->first());
+        }
 
         $file = $request->file('file');
 
