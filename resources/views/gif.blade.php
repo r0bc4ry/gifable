@@ -8,10 +8,8 @@
     <meta property="og:image" content="{{ $gif->png_url }}">
 
     <meta property="og:type" content="video.other">
-    <meta property="og:video:url" content="{{ $gif->mp4_url }}">
-    <meta property="og:video:type" content="video/mp4">
-    <meta property="og:video:url" content="{{ action('IndexController@getGif', ['gif' => $gif->shortcode]) }}">
-    <meta property="og:video:type" content="text/html">
+    <meta property="og:video:url" content="{{ $gif->webm_url }}">
+    <meta property="og:video:type" content="video/webm">
     <meta property="og:video:width" content="{{ $gif->width }}">
     <meta property="og:video:height" content="{{ $gif->height }}">
 @stop
