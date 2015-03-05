@@ -42,9 +42,9 @@ class TranscodeGifCommand extends Command implements SelfHandling, ShouldBeQueue
 
         // Transcode GIF to WebM and MP4
         exec('~/bin/ffmpeg -i "' . $this->gif->gif_http_url . '" -c:v libvpx -qmin 0 -qmax 50 -crf 5 -b:v ' . $targetBitrate . 'k -an ' . $outputFilePath . '.webm 2>&1', $output);
-        Log::error(print_r($output));
+        Log::error($output);
         exec('~/bin/ffmpeg -i "' . $this->gif->gif_http_url . '" -c:v libx264 -preset slow -crf 18 -an ' . $outputFilePath . '.mp4 2>&1', $output);
-        Log::error(print_r($output));
+        Log::error($output);
 
         // Upload WebM and MP4 files to Rackspace
         $rackspaceService = new RackspaceService();
