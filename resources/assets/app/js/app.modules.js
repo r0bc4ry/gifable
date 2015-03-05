@@ -14,8 +14,12 @@ angular.module('gifable.app', [
 ]).config(function($sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist([
         'self',
+        // Gifable Development
         'https://9df559997ef731b0b10b-132f0f81983e5ceec35f79f6532aa24c.ssl.cf5.rackcdn.com/**',
-        'https://9df559997ef731b0b10b-132f0f81983e5ceec35f79f6532aa24c.ssl.cf5.rackcdn.com/**'
+        'https://9df559997ef731b0b10b-132f0f81983e5ceec35f79f6532aa24c.ssl.cf5.rackcdn.com/**',
+        // Gifable
+        'http://4ee2a789ee643044a25a-31e9d834e87000ce37d406d3bc90d4ae.r22.cf5.rackcdn.com/**',
+        'https://f600b73e109af7849bf1-31e9d834e87000ce37d406d3bc90d4ae.ssl.cf5.rackcdn.com/**'
     ]);
 });
 
