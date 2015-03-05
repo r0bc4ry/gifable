@@ -52,7 +52,7 @@
                 @if(empty($gif->webm_http_url) && empty($gif->mp4_http_url))
                     <img src="{{ $gif->gif_url }}">
                 @else
-                    <video preload="auto" autoplay="autoplay" muted="muted" loop="loop" webkit-playsinline>
+                    <video id="video" preload="auto" autoplay="autoplay" muted="muted" loop="loop" poster="{{ $gif->png_url }}">
                         <source src="{{ $gif->webm_url }}" type="video/webm">
                         <source src="{{ $gif->mp4_url }}" type="video/mp4">
                         Your browser does not support the video tag.
@@ -95,4 +95,13 @@
             </div>
         </footer>
     </main>
+@stop
+
+@section('scripts')
+    <script>
+        var video = document.getElementById('video');
+        video.addEventListener('click', function() {
+            video.play();
+        }, false);
+    </script>
 @stop
