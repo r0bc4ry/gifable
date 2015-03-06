@@ -5,13 +5,13 @@
     <meta property="og:site_name" content="Gifable">
     <meta property="og:url" content="{{ action('IndexController@getGif', ['gif' => $gif->shortcode]) }}">
     <meta property="og:description" content="Squash your GIFs into super efficient HTML5 videos that can be viewed from any device.">
-    <meta property="og:image" content="{{ $gif->png_url }}">
 
     <meta property="og:type" content="video.other">
-    <meta property="og:video:url" content="{{ $gif->webm_url }}">
-    <meta property="og:video:type" content="video/webm">
+    <meta property="og:video" content="{{ $gif->mp4_https_url }}">
+    <meta property="og:video:type" content="video/mp4">
     <meta property="og:video:width" content="{{ $gif->width }}">
     <meta property="og:video:height" content="{{ $gif->height }}">
+    <meta property="og:image" content="{{ $gif->png_url }}">
 @stop
 
 @section('styles')
