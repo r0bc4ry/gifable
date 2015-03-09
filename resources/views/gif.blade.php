@@ -52,15 +52,14 @@
                 @if(empty($gif->webm_http_url) && empty($gif->mp4_http_url))
                     <img src="{{ $gif->gif_url }}">
                 @elseif($isiOS)
-                    <video id="video" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="{{ $gif->png_url }}" controls>
-                        <source src="{{ $gif->mp4_url }}" type="video/mp4">
-                        Your browser does not support the video tag.
+                    <video src="{{ $gif->mp4_url }}" preload="auto" controls autoplay loop poster="{{ $gif->png_url }}">
+                        Your browser does not support HTML5 video.
                     </video>
                 @else
                     <video id="video" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="{{ $gif->png_url }}">
                         <source src="{{ $gif->webm_url }}" type="video/webm">
                         <source src="{{ $gif->mp4_url }}" type="video/mp4">
-                        Your browser does not support the video tag.
+                        Your browser does not support HTML5 video.
                     </video>
                 @endif
             </div>
