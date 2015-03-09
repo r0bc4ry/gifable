@@ -39,27 +39,27 @@ class TranscodeGifCommand extends Command implements SelfHandling, ShouldBeQueue
 
         $outputFilePath = sys_get_temp_dir() . '/' . $this->gif->shortcode;
 
-        // Transcode GIF to WebM and MP4
+        // Transcode GIF to MP4 and WebM
+        shell_exec('ffmpeg -i "' . $this->gif->gif_http_url . '" -c:v libx264 -profile:v baseline -level:v 3.0 -pix_fmt yuv420p -an ' . $outputFilePath . '.mp4');
         shell_exec('ffmpeg -i "' . $this->gif->gif_http_url . '" -c:v libvpx -qmin 0 -qmax 50 -crf 5 -b:v ' . $targetBitrate . 'k -an ' . $outputFilePath . '.webm');
-        shell_exec('ffmpeg -i "' . $this->gif->gif_http_url . '" -c:v libx264 -preset slow -crf 18 -an ' . $outputFilePath . '.mp4');
 
-        // Upload WebM and MP4 files to Rackspace
+        // Upload MP4 and WebM files to Rackspace
         $rackspaceService = new RackspaceService();
-        $webmDataObject = $rackspaceService->uploadFile($this->gif->shortcode . '.webm', $outputFilePath . '.webm');
         $mp4DataObject = $rackspaceService->uploadFile($this->gif->shortcode . '.mp4', $outputFilePath . '.mp4');
+        $webmDataObject = $rackspaceService->uploadFile($this->gif->shortcode . '.webm', $outputFilePath . '.webm');
 
-        // Save WebM and MP4 information to dataabse
-        $this->gif->webm_http_url = $this->getUrlFromDataObject($webmDataObject);
-        $this->gif->webm_https_url = $this->getUrlFromDataObject($webmDataObject, UrlType::SSL);
-        $this->gif->webm_size = filesize($outputFilePath . '.webm');
+        // Save MP4 and WebM information to dataabse
         $this->gif->mp4_http_url = $this->getUrlFromDataObject($mp4DataObject);
         $this->gif->mp4_https_url = $this->getUrlFromDataObject($mp4DataObject, UrlType::SSL);
         $this->gif->mp4_size = filesize($outputFilePath . '.mp4');
+        $this->gif->webm_http_url = $this->getUrlFromDataObject($webmDataObject);
+        $this->gif->webm_https_url = $this->getUrlFromDataObject($webmDataObject, UrlType::SSL);
+        $this->gif->webm_size = filesize($outputFilePath . '.webm');
         $this->gif->save();
 
         // Delete WebM and MP4 files
-        unlink($outputFilePath . '.webm');
         unlink($outputFilePath . '.mp4');
+        unlink($outputFilePath . '.webm');
 	}
 
     /**

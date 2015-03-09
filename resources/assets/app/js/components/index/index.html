@@ -23,10 +23,10 @@
         </div>
         <div class="gif-tile-wrapper">
             <div class="gif-tile" ng-repeat="gif in gifs" gifable-repeat-events ng-click="navigateToGif(gif)" ng-mouseover="visibleGif = $index" ng-mouseout="visibleGif = false" ng-style="{ 'background-image': 'url(' + gif.png_url + ')' }" style="background-position: center center; background-size: cover;">
-                <video preload="auto" muted="muted" loop="loop" poster="{{ gif.png_url }}" ng-show="visibleGif === $index" ng-mouseover="playGif($event)" ng-mouseout="pauseGif($event)" ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">
-                    <source ng-src="{{ gif.mp4_url }}" type="video/webm">
-                    <source ng-src="{{ gif.webm_url }}" type="video/mp4">
-                    Your browser does not support the video tag.
+                <video preload="auto" loop="loop" muted="muted" poster="{{ gif.png_url }}" ng-show="visibleGif === $index" ng-mouseover="playGif($event)" ng-mouseout="pauseGif($event)" ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">
+                    <source src="{{ gif.mp4_url }}" type="video/mp4">
+                    <source src="{{ gif.webm_url }}" type="video/webm">
+                    Video not playing? <a href="{{ gif.mp4_url }}">Download it</a> instead.
                 </video>
             </div>
         </div>

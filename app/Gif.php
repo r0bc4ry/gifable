@@ -18,7 +18,7 @@ class Gif extends Model {
 	 *
 	 * @var array
 	 */
-	protected $hidden = ['id', 'png_http_url', 'png_https_url', 'gif_http_url', 'gif_https_url', 'webm_http_url', 'webm_https_url', 'mp4_http_url', 'mp4_https_url'];
+	protected $hidden = ['id', 'png_http_url', 'png_https_url', 'gif_http_url', 'gif_https_url', 'mp4_http_url', 'mp4_https_url', 'webm_http_url', 'webm_https_url'];
 
     public function getPngUrlAttribute()
     {
@@ -38,21 +38,21 @@ class Gif extends Model {
         }
     }
 
-    public function getWebmUrlAttribute()
-    {
-        if (app()->environment('local')) {
-            return $this->webm_http_url;
-        } else {
-            return 'http://files.gifable.io/' . $this->shortcode . '.webm';
-        }
-    }
-
     public function getMp4UrlAttribute()
     {
         if (app()->environment('local')) {
             return $this->mp4_http_url;
         } else {
             return 'http://files.gifable.io/' . $this->shortcode . '.mp4';
+        }
+    }
+
+    public function getWebmUrlAttribute()
+    {
+        if (app()->environment('local')) {
+            return $this->webm_http_url;
+        } else {
+            return 'http://files.gifable.io/' . $this->shortcode . '.webm';
         }
     }
 

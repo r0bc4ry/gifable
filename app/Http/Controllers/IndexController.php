@@ -15,12 +15,11 @@ class IndexController extends Controller {
 
     public function getGif(Gif $gif, $extension = null)
     {
-        $detect = new Mobile_Detect;
+        $detect = new Mobile_Detect();
 
         return view('gif', [
             'gif' => $gif,
-            'isiOS' => $detect->isiOS(),
-            'isAndroidOS' => $detect->isAndroidOS(),
+            'isAndroidOS' => $detect->isAndroidOS()
         ]);
     }
 
