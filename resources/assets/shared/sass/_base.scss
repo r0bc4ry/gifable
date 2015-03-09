@@ -1,7 +1,7 @@
 @import "bourbon";
 @import "neat";
 
-$mobile: new-breakpoint(max-width 420px, 4);
+$mobile: new-breakpoint(max-width 420px, 12);
 
 $accent-color: #A6A6A6;
 $background-color: #EEE;
@@ -108,8 +108,8 @@ html, body {
     }
     .outer-container {
         @include outer-container;
-        padding-right: 32px;
-        padding-left: 32px;
+        padding-right: 16px;
+        padding-left: 16px;
 
         .row {
             @include row();

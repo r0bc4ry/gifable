@@ -97,7 +97,7 @@ main {
 
                 .row {
                     @include media($mobile) {
-                        @include span-columns(4);
+                        @include span-columns(12);
                     }
 
                     &:last-child {
@@ -106,8 +106,11 @@ main {
                         }
                     }
                     .span-columns-6 {
+                        @include shift(3);
+
                         @include media($mobile) {
-                            @include span-columns(4);
+                            @include span-columns(12);
+                            @include shift(0);
                         }
 
                         label {

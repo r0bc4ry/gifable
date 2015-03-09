@@ -51,8 +51,13 @@
             <div class="gif-wrapper">
                 @if(empty($gif->webm_http_url) && empty($gif->mp4_http_url))
                     <img src="{{ $gif->gif_url }}">
+                @elseif($isiOS)
+                    <video id="video" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="{{ $gif->png_url }}" controls>
+                        <source src="{{ $gif->mp4_url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 @else
-                    <video id="video" preload="auto" autoplay="autoplay" muted="muted" loop="loop" poster="{{ $gif->png_url }}">
+                    <video id="video" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="{{ $gif->png_url }}">
                         <source src="{{ $gif->webm_url }}" type="video/webm">
                         <source src="{{ $gif->mp4_url }}" type="video/mp4">
                         Your browser does not support the video tag.
@@ -66,6 +71,8 @@
                             <label>Gifable Link</label>
                             <input type="url" value="{{ action('IndexController@getGif', ['gif' => $gif->shortcode]) }}" onclick="select()">
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="span-columns-6">
                             <label>Direct GIF Link (Slower)</label>
                             <input type="url" value="{{ $gif->gif_url }}" onclick="select()">
@@ -98,10 +105,12 @@
 @stop
 
 @section('scripts')
-    <script>
-        var video = document.getElementById('video');
-        video.addEventListener('click', function() {
-            video.play();
-        }, false);
-    </script>
+    @if($isAndroidOS)
+        <script>
+            var video = document.getElementById('video');
+            video.addEventListener('click', function() {
+                video.play();
+            }, false);
+        </script>
+    @endif
 @stop
