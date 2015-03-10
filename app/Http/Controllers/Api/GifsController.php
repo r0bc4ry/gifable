@@ -51,12 +51,38 @@ class GifsController extends Controller {
         $pngFilePath = sys_get_temp_dir() . '/' . $shortcode . '.png';
         imagepng(imagecreatefromgif($file), $pngFilePath);
 
-        // Upload GIF and PNG files to Rackspace
-        $rackspaceService = new RackspaceService();
-        $gifDataObject = $rackspaceService->uploadFile($shortcode . '.gif', $gifFilePath);
-        $pngDataObject = $rackspaceService->uploadFile($shortcode . '.png', $pngFilePath);
+        // Transcode GIF to MP4
+        $mp4FilePath = sys_get_temp_dir() . '/' . $shortcode . '.mp4';
+        shell_exec('ffmpeg -i "' . $gifFilePath . '" -c:v libx264 -profile:v baseline -level:v 3.0 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -an ' . $mp4FilePath);
 
-        // Insert the new GIF into the database and return
+        // Upload GIF, PNG, and MP4 files to Rackspace
+        $rackspaceService = new RackspaceService();
+        $dataObjects = $rackspaceService->uploadFiles([
+            [
+                'name' => $shortcode . '.gif',
+                'path' => $gifFilePath,
+            ],
+            [
+                'name' => $shortcode . '.png',
+                'path' => $pngFilePath,
+            ],
+            [
+                'name' => $shortcode . '.mp4',
+                'path' => $mp4FilePath,
+            ],
+        ]);
+
+        foreach ($dataObjects as $index => $dataObject) {
+            if ($index === 0) {
+                $gifDataObject = $dataObject;
+            } else if ($index === 1) {
+                $pngDataObject = $dataObject;
+            } else if ($index === 2) {
+                $mp4DataObject = $dataObject;
+            }
+        }
+
+        // Insert the new GIF into the database
         $gif = Gif::create([
             'shortcode' => $shortcode,
             'width' => $gifWidth,
@@ -66,13 +92,15 @@ class GifsController extends Controller {
             'gif_http_url' => $this->getUrlFromDataObject($gifDataObject),
             'gif_https_url' => $this->getUrlFromDataObject($gifDataObject, UrlType::SSL),
             'gif_size' => filesize($gifFilePath),
+            'mp4_http_url' => $this->getUrlFromDataObject($mp4DataObject),
+            'mp4_https_url' => $this->getUrlFromDataObject($mp4DataObject, UrlType::SSL),
+            'mp4_size' => filesize($mp4FilePath)
         ]);
 
-        // Delete GIF and PNG files
+        // Delete GIF, PNG, and MP4 files
         unlink($gifFilePath);
         unlink($pngFilePath);
-
-        Queue::push(new TranscodeGifCommand($gif));
+        unlink($mp4FilePath);
 
         return response()->apiSuccess('gif', $gif);
     }

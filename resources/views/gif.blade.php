@@ -43,18 +43,17 @@
             </div>
         </header>
         <section>
-            @if(empty($gif->mp4_http_url) && empty($gif->webm_http_url))
+            @if(empty($gif->mp4_http_url))
                 <div class="outer-container">
                     <div class="processing-message">Your GIF is currently being optimized. Most GIFs finish this process in less than a minute. Check back soon!</div>
                 </div>
             @endif
             <div class="gif-wrapper">
-                @if(empty($gif->mp4_http_url) && empty($gif->webm_http_url))
+                @if(empty($gif->mp4_http_url))
                     <img src="{{ $gif->gif_url }}">
                 @else
                     <video id="video" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="{{ $gif->png_url }}">
                         <source src="{{ $gif->mp4_url }}" type="video/mp4">
-                        <source src="{{ $gif->webm_url }}" type="video/webm">
                         Video not playing? <a href="{{ $gif->mp4_url }}">Download it</a> instead.
                     </video>
                 @endif

@@ -2,6 +2,6 @@
     <button ng-file-select ng-accept="'image/gif'" ng-model="files" ng-file-change="onFileChange($files)">
         <div ng-hide="files && files[0]"><i class="fa fa-cloud-upload"></i>Upload GIF</div>
         <div ng-show="files && files[0] && progressPercentage < 100"><i class="fa fa-spinner fa-pulse"></i>Uploading... {{ progressPercentage }}%</div>
-        <div ng-show="files && files[0] && progressPercentage === 100"><i class="fa fa-spinner fa-pulse"></i>Finishing Upload...</div>
+        <div ng-show="files && files[0] && progressPercentage === 100"><i class="fa fa-spinner fa-pulse"></i>Transcoding...</div>
     </button>
 </div>
