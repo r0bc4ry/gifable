@@ -8,7 +8,7 @@ class IndexController extends Controller {
 	public function getIndex()
 	{
 		return view('app', [
-            'gifs' => Gif::whereNotNull('mp4_https_url')->where('mp4_size', '<', 10000000)->orderBy('created_at', 'desc')->limit(4)->get(),
+            'gifs' => Gif::whereNotNull('mp4_https_url')->where('mp4_size', '<', 10000000)->orderBy('created_at')->limit(4)->get(),
             'ngApp' => 'gifable.app'
         ]);
 	}
