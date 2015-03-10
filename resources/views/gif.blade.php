@@ -57,14 +57,14 @@
                 <div class="links">
                     <div class="row">
                         <div class="span-columns-6">
-                            <label>Gifable Link</label>
+                            <label>Link</label>
                             <input type="url" value="{{ action('IndexController@getGif', ['gif' => $gif->shortcode]) }}" onclick="select()">
                         </div>
                     </div>
                     <div class="row">
                         <div class="span-columns-6">
-                            <label>Direct GIF Link (Slower)</label>
-                            <input type="url" value="{{ $gif->gif_url }}" onclick="select()">
+                            <label>Direct Link</label>
+                            <input type="url" value="{{ action('IndexController@getGif', ['gif' => $gif->shortcode, 'extension' => '.gifv']) }}" onclick="select()">
                         </div>
                     </div>
                 </div>

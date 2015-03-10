@@ -8,7 +8,8 @@ var plugins = require('gulp-load-plugins')();
 // Define frontend modules
 var modules = [
     'app',
-    'gif'
+    'gif',
+    'gifv'
 ];
 
 // For each module, dynamically create Gulp tasks
@@ -88,7 +89,8 @@ gulp.task('default', ['shared:clean'], function() {
         'app:js',
         'app:styles',
         'app:views',
-        'gif:styles'
+        'gif:styles',
+        'gifv:styles'
     ]);
 });
 

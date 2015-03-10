@@ -1,0 +1,16 @@
+img, video {
+    vertical-align: top;
+}
+a {
+    font-size: 14px;
+    color: #4DBCE9;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    img {
+        vertical-align: middle;
+    }
+}
