@@ -2,13 +2,13 @@
 <section class="component documentation">
     <div class="outer-container">
         <h2 style="margin-top: 0;">POST /api/v1/gifs</h2>
-        <p>Convert a GIF file into an HTML5 video. Capture a GIF via file upload as <code>multipart/form-data</code> then POST using the <code>file</code> parameter. Transcoding the GIF is an asynchronous process, so the response to this POST request will only contain basic file information about the GIF and links to the CDN's HTTP and HTTPS versions of that file until transcoding has finished.</p>
+        <p>Convert a GIF file into an HTML5 video. Capture a GIF via file upload as <code>multipart/form-data</code> then POST using the <code>file</code> parameter. The response to this POST request will contain basic file information, a link to the GIF, a link to a PNG poster generated from the GIF, and a link to the MP4 version.</p>
         <h4>Sample Response</h4>
         <pre>{{ postResponse }}</pre>
 
         <h2>GET /api/v1/gifs/{shortcode}</h2>
         <p>Retrieve a GIF's stored information based on URL shortcode.</p>
-        <h4>Sample Response (After Transcoding has Finished)</h4>
+        <h4>Sample Response</h4>
         <pre>{{ getResponse }}</pre>
     </div>
 </section>

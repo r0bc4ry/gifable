@@ -14,14 +14,16 @@ angular.module('gifable.app.controllers')
                 status: "success",
                 data: {
                     gif: {
-                        shortcode: "luk9r1",
+                        shortcode: "ylu4dw",
                         width: "499",
                         height: "350",
                         gif_size: 2116005,
-                        created_at: "2015-03-05 07:12:14",
-                        updated_at: "2015-03-05 07:12:34",
-                        png_url: "http://files.gifable.io/luk9r1.png",
-                        gif_url: "http://files.gifable.io/luk9r1.gif"
+                        mp4_size: 152821,
+                        created_at: "2015-03-10 03:37:52",
+                        updated_at: "2015-03-10 03:37:52",
+                        png_url: "http://files.gifable.io/ylu4dw.png",
+                        gif_url: "http://files.gifable.io/ylu4dw.gif",
+                        mp4_url: "http://files.gifable.io/ylu4dw.mp4"
                     }
                 }
             }, null, 4);
@@ -30,16 +32,16 @@ angular.module('gifable.app.controllers')
                 status: "success",
                 data: {
                     gif: {
-                        shortcode: "luk9r1",
+                        shortcode: "ylu4dw",
                         width: "499",
                         height: "350",
                         gif_size: 2116005,
-                        mp4_size: 887815,
-                        created_at: "2015-03-05 07:12:14",
-                        updated_at: "2015-03-05 07:12:34",
-                        png_url: "http://files.gifable.io/luk9r1.png",
-                        gif_url: "http://files.gifable.io/luk9r1.gif",
-                        mp4_url: "http://files.gifable.io/luk9r1.mp4"
+                        mp4_size: 152821,
+                        created_at: "2015-03-10 03:37:52",
+                        updated_at: "2015-03-10 03:37:52",
+                        png_url: "http://files.gifable.io/ylu4dw.png",
+                        gif_url: "http://files.gifable.io/ylu4dw.gif",
+                        mp4_url: "http://files.gifable.io/ylu4dw.mp4"
                     }
                 }
             }, null, 4);
