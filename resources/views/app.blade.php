@@ -9,21 +9,13 @@
         <section ng-view></section>
         <footer>
             <div class="outer-container">
-                <div class="information">
-                    Made with <i class="fa fa-heart"></i> by <a href="https://github.com/r0bc4ry" target="_blank">Rob Cary</a>.
-                </div>
-                <div class="links">
-                    <ul>
-                        <li><a href="#/api">API</a></li>
-                        <li>
-                            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-                                <input type="hidden" name="cmd" value="_s-xclick">
-                                <input type="hidden" name="hosted_button_id" value="NN9AQHPRKT94A">
-                                <input type="submit" value="Donate">
-                                <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-                            </form>
-                        </li>
-                    </ul>
+                <div class="row">
+                    <div class="span-columns-6">
+                        Made with <i class="fa fa-heart"></i> by <a href="https://github.com/r0bc4ry" target="_blank">Rob Cary</a>.
+                    </div>
+                    <div class="span-columns-6" style="text-align: right;">
+                        Bandwidth Saved: {{ number_format($bandwidth) }} MB
+                    </div>
                 </div>
             </div>
         </footer>

@@ -36,11 +36,19 @@ html, body {
         }
     }
     main {
+        @include media($mobile) {
+            padding: 0 0 100px;
+        }
+
         min-height: 100%;
         padding: 0 0 50px;
         position: relative;
 
         footer {
+            @include media($mobile) {
+                height: 100px;
+            }
+
             width: 100%;
             height: 50px;
             background-color: $text-color;
@@ -63,43 +71,12 @@ html, body {
                         text-decoration: none;
                     }
                 }
-                .information {
-                    float: left;
-                }
-                .links {
-                    overflow: hidden;
+                .row {
+                    .span-columns-6 {
+                        @include media($mobile) {
+                            @include span-columns(12);
 
-                    text-align: right;
-
-                    ul {
-                        @include clearfix;
-
-                        padding: 0;
-                        margin: 0;
-
-                        list-style-type: none;
-
-                        li {
-                            display: inline-block;
-                            margin-right: 38px;
-
-                            text-transform: uppercase;
-
-                            &:last-child {
-                                margin: 0;
-                            }
-                            input[type=submit] {
-                                background: none;
-                                padding: 0;
-                                border: none;
-                                margin: 0;
-
-                                text-transform: uppercase;
-
-                                &:hover {
-                                    color: #fff;
-                                }
-                            }
+                            text-align: center !important;
                         }
                     }
                 }

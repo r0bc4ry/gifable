@@ -122,6 +122,10 @@ main {
                         input[type=url] {
                             margin-bottom: 16px;
                         }
+                        &.file-details {
+                            color: $accent-color;
+                            text-align: center;
+                        }
                     }
                 }
             }
