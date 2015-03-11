@@ -1,23 +1,47 @@
-## Laravel PHP Framework
+## Gifable
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/downloads.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
-
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
-
-## Official Documentation
-
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+Gifable squashes your GIFs into super efficient HTML5 videos that can be viewed from any device - saving you time and bandwidth.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+### Required Software
 
-### License
+> - PHP 5.5
+> - Vagrant
+> - Laravel Homestead
+> - Node.js
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+### Installation
+
+Generate environment:
+```
+homestead up
+```
+
+Install dependencies:
+```
+composer install
+```
+
+Generate and populate database table(s):
+```
+php artisan migrate
+```
+
+Install frontend dependencies and build:
+```
+npm install
+npm install -g bower gulp
+bower install
+gulp watch
+```
+
+Thank you for considering contributing to Gifable!
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Gifable, please send an e-mail to Rob Cary at r0bc4ry@gmail.com. All security vulnerabilities will be promptly addressed.
+
+## License
+
+Gifable is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
