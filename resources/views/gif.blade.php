@@ -70,7 +70,7 @@
                     @if(!empty($gif->mp4_http_url))
                         <div class="row">
                             <div class="span-columns-6 file-details">
-                                This file is {{ round(($gif->mp4_size / $gif->gif_size) * 100) }}% smaller than the original GIF.
+                                This file is {{ round(($gif->gif_size - $gif->mp4_size) / $gif->gif_size * 100) }}% smaller than the original GIF.
                             </div>
                         </div>
                     @endif
