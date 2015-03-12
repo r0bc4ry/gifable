@@ -85,47 +85,61 @@ main {
             }
         }
         .outer-container {
-            .processing-message {
-                margin-bottom: 25px;
+            padding-top: 50px;
+            padding-bottom: 50px;
 
-                font-weight: 700;
-                text-align: center;
-                color: $primary-color;
-            }
-            .links {
-                margin-top: 50px;
+            .row {
+                @include media($mobile) {
+                    @include span-columns(12);
+                }
 
-                .row {
+                &:last-child {
+                    input[type=url] {
+                        margin-bottom: 0;
+                    }
+                }
+                .span-columns-6 {
+                    @include shift(3);
+
                     @include media($mobile) {
                         @include span-columns(12);
+                        @include shift(0);
                     }
 
+                    label {
+                        display: block;
+                        margin-bottom: 4px;
+
+                        font-weight: 700;
+                    }
+                    input[type=url] {
+                        margin-bottom: 16px;
+                    }
+                }
+            }
+            .links {
+
+            }
+            .tags {
+                .tag {
+                    float: left;
+                    background-color: $primary-color;
+                    padding: 2px 8px;
+                    margin-right: 2px;
+                    border-radius: 3px;
+
+                    color: #fff;
+
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: lighten($primary-color, 5%);
+                    }
+                    &:active {
+                        background-color: darken($primary-color, 5%);
+                    }
                     &:last-child {
-                        input[type=url] {
-                            margin-bottom: 0;
-                        }
-                    }
-                    .span-columns-6 {
-                        @include shift(3);
-
-                        @include media($mobile) {
-                            @include span-columns(12);
-                            @include shift(0);
-                        }
-
-                        label {
-                            display: block;
-                            margin-bottom: 4px;
-
-                            font-weight: 700;
-                        }
-                        input[type=url] {
-                            margin-bottom: 16px;
-                        }
-                        &.file-details {
-                            color: $accent-color;
-                            text-align: center;
-                        }
+                        margin-right: 0;
                     }
                 }
             }
@@ -133,5 +147,22 @@ main {
     }
     .outer-container {
         max-width: 1024px;
+    }
+}
+.dialog.add-tag-dialog {
+    .interaction-wrapper {
+        @include clearfix;
+
+        button {
+            float: right;
+            margin-left: 10px;
+
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 27px;
+        }
+        .input-wrapper {
+            overflow: hidden;
+        }
     }
 }

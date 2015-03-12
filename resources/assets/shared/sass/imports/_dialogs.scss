@@ -1,5 +1,6 @@
 .ngdialog.ngdialog-theme-default {
     .ngdialog-content {
+        background-color: #fff;
         border-radius: 0;
 
         h3 {
@@ -16,6 +17,19 @@
             font-size: 14px;
             color: $text-color;
             line-height: golden-ratio(14px, 1);
+        }
+        .ngdialog-close {
+            &:before {
+                @include font-awesome;
+                content: '\f00d';
+                color: $accent-color;
+                line-height: 30px;
+            }
+            &:hover {
+                &:before {
+                    color: $text-color;
+                }
+            }
         }
     }
 }

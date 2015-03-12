@@ -89,7 +89,9 @@ gulp.task('default', ['shared:clean'], function() {
         'app:js',
         'app:styles',
         'app:views',
+        'gif:js',
         'gif:styles',
+        'gif:views',
         'gifv:styles'
     ]);
 });

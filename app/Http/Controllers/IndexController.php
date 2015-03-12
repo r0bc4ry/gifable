@@ -3,6 +3,7 @@
 use Gifable\BandwidthSaved;
 use Gifable\Commands\CalculateBandwidthSaved;
 use Gifable\Gif;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Mobile_Detect;
 
@@ -27,10 +28,22 @@ class IndexController extends Controller {
                 'isAndroidOS' => (new Mobile_Detect())->isAndroidOS()
             ]);
         } else {
+            // Get the top four most popular tags for this GIF
+            $tags = DB::table('tags')
+                ->select('tag', DB::raw('count(*) as count'))
+                ->groupBy('tag')
+                ->orderBy('count', 'desc')
+                ->take(4)
+                ->get();
+
+            $gif['tags'] = $tags;
+
+            // Return view
             return view('gif', [
                 'bandwidth' => BandwidthSaved::first()->megabytes,
                 'gif' => $gif,
-                'isAndroidOS' => (new Mobile_Detect())->isAndroidOS()
+                'isAndroidOS' => (new Mobile_Detect())->isAndroidOS(),
+                'ngApp' => 'gifable.gif'
             ]);
         }
     }

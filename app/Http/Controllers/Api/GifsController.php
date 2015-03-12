@@ -4,7 +4,9 @@ use Gifable\Commands\TranscodeGifCommand;
 use Gifable\Gif;
 use Gifable\Http\Controllers\Controller;
 use Gifable\Services\RackspaceService;
+use Gifable\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Validator;
 use OpenCloud\ObjectStore\Constants\UrlType;
@@ -14,13 +16,9 @@ class GifsController extends Controller {
 
     public function postIndex(Request $request)
     {
-        $v = Validator::make($request->all(), [
+        $this->validate($request, [
             'file' => 'required|image'
         ]);
-
-        if ($v->fails()) {
-            throw new \Exception($v->errors()->first());
-        }
 
         $file = $request->file('file');
 
@@ -138,7 +136,32 @@ class GifsController extends Controller {
 
     public function getGif(Request $request, Gif $gif)
     {
+        // Get the top four most popular tags for this GIF
+        $tags = DB::table('tags')
+            ->select('tag', DB::raw('count(*) as count'))
+            ->groupBy('tag')
+            ->orderBy('count', 'desc')
+            ->take(4)
+            ->get();
+
+        $gif['tags'] = $tags;
+
+        // Return response
         return response()->apiSuccess('gif', $gif);
+    }
+
+    public function postTags(Request $request, Gif $gif)
+    {
+        $this->validate($request, [
+            'tag' => 'required|string'
+        ]);
+
+        $tag = Tag::create([
+            'gif_id' => $gif->id,
+            'tag' => strtolower($request->input('tag'))
+        ]);
+
+        return response()->apiSuccess('tag', $tag);
     }
 
 }

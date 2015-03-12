@@ -8,6 +8,16 @@ $background-color: #EEE;
 $primary-color: #4DBCE9;
 $text-color: #515151;
 
+@mixin font-awesome {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+}
+
 @import "imports/buttons";
 @import "imports/dialogs";
 @import "imports/inputs";
@@ -44,6 +54,9 @@ html, body {
         padding: 0 0 50px;
         position: relative;
 
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
         footer {
             @include media($mobile) {
                 height: 100px;

@@ -42,7 +42,7 @@
                 </div>
             </div>
         </header>
-        <section>
+        <section ng-controller="GifController">
             <div class="gif-wrapper">
                 @if(empty($gif->mp4_http_url))
                     <img src="{{ $gif->gif_url }}">
@@ -67,13 +67,19 @@
                             <input type="url" value="{{ action('IndexController@getGif', ['gif' => $gif->shortcode, 'extension' => '.gifv']) }}" onclick="select()">
                         </div>
                     </div>
-                    @if(!empty($gif->mp4_http_url))
-                        <div class="row">
-                            <div class="span-columns-6 file-details">
-                                This file is {{ round(($gif->gif_size - $gif->mp4_size) / $gif->gif_size * 100) }}% smaller than the original GIF.
+                </div>
+                <div class="tags">
+                    <div class="row">
+                        <div class="span-columns-6">
+                            <label>Popular Tags</label>
+                            <div class="tag" ng-cloak ng-repeat="tag in tags">
+                                [[ tag.tag ]]
+                            </div>
+                            <div class="tag" ng-click="showTagDialog()">
+                                <i class="fa fa-plus"></i>
                             </div>
                         </div>
-                    @endif
+                    </div>
                 </div>
             </div>
         </section>
@@ -93,6 +99,10 @@
 @stop
 
 @section('scripts')
+    <script>
+        var $tags = {!! json_encode($gif['tags'])  !!};
+    </script>
+
     @if($isAndroidOS)
         <script>
             var video = document.getElementById('video');
@@ -101,4 +111,7 @@
             }, false);
         </script>
     @endif
+
+    <script src="/js/gif/app.js"></script>
+    <script src="/js/gif/templates.js"></script>
 @stop

@@ -47,4 +47,9 @@ class Gif extends Model {
         }
     }
 
+    public function tags()
+    {
+        return $this->hasMany('Gifable\Tag');
+    }
+
 }
