@@ -32,6 +32,7 @@ class IndexController extends Controller {
             $tags = DB::table('tags')
                 ->select('tag', DB::raw('count(*) as count'))
                 ->groupBy('tag')
+                ->where('gif_id', $gif->id)
                 ->orderBy('count', 'desc')
                 ->take(4)
                 ->get();
