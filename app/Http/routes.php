@@ -20,4 +20,5 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api/v1'], function() {
     Route::post('gifs', 'GifsController@postIndex');
     Route::get('gifs/{gif}', 'GifsController@getGif');
     Route::post('gifs/{gif}/tags', 'GifsController@postTags');
+    Route::get('search', 'SearchController@getIndex');
 });

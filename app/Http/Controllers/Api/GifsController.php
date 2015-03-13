@@ -104,7 +104,9 @@ class GifsController extends Controller {
         unlink($pngFilePath);
         unlink($mp4FilePath);
 
-        return response()->apiSuccess('gif', $gif);
+        return response()->apiSuccess([
+            'gif' => $gif
+        ]);
     }
 
     /**
@@ -148,7 +150,9 @@ class GifsController extends Controller {
         $gif['tags'] = $tags;
 
         // Return response
-        return response()->apiSuccess('gif', $gif);
+        return response()->apiSuccess([
+            'gif' => $gif
+        ]);
     }
 
     public function postTags(Request $request, Gif $gif)
@@ -162,7 +166,9 @@ class GifsController extends Controller {
             'tag' => strtolower($request->input('tag'))
         ]);
 
-        return response()->apiSuccess('tag', $tag);
+        return response()->apiSuccess([
+            'tag' => $tag
+        ]);
     }
 
 }
