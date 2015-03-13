@@ -1,16 +1,24 @@
-img, video {
-    vertical-align: top;
-}
-a {
-    font-size: 14px;
-    color: #4DBCE9;
-    text-decoration: none;
+.gifable-wrapper {
+    display: inline-block;
+    position: relative;
 
-    &:hover {
-        text-decoration: underline;
+    img, video {
+        vertical-align: top;
     }
+    .watermark {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
 
-    img {
-        vertical-align: middle;
+        opacity: 0.25;
+
+        &:hover {
+            opacity: 0.75;
+        }
+        a {
+            img {
+                vertical-align: top;
+            }
+        }
     }
 }

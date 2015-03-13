@@ -19,16 +19,19 @@
 @stop
 
 @section('content')
-    @if(empty($gif->mp4_http_url))
-        <img src="{{ $gif->gif_url }}">
-    @else
-        <video id="video" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="{{ $gif->png_url }}">
-            <source src="{{ $gif->mp4_url }}" type="video/mp4">
-            Video not playing? <a href="{{ $gif->mp4_url }}">Download it</a> instead.
-        </video>
-    @endif
-    <div>
-        <a href="/{{ $gif->shortcode }}"><img src="/img/favicon.png">Gifable</a>
+    <div class="gifable-wrapper">
+        @if(empty($gif->webm_url) && empty($gif->mp4_url))
+            <img src="{{ $gif->gif_url }}">
+        @else
+            <video id="video" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="{{ $gif->png_url }}">
+                <source src="{{ $gif->webm_url }}" type="video/webm">
+                <source src="{{ $gif->mp4_url }}" type="video/mp4">
+                Video not playing? <a href="{{ $gif->mp4_url }}">Download it</a> instead.
+            </video>
+        @endif
+        <div class="watermark">
+            <a href="/"><img src="/img/watermark-logo.png"></a>
+        </div>
     </div>
 @stop
 

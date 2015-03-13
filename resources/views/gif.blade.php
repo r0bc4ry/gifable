@@ -44,10 +44,11 @@
         </header>
         <section ng-controller="GifController">
             <div class="gif-wrapper">
-                @if(empty($gif->mp4_http_url))
+                @if(empty($gif->webm_url) && empty($gif->mp4_url))
                     <img src="{{ $gif->gif_url }}">
                 @else
                     <video id="video" preload="auto" autoplay="autoplay" loop="loop" muted="muted" poster="{{ $gif->png_url }}">
+                        <source src="{{ $gif->webm_url }}" type="video/webm">
                         <source src="{{ $gif->mp4_url }}" type="video/mp4">
                         Video not playing? <a href="{{ $gif->mp4_url }}">Download it</a> instead.
                     </video>

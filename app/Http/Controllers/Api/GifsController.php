@@ -49,12 +49,23 @@ class GifsController extends Controller {
         $pngFilePath = sys_get_temp_dir() . '/' . $shortcode . '.png';
         imagepng(imagecreatefromgif($file), $pngFilePath);
 
+        // Calculate video bitrate based on image dimensions using the Kush Gauge
+        $targetBitrate = round($gifWidth * $gifHeight * 30 * 4 * 0.07 / 1000);
+
+        // Transcode GIF to WebM
+        $webmFilePath = sys_get_temp_dir() . '/' . $shortcode . '.webm';
+        exec('ffmpeg -i "' . $gifFilePath . '" -c:v libvpx -crf 10 -b:v ' . $targetBitrate . 'K -an ' . $webmFilePath, $output, $return);
+
+        if ($return != 0) {
+            throw new \Exception('An error occurred transcoding your GIF to WebM - please try again.');
+        }
+
         // Transcode GIF to MP4
         $mp4FilePath = sys_get_temp_dir() . '/' . $shortcode . '.mp4';
         exec('ffmpeg -i "' . $gifFilePath . '" -c:v libx264 -profile:v baseline -level:v 3.0 -crf 18 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -an ' . $mp4FilePath, $output, $return);
 
         if ($return != 0) {
-            throw new \Exception('An error occurred transcoding your GIF - please try again.');
+            throw new \Exception('An error occurred transcoding your GIF to MP4 - please try again.');
         }
 
         // Upload GIF, PNG, and MP4 files to Rackspace
@@ -63,14 +74,15 @@ class GifsController extends Controller {
             [
                 'name' => $shortcode . '.gif',
                 'path' => $gifFilePath,
-            ],
-            [
+            ], [
                 'name' => $shortcode . '.png',
                 'path' => $pngFilePath,
-            ],
-            [
+            ], [
                 'name' => $shortcode . '.mp4',
                 'path' => $mp4FilePath,
+            ], [
+                'name' => $shortcode . '.webm',
+                'path' => $webmFilePath,
             ],
         ]);
 
@@ -81,6 +93,8 @@ class GifsController extends Controller {
                 $pngDataObject = $dataObject;
             } else if ($index === 2) {
                 $mp4DataObject = $dataObject;
+            } else if ($index === 3) {
+                $webmDataObject = $dataObject;
             }
         }
 
@@ -96,12 +110,16 @@ class GifsController extends Controller {
             'gif_size' => filesize($gifFilePath),
             'mp4_http_url' => $this->getUrlFromDataObject($mp4DataObject),
             'mp4_https_url' => $this->getUrlFromDataObject($mp4DataObject, UrlType::SSL),
-            'mp4_size' => filesize($mp4FilePath)
+            'mp4_size' => filesize($mp4FilePath),
+            'webm_http_url' => $this->getUrlFromDataObject($webmDataObject),
+            'webm_https_url' => $this->getUrlFromDataObject($webmDataObject, UrlType::SSL),
+            'webm_size' => filesize($webmFilePath)
         ]);
 
         // Delete GIF, PNG, and MP4 files
         unlink($gifFilePath);
         unlink($pngFilePath);
+        unlink($webmFilePath);
         unlink($mp4FilePath);
 
         return response()->apiSuccess([
