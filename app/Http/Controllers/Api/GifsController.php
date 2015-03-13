@@ -51,7 +51,7 @@ class GifsController extends Controller {
 
         // Transcode GIF to MP4
         $mp4FilePath = sys_get_temp_dir() . '/' . $shortcode . '.mp4';
-        exec('ffmpeg -i "' . $gifFilePath . '" -c:v libx264 -profile:v baseline -level:v 3.0 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -an ' . $mp4FilePath, $output, $return);
+        exec('ffmpeg -i "' . $gifFilePath . '" -c:v libx264 -profile:v baseline -level:v 3.0 -crf 18 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -an ' . $mp4FilePath, $output, $return);
 
         if ($return != 0) {
             throw new \Exception('An error occurred transcoding your GIF - please try again.');
@@ -144,7 +144,7 @@ class GifsController extends Controller {
             ->groupBy('tag')
             ->where('gif_id', $gif->id)
             ->orderBy('count', 'desc')
-            ->take(4)
+            ->take(20)
             ->get();
 
         $gif['tags'] = $tags;

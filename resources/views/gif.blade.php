@@ -72,7 +72,7 @@
                     <div class="row">
                         <div class="span-columns-6">
                             <label>Popular Tags</label>
-                            <div class="tag" ng-cloak ng-repeat="tag in tags">
+                            <div class="tag" ng-cloak ng-repeat="tag in gif.tags" ng-click="onTagClick(tag.tag)">
                                 [[ tag.tag ]]
                             </div>
                             <div class="tag" ng-click="showTagDialog()">
@@ -100,7 +100,7 @@
 
 @section('scripts')
     <script>
-        var $tags = {!! json_encode($gif['tags'])  !!};
+        var $gif = {!! json_encode($gif)  !!};
     </script>
 
     @if($isAndroidOS)

@@ -2,18 +2,24 @@
 
 angular.module('gifable.gif.controllers')
     .controller('GifController', [
+        '$http',
         '$scope',
         '$window',
 
         'ngDialog',
         function(
+            $http,
             $scope,
             $window,
 
             ngDialog
         ) {
             $scope.tagDialog = {};
-            $scope.tags = $window.$tags;
+            $scope.gif = $window.$gif;
+
+            $scope.onTagClick = function(tag) {
+                $window.location.href = '/#/search?q=' + tag;
+            };
 
             $scope.showTagDialog = function() {
                 $scope.tagDialog.newTag = '';
@@ -25,8 +31,18 @@ angular.module('gifable.gif.controllers')
             };
 
             $scope.tagDialog.addTag = function() {
-                console.log($scope.tagDialog.newTag);
-                ngDialog.closeAll();
+                $http.post('/api/v1/gifs/' + $scope.gif.shortcode + '/tags', {
+                    tag: $scope.tagDialog.newTag
+                }).success(function() {
+                    if ($scope.gif.tags.length < 20) {
+                        $scope.gif.tags.push({
+                            tag: $scope.tagDialog.newTag
+                        });
+                    }
+                    ngDialog.closeAll();
+                }).error(function() {
+
+                });
             };
         }
     ]);

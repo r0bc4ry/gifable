@@ -12,5 +12,10 @@ angular.module('gifable.app')
             controller: 'DocumentationController'
         });
 
+        $routeProvider.when('/search', {
+            templateUrl: 'components/search/search.html',
+            controller: 'SearchController'
+        });
+
         $routeProvider.otherwise({ redirectTo: '/' });
     }]);

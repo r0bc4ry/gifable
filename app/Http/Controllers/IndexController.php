@@ -34,7 +34,7 @@ class IndexController extends Controller {
                 ->groupBy('tag')
                 ->where('gif_id', $gif->id)
                 ->orderBy('count', 'desc')
-                ->take(4)
+                ->take(20)
                 ->get();
 
             $gif['tags'] = $tags;
