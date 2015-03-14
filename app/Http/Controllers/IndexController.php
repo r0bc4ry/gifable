@@ -13,7 +13,7 @@ class IndexController extends Controller {
 	{
 		return view('app', [
             'bandwidth' => BandwidthSaved::first()->megabytes,
-            'gifs' => Gif::whereNotNull('mp4_https_url')->where('mp4_size', '<', 10000000)->orderBy('created_at')->limit(4)->get(),
+            'gifs' => Gif::whereNotNull('mp4_https_url')->where('mp4_size', '<', 2500000)->orderBy('created_at')->limit(8)->get(),
             'ngApp' => 'gifable.app'
         ]);
 	}

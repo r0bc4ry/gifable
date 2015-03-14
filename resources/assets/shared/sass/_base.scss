@@ -91,6 +91,48 @@ html, body {
 
                             text-align: center !important;
                         }
+
+                        &.links {
+                            overflow: hidden;
+
+                            text-align: right;
+                            line-height: 50px;
+
+                            ul {
+                                @include clearfix;
+
+                                padding: 0;
+                                margin: 0;
+
+                                list-style-type: none;
+
+                                li {
+                                    display: inline-block;
+                                    margin-right: 38px;
+
+                                    text-transform: uppercase;
+
+                                    &:last-child {
+                                        margin: 0;
+                                    }
+                                    a {
+                                        color: inherit;
+
+                                        &:hover {
+                                            text-decoration: none;
+                                        }
+                                    }
+                                    input[type=submit] {
+                                        background: none;
+                                        padding: 0;
+                                        border: none;
+                                        margin: 0;
+
+                                        text-transform: uppercase;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

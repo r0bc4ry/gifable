@@ -5,9 +5,9 @@
     color: #fff;
 
     .navigation {
-        border-bottom: 1px solid #fff;
-
         .outer-container {
+            padding-top: 20px;
+
             .logo {
                 float: left;
 
@@ -16,43 +16,39 @@
                     vertical-align: top;
                 }
             }
-            .links {
-                overflow: hidden;
+            .upload {
+                float: right;
 
-                text-align: right;
-                line-height: 50px;
+                .directive.gifable-file-input {
+                    button {
+                        background: none;
+                        padding: 10px 16px;
+                        border: 1px solid #fff;
+                        margin: 4px 0;
 
-                ul {
-                    @include clearfix;
-
-                    padding: 0;
-                    margin: 0;
-
-                    list-style-type: none;
-
-                    li {
-                        display: inline-block;
-                        margin-right: 38px;
-
-                        text-transform: uppercase;
-
-                        &:last-child {
-                            margin: 0;
+                        font-weight: 600;
+                        line-height: normal;
+                    }
+                    &:hover {
+                        button {
+                            background-color: #fff;
+                            color: $primary-color;
                         }
-                        a {
-                            color: inherit;
-
-                            &:hover {
-                                text-decoration: none;
-                            }
+                    }
+                    &:active {
+                        button {
+                            background-color: #fff;
+                            color: $primary-color;
                         }
-                        input[type=submit] {
-                            background: none;
-                            padding: 0;
-                            border: none;
-                            margin: 0;
+                    }
+                    &.disabled {
+                        pointer-events: none;
 
-                            text-transform: uppercase;
+                        button {
+                            background-color: #fff;
+                            color: $primary-color;
+
+                            cursor: progress;
                         }
                     }
                 }
@@ -60,54 +56,65 @@
         }
     }
     .call-to-action {
-        padding: 50px 0;
+        padding: 100px 0 170px;
 
         text-align: center;
 
         h1 {
-            margin: 0 0 20px;
+            margin: 0;
 
-            font-size: 34px;
-            text-transform: uppercase;
+            font-size: 30px;
+            line-height: golden-ratio(30px, 1);
         }
-        .input {
-            margin-bottom: 50px;
+        h2 {
+            margin: 0 0 25px;
 
-            .directive.gifable-file-input {
-                button {
-                    width: 256px;
-                    background: none;
-                    border: 2px solid #fff;
-                }
+            font-size: 16px;
+            font-weight: normal;
+            line-height: golden-ratio(16px, 1);
+
+            opacity: 0.5;
+        }
+        .search {
+            max-width: 650px;
+            border-radius: 3px;
+            margin: 0 auto;
+
+            overflow: hidden;
+            @include clearfix;
+
+            button {
+                background-color: #ED667F;
+//                background-color: #AEE239;
+                border-radius: 0;
+
+                float: right;
+
                 &:hover {
-                    button {
-                        background-color: #fff;
-                        color: $primary-color;
-                    }
+                    background-color: lighten(#ED667F, 5%);
+//                    background-color: lighten(#AEE239, 5%);
                 }
                 &:active {
-                    button {
-                        background-color: #fff;
-                        color: $primary-color;
-                    }
+                    background-color: darken(#ED667F, 5%);
+//                    background-color: darken(#AEE239, 5%);
                 }
-                &.disabled {
-                    pointer-events: none;
+            }
+            .input-wrapper {
+                overflow: hidden;
 
-                    button {
-                        background-color: #fff;
-                        color: $primary-color;
+                input[type=text] {
+                    background-color: rgba(#fff, 0.25);
+                    padding: 0 20px;
+                    border: none;
 
-                        cursor: progress;
+                    font-size: 18px;
+                    line-height: 50px;
+
+                    @include placeholder {
+                        color: #fff;
                     }
                 }
             }
-        }
-        p {
-            max-width: 500px;
-            margin: 0 auto;
-
-            line-height: golden-ratio(14px, 1);
         }
     }
 }
