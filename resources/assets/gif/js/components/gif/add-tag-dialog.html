@@ -1,9 +1,12 @@
 <div class="dialog add-tag-dialog">
-    <h3>Add New Tag</h3>
+    <h3>Add Tag</h3>
     <div class="interaction-wrapper">
-        <button ng-click="tagDialog.addTag()">Add</button>
+        <button ng-click="tagDialog.addTag()">
+            <div ng-hide="addingTag">Add</div>
+            <div ng-show="addingTag" style="width: 18px;"><i class="fa fa-spinner fa-pulse"></i></div>
+        </button>
         <div class="input-wrapper">
-            <input type="text" placeholder="Enter a Tag" ng-model="tagDialog.newTag">
+            <input type="text" placeholder="Enter a Tag" ng-model="tagDialog.newTag" ng-enter="tagDialog.addTag()">
         </div>
     </div>
 </div>

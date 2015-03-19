@@ -22,10 +22,10 @@
     <div class="hero">
         <div class="outer-container">
             <h1>GIFs Just Got Even Better</h1>
-            <h2>GIFs optimized as HTML5 videos, saving your bandwidth and time.</h2>
+            <h2>GIFs converted to HTML5 videos, saving you time and bandwidth.</h2>
             <div class="call-to-action">
                 <div class="search">
-                    <input type="text" placeholder="Search GIFs">
+                    <input type="text" placeholder="Search GIFs" ng-model="searchValue" ng-enter="onSearch()">
                 </div>
                 <gifable-file-input></gifable-file-input>
             </div>

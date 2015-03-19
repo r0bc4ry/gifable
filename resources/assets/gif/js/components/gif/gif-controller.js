@@ -31,17 +31,25 @@ angular.module('gifable.gif.controllers')
             };
 
             $scope.tagDialog.addTag = function() {
+                if (!$scope.tagDialog.newTag || $scope.addingTag) {
+                    return false;
+                }
+
+                $scope.addingTag = true;
+
                 $http.post('/api/v1/gifs/' + $scope.gif.shortcode + '/tags', {
                     tag: $scope.tagDialog.newTag
-                }).success(function() {
+                }).then(function(response) {
                     if ($scope.gif.tags.length < 20) {
                         $scope.gif.tags.push({
-                            tag: $scope.tagDialog.newTag
+                            tag: $scope.tagDialog.newTag.toLowerCase()
                         });
                     }
                     ngDialog.closeAll();
-                }).error(function() {
-
+                }, function(error) {
+                    console.log(error);
+                }).then(function() {
+                    $scope.addingTag = false;
                 });
             };
         }

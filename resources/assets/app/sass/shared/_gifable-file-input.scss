@@ -3,6 +3,8 @@
 
     position: relative;
 
+    @include user-select(none);
+
     &:hover {
         button {
             background-color: lighten($primary-color, 5%);
@@ -12,5 +14,9 @@
         button {
             background-color: darken($primary-color, 5%);
         }
+    }
+    &.disabled {
+        cursor: wait;
+        pointer-events: none;
     }
 }

@@ -181,7 +181,7 @@ class GifsController extends Controller {
 
         $tag = Tag::create([
             'gif_id' => $gif->id,
-            'tag' => strtolower($request->input('tag'))
+            'tag' => strtolower(strip_tags($request->input('tag')))
         ]);
 
         return response()->apiSuccess([

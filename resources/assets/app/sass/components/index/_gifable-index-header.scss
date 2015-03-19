@@ -113,13 +113,19 @@
                 }
             }
             .directive.gifable-file-input {
-                @include media($mobile) {
-                    margin-bottom: 20px;
-                }
-
                 button {
-                    background-color: #ed667f;
-                    padding: 0 50px;
+                    min-width: 214px;
+                    background-color: $secondary-color;
+                }
+                &:hover {
+                    button {
+                        background-color: lighten($secondary-color, 5%);
+                    }
+                }
+                &:active {
+                    button {
+                        background-color: darken($secondary-color, 5%);
+                    }
                 }
             }
         }

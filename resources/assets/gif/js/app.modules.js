@@ -8,6 +8,7 @@ angular.module('gifable.gif', [
 
     // Application modules
     'gifable.gif.controllers',
+    'gifable.gif.directives',
     'gifable.gif.templates'
 ]).config([
     '$httpProvider',
@@ -26,4 +27,5 @@ angular.module('gifable.gif', [
 ]);
 
 angular.module('gifable.gif.controllers', []);
+angular.module('gifable.gif.directives', []);
 angular.module('gifable.gif.templates', []);
