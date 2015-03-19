@@ -5,9 +5,9 @@
     color: #fff;
 
     .navigation {
-        .outer-container {
-            padding-top: 20px;
+        border-bottom: 1px solid #fff;
 
+        .outer-container {
             .logo {
                 float: left;
 
@@ -16,47 +16,51 @@
                     vertical-align: top;
                 }
             }
-            .upload {
-                float: right;
+            .links {
+                overflow: hidden;
 
-                .directive.gifable-file-input {
-                    button {
-                        background: none;
-                        padding: 10px 20px;
-                        border: 1px solid #fff;
-                        margin: 4px 0;
+                text-align: right;
+                line-height: 50px;
 
-                        font-weight: 600;
-                        line-height: normal;
-                    }
-                    &:hover {
-                        button {
-                            background-color: #fff;
-                            color: $primary-color;
+                ul {
+                    @include clearfix;
+
+                    padding: 0;
+                    margin: 0;
+
+                    list-style-type: none;
+
+                    li {
+                        display: inline-block;
+                        margin-right: 38px;
+
+                        text-transform: uppercase;
+
+                        &:last-child {
+                            margin: 0;
                         }
-                    }
-                    &:active {
-                        button {
-                            background-color: #fff;
-                            color: $primary-color;
+                        a {
+                            color: inherit;
+
+                            &:hover {
+                                text-decoration: none;
+                            }
                         }
-                    }
-                    &.disabled {
-                        pointer-events: none;
+                        input[type=submit] {
+                            background: none;
+                            padding: 0;
+                            border: none;
+                            margin: 0;
 
-                        button {
-                            background-color: #fff;
-                            color: $primary-color;
-
-                            cursor: progress;
+                            text-transform: uppercase;
                         }
                     }
                 }
             }
         }
     }
-    .call-to-action {
-        padding: 100px 0;
+    .hero {
+        padding: 72px 0;
 
         text-align: center;
 
@@ -67,52 +71,55 @@
             line-height: golden-ratio(30px, 1);
         }
         h2 {
-            margin: 0 0 25px;
+            margin: 0 0 36px;
 
             font-size: 16px;
             font-weight: normal;
             line-height: golden-ratio(16px, 1);
-
-            opacity: 0.5;
         }
-        .search {
-            max-width: 650px;
-            border-radius: 3px;
+        .call-to-action {
+            max-width: 600px;
             margin: 0 auto;
 
-            overflow: hidden;
-            @include clearfix;
+            .search {
+                margin-bottom: 18px;
 
-            button {
-                background-color: #ED667F;
-//                background-color: #AEE239;
-                border-radius: 0;
+                position: relative;
 
-                float: right;
-
-                &:hover {
-                    background-color: lighten(#ED667F, 5%);
-//                    background-color: lighten(#AEE239, 5%);
-                }
-                &:active {
-                    background-color: darken(#ED667F, 5%);
-//                    background-color: darken(#AEE239, 5%);
-                }
-            }
-            .input-wrapper {
                 overflow: hidden;
 
-                input[type=text] {
-                    background-color: rgba(#fff, 0.25);
-                    padding: 0 20px;
-                    border: none;
+                &:after {
+                    @include font-awesome;
+                    content: "\f002";
+
+                    position: absolute;
+                    top: 16px;
+                    left: 20px;
 
                     font-size: 18px;
+                }
+                input[type=text] {
+                    background-color: rgba(#fff, 0.25);
+                    padding: 0 20px 0 58px;
+                    border: none;
+                    border-radius: 3px;
+
+                    font-size: 16px;
                     line-height: 50px;
 
                     @include placeholder {
                         color: #fff;
                     }
+                }
+            }
+            .directive.gifable-file-input {
+                @include media($mobile) {
+                    margin-bottom: 20px;
+                }
+
+                button {
+                    background-color: #ed667f;
+                    padding: 0 50px;
                 }
             }
         }

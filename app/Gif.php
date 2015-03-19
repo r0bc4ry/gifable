@@ -8,7 +8,7 @@ class Gif extends Model {
         'png_url',
         'gif_url',
         'mp4_url',
-        'webm_url'
+        'webm_url',
     ];
 
 	/**
@@ -30,7 +30,7 @@ class Gif extends Model {
         'mp4_size',
         'webm_http_url',
         'webm_https_url',
-        'webm_size'
+        'webm_size',
     ];
 
 	/**
@@ -47,7 +47,7 @@ class Gif extends Model {
         'mp4_http_url',
         'mp4_https_url',
         'webm_http_url',
-        'webm_https_url'
+        'webm_https_url',
     ];
 
     public function getPngUrlAttribute()

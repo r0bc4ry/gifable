@@ -54,7 +54,7 @@ class GifsController extends Controller {
 
         // Transcode GIF to WebM
         $webmFilePath = sys_get_temp_dir() . '/' . $shortcode . '.webm';
-        exec('ffmpeg -i "' . $gifFilePath . '" -c:v libvpx -crf 10 -b:v ' . $targetBitrate . 'K -an ' . $webmFilePath, $output, $return);
+        exec('ffmpeg -i "' . $gifFilePath . '" -c:v libvpx -deadline realtime -crf 10 -b:v ' . $targetBitrate . 'K -an ' . $webmFilePath, $output, $return);
 
         if ($return != 0) {
             throw new \Exception('An error occurred transcoding your GIF to WebM - please try again.');

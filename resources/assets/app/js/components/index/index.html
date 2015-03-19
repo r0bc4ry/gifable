@@ -23,7 +23,7 @@
         </div>
         <div class="gif-tile-wrapper">
             <div class="gif-tile" data-ng-repeat="gif in gifs" gifable-repeat-events data-ng-click="navigateToGif(gif)" data-ng-mouseover="visibleGif = $index" data-ng-mouseout="visibleGif = false" data-ng-style="{ 'background-image': 'url(' + gif.png_url + ')' }" style="background-position: center center; background-size: cover;">
-                <video preload="auto" loop="loop" muted="muted" poster="{{ gif.png_url }}" data-ng-show="visibleGif === $index" data-ng-mouseover="playGif($event)" data-ng-mouseout="pauseGif($event)" data-ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">
+                <video preload="none" loop="loop" muted="muted" poster="{{ gif.png_url }}" data-ng-show="visibleGif === $index" data-ng-mouseover="playGif($event)" data-ng-mouseout="pauseGif($event)" data-ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">
                     <source data-ng-src="{{ gif.webm_url }}" type="video/webm">
                     <source data-ng-src="{{ gif.mp4_url }}" type="video/mp4">
                     Video not playing? <a href="{{ gif.mp4_url }}">Download it</a> instead.

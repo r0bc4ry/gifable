@@ -91,7 +91,7 @@
                         Made with <i class="fa fa-heart"></i> by <a href="https://github.com/r0bc4ry" target="_blank">Rob Cary</a>.
                     </div>
                     <div class="span-columns-6" style="text-align: right;">
-                        Bandwidth Saved: {{ number_format($bandwidth) }} MB
+                        Bandwidth Saved: 0 MB
                     </div>
                 </div>
             </div>

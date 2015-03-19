@@ -1,7 +1,5 @@
 <?php namespace Gifable\Http\Controllers;
 
-use Gifable\BandwidthSaved;
-use Gifable\Commands\CalculateBandwidthSaved;
 use Gifable\Gif;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
@@ -12,16 +10,13 @@ class IndexController extends Controller {
 	public function getIndex()
 	{
 		return view('app', [
-            'bandwidth' => BandwidthSaved::first()->megabytes,
-            'gifs' => Gif::whereNotNull('mp4_https_url')->where('mp4_size', '<', 2500000)->orderBy('created_at')->limit(8)->get(),
+            'gifs' => Gif::where('webm_size', '<', 1000000)->orderBy('created_at')->limit(8)->get(),
             'ngApp' => 'gifable.app'
         ]);
 	}
 
     public function getGif(Gif $gif, $extension = null)
     {
-        Queue::push(new CalculateBandwidthSaved($gif));
-
         if ($extension === '.gifv') {
             return view('gifv', [
                 'gif' => $gif,
@@ -41,7 +36,6 @@ class IndexController extends Controller {
 
             // Return view
             return view('gif', [
-                'bandwidth' => BandwidthSaved::first()->megabytes,
                 'gif' => $gif,
                 'isAndroidOS' => (new Mobile_Detect())->isAndroidOS(),
                 'ngApp' => 'gifable.gif'
