@@ -1,0 +1,7 @@
+<div class="directive gifable-gif-tile" data-ng-click="onClick()" data-ng-mouseover="playingGif = true" data-ng-mouseout="playingGif = false" data-ng-style="{ 'background-image': 'url(' + gif.png_url + ')' }">
+    <video preload="{{ preload || 'none' }}" loop="loop" muted="muted" poster="{{ gif.png_url }}" data-ng-show="playingGif" data-ng-mouseover="playGif($event)" data-ng-mouseout="pauseGif($event)" data-ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">
+        <source data-ng-src="{{ gif.webm_url }}" type="video/webm">
+        <source data-ng-src="{{ gif.mp4_url }}" type="video/mp4">
+        Video not playing? <a href="{{ gif.mp4_url }}">Download it</a> instead.
+    </video>
+</div>

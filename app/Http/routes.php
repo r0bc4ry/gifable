@@ -17,8 +17,11 @@ Route::get('{gif}{extension?}', 'IndexController@getGif')->where(['gif' => '[a-z
 
 // API
 Route::group(['namespace' => 'Api', 'prefix' => 'api/v1'], function() {
+    // GIFs
     Route::post('gifs', 'GifsController@postIndex');
     Route::get('gifs/{gif}', 'GifsController@getGif');
     Route::post('gifs/{gif}/tags', 'GifsController@postTags');
+
+    // Search
     Route::get('search', 'SearchController@getIndex');
 });

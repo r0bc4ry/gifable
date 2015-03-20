@@ -1,0 +1,39 @@
+.directive.gifable-gif-tile {
+    @include span-columns(3);
+
+    @include media($mobile) {
+        @include span-columns(6);
+        width: 50%;
+    }
+
+    width: 25%;
+    background-color: $background-color;
+    background-position: center center;
+    background-size: cover;
+
+    position: relative;
+
+    cursor: pointer;
+    overflow: hidden;
+
+    &:last-child {
+        width: 25%;
+
+        @include media($mobile) {
+            width: 50%;
+        }
+    }
+    &:after {
+        display: block;
+        content: "";
+        padding-top: 75%;
+    }
+    video {
+        width: auto;
+        height: auto;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
