@@ -17,18 +17,5 @@ angular.module('gifable.app.controllers')
             $window
         ) {
             $scope.gifs = $window.$gifs;
-            $scope.ngRepeatStartedDeferred = $q.defer();
-
-
-
-
-
-            $scope.ngRepeatStartedDeferred.promise.then(function() {
-                _getGifTileDimensions();
-            });
-
-            angular.element($window).bind('resize', function() {
-                _getGifTileDimensions();
-            });
         }
     ]);

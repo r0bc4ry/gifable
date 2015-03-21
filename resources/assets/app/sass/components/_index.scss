@@ -42,7 +42,7 @@
 
             box-shadow: 0 4px 8px rgba($text-color, 0.25);
 
-            .gif-tile {
+            .directive.gifable-gif-tile {
                 @include span-columns(3, block-collapse);
 
                 @include media($mobile) {
@@ -51,12 +51,7 @@
                 }
 
                 width: 25%;
-                background-color: $background-color;
-
-                position: relative;
-
-                cursor: pointer;
-                overflow: hidden;
+                margin: 0;
 
                 &:last-child {
                     width: 25%;
@@ -64,19 +59,6 @@
                     @include media($mobile) {
                         width: 50%;
                     }
-                }
-                &:after {
-                    padding-top: 75%;
-                    display: block;
-                    content: "";
-                }
-                video {
-                    width: auto;
-                    height: auto;
-
-                    position: absolute;
-                    top: 0;
-                    left: 0;
                 }
             }
         }

@@ -18,13 +18,25 @@ angular.module('gifable.app.directives')
                     var tileWidth = elem.prop('offsetWidth');
                     var tileHeight = elem.prop('offsetHeight');
 
-                    scope.playGif = function(evt) {
-                        evt.target.play();
+                    var video = elem[0].querySelector('.video');
+
+                    angular.element(video).bind('canplay', function() {
+                        scope.$apply(function () {
+                            scope.canplay = true;
+                        });
+                    });
+
+                    scope.play = function(evt) {
+                        scope.playing = true;
+
+                        video.play();
                     };
 
-                    scope.pauseGif = function(evt) {
-                        evt.target.pause();
-                        evt.target.currentTime = 0;
+                    scope.pause = function(evt) {
+                        scope.playing = false;
+
+                        video.pause();
+                        video.currentTime = 0;
                     };
 
                     scope.onClick = function() {
@@ -49,11 +61,11 @@ angular.module('gifable.app.directives')
                         var gifWidth = parseInt(gif.width);
                         var gifHeight = parseInt(gif.height);
 
-                        if (gifHeight <= gifWidth) {
+                        if (gifHeight < gifWidth) {
                             return 0 + 'px';
                         } else {
                             var adjustedHeight = (tileWidth / gifWidth) * gifHeight;
-                            return -((adjustedHeight - tileWidth) / 2) + 'px';
+                            return -((adjustedHeight - tileHeight) / 2) + 'px';
                         }
                     };
 
