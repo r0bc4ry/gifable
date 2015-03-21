@@ -20,12 +20,6 @@ angular.module('gifable.app.directives')
 
                     var video = elem[0].querySelector('.video');
 
-                    angular.element(video).bind('canplay', function() {
-                        scope.$apply(function () {
-                            scope.canplay = true;
-                        });
-                    });
-
                     scope.play = function(evt) {
                         scope.playing = true;
 

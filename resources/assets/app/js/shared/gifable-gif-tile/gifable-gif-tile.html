@@ -1,11 +1,4 @@
-<div class="directive gifable-gif-tile" data-ng-click="onClick()" data-ng-mouseover="play($event)" data-ng-mouseout="pause($event)" data-ng-style="{ 'background-image': 'url(' + gif.png_url + ')' }">
-    <div class="buffering-wrapper" data-ng-show="playing && !canplay">
-        <div class="buffering-table">
-            <div class="buffering-table-cell">
-                <i class="fa fa-spinner fa-pulse"></i>
-            </div>
-        </div>
-    </div>
+<div class="directive gifable-gif-tile" data-ng-click="onClick()" data-ng-mouseover="play()" data-ng-mouseout="pause()" data-ng-style="{ 'background-image': 'url(' + gif.png_url + ')' }">
     <video class="video" preload="{{ preload || 'none' }}" loop="loop" muted="muted" poster="{{ gif.png_url }}" data-ng-show="playing" data-ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">
         <source data-ng-src="{{ gif.webm_url }}" type="video/webm">
         <source data-ng-src="{{ gif.mp4_url }}" type="video/mp4">
