@@ -2,6 +2,7 @@
 
 angular.module('gifable.app', [
     // Angular modules
+    'ngAnimate',
     'ngRoute',
 
     // Third-party modules

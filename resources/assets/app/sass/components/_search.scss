@@ -3,6 +3,18 @@
         padding-top: 50px;
         padding-bottom: 50px;
 
+        .loading-icon {
+            font-size: 48px;
+            color: $secondary-color;
+            text-align: center;
+
+            h3 {
+                margin: 0;
+
+                font-size: 14px;
+                color: $text-color;
+            }
+        }
         .directive.gifable-gif-tile {
             @include span-columns(3);
 
@@ -26,6 +38,14 @@
             }
             &:nth-child(4) {
                 margin-right: 0;
+            }
+            &.ng-enter {
+                @include transition(opacity 200ms);
+                opacity: 0;
+                
+                &.ng-enter-active {
+                    opacity: 1;
+                }
             }
         }
     }
