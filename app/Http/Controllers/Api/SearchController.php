@@ -19,7 +19,7 @@ class SearchController extends Controller {
         $limit = $request->has('limit') ? $request->get('limit') : 25;
         $offset = $request->has('offset') ? $request->get('offset') : 0;
 
-        // TODO Update this SQL call to be more effiecent
+        // TODO Update this SQL call to be more efficient
         $tags = DB::table('tags')
             ->select('gif_id', DB::raw('count(*) as count'))
             ->where('tag', 'LIKE', '%' . $query . '%')

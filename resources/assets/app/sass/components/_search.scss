@@ -3,6 +3,11 @@
         padding-top: 50px;
         padding-bottom: 50px;
 
+        h1 {
+            margin: 0 0 20px;
+
+            font-size: 30px;
+        }
         .results-wrapper {
             @include clearfix;
         }

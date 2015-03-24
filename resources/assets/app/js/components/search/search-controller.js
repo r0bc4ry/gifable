@@ -10,11 +10,13 @@ angular.module('gifable.app.controllers')
             $routeParams,
             $scope
         ) {
+            $scope.query = $routeParams.q;
+
             $http({
                 url:'/api/v1/search',
                 method: 'GET',
                 params: {
-                    q: $routeParams.q
+                    q: $scope.query
                 }
             }).success(function(response) {
                 $scope.gifs = response.data.gifs;
