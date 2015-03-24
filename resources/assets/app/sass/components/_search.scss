@@ -3,7 +3,10 @@
         padding-top: 50px;
         padding-bottom: 50px;
 
-        .loading-icon {
+        .results-wrapper {
+            @include clearfix;
+        }
+        .loader-wrapper {
             font-size: 48px;
             color: $secondary-color;
             text-align: center;
@@ -42,7 +45,7 @@
             &.ng-enter {
                 @include transition(opacity 200ms);
                 opacity: 0;
-                
+
                 &.ng-enter-active {
                     opacity: 1;
                 }

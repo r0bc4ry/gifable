@@ -20,13 +20,13 @@ angular.module('gifable.app.directives')
 
                     var video = elem[0].querySelector('.video');
 
-                    scope.play = function(evt) {
+                    scope.play = function() {
                         scope.playing = true;
 
                         video.play();
                     };
 
-                    scope.pause = function(evt) {
+                    scope.pause = function() {
                         scope.playing = false;
 
                         video.pause();

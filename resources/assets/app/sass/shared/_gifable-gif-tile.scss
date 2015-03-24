@@ -28,34 +28,34 @@
         content: "";
         padding-top: 75%;
     }
-    .buffering-wrapper {
-        width: 100%;
-        height: 100%;
-
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-
-        z-index: 1;
-
-        .buffering-table {
-            width: 100%;
-            height: 100%;
-
-            display: table;
-
-            .buffering-table-cell {
-                display: table-cell;
-                vertical-align: middle;
-
-                font-size: 30px;
-                color: #fff;
-                text-align: center;
-            }
-        }
-    }
+//    .buffering-wrapper {
+//        width: 100%;
+//        height: 100%;
+//
+//        position: absolute;
+//        top: 0;
+//        right: 0;
+//        bottom: 0;
+//        left: 0;
+//
+//        z-index: 1;
+//
+//        .buffering-table {
+//            width: 100%;
+//            height: 100%;
+//
+//            display: table;
+//
+//            .buffering-table-cell {
+//                display: table-cell;
+//                vertical-align: middle;
+//
+//                font-size: 30px;
+//                color: #fff;
+//                text-align: center;
+//            }
+//        }
+//    }
     video {
         width: auto;
         height: auto;

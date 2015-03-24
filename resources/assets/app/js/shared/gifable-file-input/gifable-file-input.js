@@ -22,8 +22,8 @@ angular.module('gifable.app.directives')
                             for (var i = 0; i < files.length; i++) {
                                 var file = files[i];
 
-                                if (file.size > 100000000) {
-                                    _showError('File must be less than 100MB.');
+                                if (file.size > 50000000) {
+                                    _showError('File must be less than 50MB.');
                                     continue;
                                 }
 

@@ -2,6 +2,6 @@
     <video class="video" preload="{{ preload || 'none' }}" loop="loop" muted="muted" poster="{{ gif.png_url }}" data-ng-show="playing" data-ng-style="{ width: calculateVideoWidth(gif), height: calculateVideoHeight(gif), top: calculateVideoTop(gif), left: calculateVideoLeft(gif) }">
         <source data-ng-src="{{ gif.webm_url }}" type="video/webm">
         <source data-ng-src="{{ gif.mp4_url }}" type="video/mp4">
-        Video not playing? <a href="{{ gif.mp4_url }}">Download it</a> instead.
+        Video not playing? <a data-ng-href="{{ gif.mp4_url }}">Download it</a> instead.
     </video>
 </div>
