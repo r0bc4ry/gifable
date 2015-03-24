@@ -92,7 +92,7 @@
                     </div>
                     <div class="span-columns-6 links">
                         <ul>
-                            <li><a href="#/api">API</a></li>
+                            <li><a href="/#/api">API</a></li>
                             <li>
                                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
                                     <input type="hidden" name="cmd" value="_s-xclick">
